@@ -12,19 +12,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Message {
-    public final @NotNull OfflinePlayer sender;
-    public final @NotNull OfflinePlayer recipient;
-    public final @NotNull String message;
-
-    public Message(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull String message) {
-        this.sender = sender;
-        this.recipient = recipient;
-        this.message = message;
-    }
+public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer recipient, @NotNull String message) {
 
     private @NotNull String playerOrServerUsername(final @NotNull OfflinePlayer player) throws InvalidPlayerError {
-        if (player.getUniqueId().equals(console.getUniqueId())) return CloudnodeMSG.getInstance().config().consoleName();
+        if (player.getUniqueId().equals(console.getUniqueId()))
+            return CloudnodeMSG.getInstance().config().consoleName();
         else {
             final @NotNull Optional<@NotNull String> name = Optional.ofNullable(player.getName());
             if (name.isEmpty()) throw new InvalidPlayerError();
@@ -37,7 +29,8 @@ public class Message {
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
-        sendMessage(recipient, CloudnodeMSG.getInstance().config().incoming(senderUsername, recipientUsername, message));
+        sendMessage(recipient, CloudnodeMSG.getInstance().config()
+                .incoming(senderUsername, recipientUsername, message));
     }
 
     public final static @NotNull OfflinePlayer console = CloudnodeMSG.getInstance().getServer()
@@ -48,7 +41,8 @@ public class Message {
     }
 
     public static void sendMessage(final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
-        if (recipient.getUniqueId() == console.getUniqueId()) CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
+        if (recipient.getUniqueId() == console.getUniqueId())
+            CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
         else if (recipient.isOnline()) Objects.requireNonNull(recipient.getPlayer()).sendMessage(message);
     }
 }
