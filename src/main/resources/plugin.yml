@@ -3,3 +3,8 @@ version: '${project.version}'
 main: pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG
 api-version: '1.20'
 author: Cloudnode
+commands:
+    message:
+        description: Send a private message
+        usage: /<command> <player> <message>
+        aliases: [ "msg", "tell", "t", "whisper", "dm", "m", "pm" ]
