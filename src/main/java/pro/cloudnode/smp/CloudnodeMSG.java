@@ -2,29 +2,31 @@ package pro.cloudnode.smp;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.SQLException;
-import java.util.HashMap;
+import pro.cloudnode.smp.Commands.Message;
 
 public final class CloudnodeMSG extends JavaPlugin {
     public static @NotNull FileConfiguration configFile;
     public static @NotNull HikariDataSource database;
+    public static @NotNull Server server;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         initDbSource();
         configFile = this.getConfig();
+        server = getServer();
         // Plugin startup logic
 
+        getCommand("message").setExecutor(new @NotNull Message());
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        database.close();
     }
 
     private void initDbSource() {
@@ -32,5 +34,6 @@ public final class CloudnodeMSG extends JavaPlugin {
         config.setDriverClassName("org.sqlite.JDBC");
         config.setJdbcUrl("jdbc:sqlite:" + getDataFolder().getAbsolutePath() + "/messages.db");
         database = new HikariDataSource(config);
+
     }
 }
