@@ -76,6 +76,13 @@ public final class PluginConfig {
     }
 
     /**
+     * Plugin reloaded
+     */
+    public @NotNull Component reloaded() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("reloaded")));
+    }
+
+    /**
      * Name for console/server that should appear as {@code <sender>} or {@code <recipient>} in messages
      */
     public @NotNull String consoleName() {

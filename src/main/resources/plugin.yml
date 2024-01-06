@@ -8,3 +8,6 @@ commands:
         description: Send a private message
         usage: /<command> <player> <message>
         aliases: [ "msg", "tell", "t", "whisper", "dm", "m", "pm" ]
+    cloudnodemsg:
+        description: CloudnodeMSG
+        usage: /<command>

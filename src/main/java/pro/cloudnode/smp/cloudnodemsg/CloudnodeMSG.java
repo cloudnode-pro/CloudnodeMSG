@@ -2,6 +2,7 @@ package pro.cloudnode.smp.cloudnodemsg;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
 
 import java.util.Objects;
@@ -21,6 +22,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         saveDefaultConfig();
         reload();
 
+        Objects.requireNonNull(getCommand("cloudnodemsg")).setExecutor(new MainCommand());
         Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand());
     }
 

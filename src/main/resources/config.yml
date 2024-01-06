@@ -18,6 +18,9 @@ console-name: "Server"
 #  <usage> - the command usage parameters
 usage: "<yellow>(!) Usage:</yellow> <white>/<command> <usage></white>"
 
+# Plugin reloaded
+reloaded: "<green>(!) Plugin successfully reloaded.</green>"
+
 # Error messages
 errors:
     # No permission
