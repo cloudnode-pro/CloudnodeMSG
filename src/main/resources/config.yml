@@ -1,0 +1,3 @@
+# Format for the messages, uses MiniMessage formatting
+incoming: '<click:suggest_command:/msg <sender> ><dark_gray>[<dark_aqua><sender></dark_aqua> <white>-></white> <aqua>me</aqua>]</dark_gray></click> <reset><white><message></white>'
+outgoing: '<click:suggest_command:/msg <recipient> ><dark_gray>[<aqua>me</aqua> <white>-></white> <dark_aqua><recipient></dark_aqua>]</dark_gray></click> <reset><white><message></white>'
