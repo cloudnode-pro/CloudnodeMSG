@@ -43,6 +43,7 @@ public final class MessageCommand extends Command {
 
     @Override
     public @NotNull List<@NotNull String> onTabComplete(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        if (!sender.hasPermission(Permission.USE)) return new ArrayList<>();
         final @NotNull List<@NotNull String> completions = new ArrayList<>();
         if (args.length == 1) completions.addAll(CloudnodeMSG.getInstance().getServer().getOnlinePlayers().stream()
                 .map(Player::getName)
