@@ -1,0 +1,37 @@
+# Incoming message format (recipient's point of view)
+# Placeholders:
+#  <sender> - the username of the message sender
+#  <recipient> - the username of the message recipient
+#  <message> - the message text
+incoming: '<click:suggest_command:/msg <sender> ><dark_gray>[<#60a5fa><sender></#60a5fa> <white>-></white> <#bfdbfe>me</#bfdbfe>]</dark_gray></click> <reset><#dbeafe><message></#dbeafe>'
+
+# Outgoing message format (sender's point of view)
+# Same placeholders as incoming
+outgoing: '<click:suggest_command:/msg <recipient> ><dark_gray>[<#93c5fd>me</#93c5fd> <white>-></white> <#60a5fa><recipient></#60a5fa>]</dark_gray></click> <reset><#dbeafe><message></#dbeafe>'
+
+# Name for console/server that should appear as <sender> or <recipient> in messages
+console-name: "Server"
+
+# Command usage format
+# Placeholders:
+#  <command> - the command name
+#  <usage> - the command usage parameters
+usage: "<yellow>(!) Usage:</yellow> <white>/<command> <usage></white>"
+
+# Plugin reloaded
+reloaded: "<green>(!) Plugin successfully reloaded.</green>"
+
+# Error messages
+errors:
+    # No permission
+    no-permission: "<red>(!) You don't have permission to use this command.</red>"
+
+    # Player has no username (somehow)
+    invalid-player: "<red>(!) Invalid player.</red>"
+
+    # Player not found
+    # Placeholders:
+    #  <player> - the player's username
+    player-not-found: "<red>(!) Player <gray><player></gray> not found.</red>"
+
+    message-yourself: "<red>(!) You can't send a message to yourself.</red>"
