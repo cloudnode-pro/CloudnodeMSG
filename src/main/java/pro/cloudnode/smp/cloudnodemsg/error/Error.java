@@ -11,7 +11,7 @@ import java.util.logging.Level;
 public abstract class Error extends Throwable {
     public final @NotNull Component component;
 
-    protected Error(@NotNull Component component) {
+    protected Error(final @NotNull Component component) {
         this.component = component;
     }
 
