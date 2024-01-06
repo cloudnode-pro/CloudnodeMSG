@@ -1,6 +1,5 @@
 package pro.cloudnode.smp.cloudnodemsg.error;
 
-import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 
 /**
