@@ -1,0 +1,17 @@
+name: CloudnodeMSG
+version: '${project.version}'
+main: pro.cloudnode.smp.CloudnodeMSG
+api-version: '1.20'
+author: Cloudnode
+commands:
+  togglemsg:
+    description: Allows players to disable sending and receiving messages for themselves
+    usage: /<command>
+  reply:
+    description: Reply to the most recently recieved message
+    usage: /<command> <message>
+    aliases: ["r", "re"]
+  message:
+    description: Lets players send each other private messages
+    usage: /<command> <player> <message>
+    aliases: ["msg", "tell", "t", "whisper", "dm", "m", "pm"]
