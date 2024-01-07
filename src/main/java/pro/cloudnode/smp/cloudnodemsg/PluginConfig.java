@@ -119,5 +119,22 @@ public final class PluginConfig {
     public @NotNull Component messageYourself() {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.message-yourself")));
     }
+
+    public @NotNull Component nobodyReply() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.nobody-reply")));
+    }
+
+    /**
+     * The player that messaged you is no longer online
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component replyOffline(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.reply-offline")),
+                Placeholder.unparsed("player", player)
+        );
+    }
 }
 

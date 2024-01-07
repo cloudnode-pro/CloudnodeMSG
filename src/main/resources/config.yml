@@ -35,3 +35,10 @@ errors:
     player-not-found: "<red>(!) Player <gray><player></gray> not found.</red>"
 
     message-yourself: "<red>(!) You can't send a message to yourself.</red>"
+
+    nobody-reply: "<red>(!) You have no one to reply to.</red>"
+
+    # The player that messaged you is no longer online
+    # Placeholders:
+    #  <player> - the player's username
+    reply-offline: "<red>(!) Player <gray><player></gray> is no longer online.</red>"
