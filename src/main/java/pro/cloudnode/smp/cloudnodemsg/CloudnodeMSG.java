@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
+import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
 
 import java.util.Objects;
 
@@ -24,6 +25,7 @@ public final class CloudnodeMSG extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("cloudnodemsg")).setExecutor(new MainCommand());
         Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand());
+        Objects.requireNonNull(getCommand("reply")).setExecutor(new ReplyCommand());
     }
 
     @Override
