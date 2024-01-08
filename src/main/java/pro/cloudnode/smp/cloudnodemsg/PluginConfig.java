@@ -58,6 +58,32 @@ public final class PluginConfig {
     }
 
     /**
+     * Player has successfully been ignored
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the username of the player</li></ul>
+     *
+     * @param player The username of the player
+     */
+    public @NotNull Component ignored(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("ignored")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
+     * Player has successfully been unignored
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the username of the player</li></ul>
+     *
+     * @param player The username of the player
+     */
+    public @NotNull Component unignored(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("unignored")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
      * Command usage format
      * <p>Placeholders:</p>
      * <ul>
@@ -133,6 +159,26 @@ public final class PluginConfig {
      */
     public @NotNull Component replyOffline(final @NotNull String player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.reply-offline")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
+     * Only players can use this command
+     */
+    public @NotNull Component notPlayer() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-player")));
+    }
+
+    /**
+     * That player is not ignored
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component notIgnored(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-ignored")),
                 Placeholder.unparsed("player", player)
         );
     }

@@ -17,4 +17,9 @@ public final class Permission {
      * Allows sending messages to vanished players
      */
     public final static @NotNull String SEND_VANISHED = "cloudnodemsg.send.vanished";
+
+    /**
+     * Allows ignoring and unignoring players
+     */
+    public final static @NotNull String IGNORE = "cloudnodemsg.ignore";
 }
