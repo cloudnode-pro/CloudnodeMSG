@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
-import pro.cloudnode.smp.cloudnodemsg.error.CannotIgnoredError;
+import pro.cloudnode.smp.cloudnodemsg.error.CannotIgnoreError;
 import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
@@ -32,7 +32,7 @@ public final class IgnoreCommand extends Command {
     }
 
     public static boolean ignore(final @NotNull Player player, final @NotNull OfflinePlayer target) {
-        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permission.IGNORE_IMMUNE)) return new CannotIgnoredError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
+        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permission.IGNORE_IMMUNE)) return new CannotIgnoreError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
         if (!target.hasPlayedBefore()) return new NeverJoinedError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
         Message.ignore(player, target);
         return sendMessage(player, CloudnodeMSG.getInstance().config().ignored(Optional.ofNullable(target.getName()).orElse("Unknown Player")));
