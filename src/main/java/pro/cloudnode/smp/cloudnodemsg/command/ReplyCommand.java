@@ -30,7 +30,7 @@ public final class ReplyCommand extends Command {
             !recipient.get().getUniqueId().equals(Message.console.getUniqueId())
             && (
                     !recipient.get().isOnline()
-                    || CloudnodeMSG.isVanished(Objects.requireNonNull(recipient.get().getPlayer()))
+                    || (CloudnodeMSG.isVanished(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.SEND_VANISHED))
             )
         )
             return new ReplyOfflineError(Optional.ofNullable(recipient.get().getName()).orElse("Unknown Player")).send(sender);
