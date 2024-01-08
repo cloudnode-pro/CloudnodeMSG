@@ -3,6 +3,7 @@ package pro.cloudnode.smp.cloudnodemsg.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
@@ -42,13 +43,10 @@ public final class MessageCommand extends Command {
     }
 
     @Override
-    public @NotNull List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.USE)) return new ArrayList<>();
-        final @NotNull List<@NotNull String> completions = new ArrayList<>();
-        if (args.length == 1) completions.addAll(CloudnodeMSG.getInstance().getServer().getOnlinePlayers().stream()
-                .map(Player::getName)
-                .filter(n -> n.toLowerCase().startsWith(args[0].toLowerCase()))
-                .toList());
-        return completions;
+        // `null` works for list of players
+        if (args.length == 1) return null;
+        return new ArrayList<>();
     }
 }
