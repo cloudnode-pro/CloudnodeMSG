@@ -26,5 +26,5 @@ public final class Permission {
     /**
      * Player's messages are immune to ignoring
      */
-    public final static @NotNull String IGNORE_IMMUNE = "cloudnodemsg.ignore.immune";
+    public final static @NotNull String IGNORE_IMMUNE = "cloudnodemsg.ignore.bypass";
 }
