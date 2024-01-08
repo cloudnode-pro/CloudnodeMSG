@@ -12,4 +12,9 @@ public final class Permission {
      * Allows reloading the plugin
      */
     public final static @NotNull String RELOAD = "cloudnodemsg.reload";
+
+    /**
+     * Allows sending messages to vanished players
+     */
+    public final static @NotNull String SEND_VANISHED = "cloudnodemsg.send.vanished";
 }

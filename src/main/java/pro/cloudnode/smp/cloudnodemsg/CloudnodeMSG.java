@@ -1,5 +1,7 @@
 package pro.cloudnode.smp.cloudnodemsg;
 
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
@@ -31,6 +33,12 @@ public final class CloudnodeMSG extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static boolean isVanished(final @NotNull Player player) {
+        for (final @NotNull MetadataValue meta : player.getMetadata("vanished"))
+            if (meta.asBoolean()) return true;
+        return false;
     }
 
     private final @NotNull PluginConfig config = new PluginConfig(getConfig());

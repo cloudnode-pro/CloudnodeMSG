@@ -28,7 +28,7 @@ public final class MessageCommand extends Command {
 
         final @NotNull Optional<@NotNull Player> recipient = Optional.ofNullable(CloudnodeMSG.getInstance().getServer()
                 .getPlayer(args[0]));
-        if (recipient.isEmpty()) return new PlayerNotFoundError(args[0]).send(sender);
+        if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !sender.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(sender);
         if (sender instanceof final @NotNull Player player && recipient.get().getUniqueId().equals(player.getUniqueId()))
             return new MessageYourselfError().send(sender);
 
