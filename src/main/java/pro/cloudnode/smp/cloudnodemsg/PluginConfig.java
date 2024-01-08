@@ -195,5 +195,18 @@ public final class PluginConfig {
                 Placeholder.unparsed("player", player)
         );
     }
+
+    /**
+     * Target player has never joined the server
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component neverJoined(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.never-joined")),
+                Placeholder.unparsed("player", player)
+        );
+    }
 }
 
