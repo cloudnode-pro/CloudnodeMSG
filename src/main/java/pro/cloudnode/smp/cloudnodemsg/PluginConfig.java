@@ -182,5 +182,18 @@ public final class PluginConfig {
                 Placeholder.unparsed("player", player)
         );
     }
+
+    /**
+     * Player cannot be ignored
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component cannotIgnore(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.cannot-ignore")),
+                Placeholder.unparsed("player", player)
+        );
+    }
 }
 

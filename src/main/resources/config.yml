@@ -59,3 +59,8 @@ errors:
     # Placeholders:
     #  <player> - the player's username
     not-ignored: "<red>(!) You are not ignoring that player.</red>"
+
+    # Player cannot be ignored
+    # Placeholders:
+    #  <player> - the player's username
+    cannot-ignore: "<red>(!) You cannot ignore <gray><player></gray>.</red>"

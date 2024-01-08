@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 
 import java.util.Arrays;
@@ -37,7 +38,11 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         setReplyTo(sender, recipient);
 
-        if (recipient.isOnline() && Message.isIgnored(Objects.requireNonNull(recipient.getPlayer()), sender)) return;
+        if (
+                (recipient.isOnline() && Message.isIgnored(Objects.requireNonNull(recipient.getPlayer()), sender))
+                &&
+                (sender.isOnline() && !Objects.requireNonNull(sender.getPlayer()).hasPermission(Permission.IGNORE_IMMUNE))
+        ) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
         setReplyTo(recipient, sender);
