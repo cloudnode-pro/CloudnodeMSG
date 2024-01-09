@@ -89,6 +89,10 @@ public final class PluginConfig {
         return Objects.requireNonNull(config.getString("console-name"));
     }
 
+    public @NotNull Component toggleDisable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-disable")));
+    }
+
     /**
      * No permission
      */
