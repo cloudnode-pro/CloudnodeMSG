@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
+import pro.cloudnode.smp.cloudnodemsg.command.ToggleMessageCommand;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         Objects.requireNonNull(getCommand("cloudnodemsg")).setExecutor(new MainCommand());
         Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand());
         Objects.requireNonNull(getCommand("reply")).setExecutor(new ReplyCommand());
+        Objects.requireNonNull(getCommand("togglemsg")).setExecutor(new ToggleMessageCommand());
     }
 
     @Override
