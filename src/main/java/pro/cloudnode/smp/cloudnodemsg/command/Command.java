@@ -7,7 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Command implements TabCompleter, CommandExecutor {
-    public boolean sendMessage(final @NotNull Audience recipient, final @NotNull Component message) {
+    public static boolean sendMessage(final @NotNull Audience recipient, final @NotNull Component message) {
         recipient.sendMessage(message);
         return true;
     }

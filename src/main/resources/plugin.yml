@@ -15,3 +15,11 @@ commands:
     cloudnodemsg:
         description: CloudnodeMSG
         usage: /<command>
+    ignore:
+        description: Ignore a player
+        usage: /<command> <player>
+        aliases: [ "block" ]
+    unignore:
+        description: Unignore a player
+        usage: /<command> <player>
+        aliases: [ "unblock" ]
