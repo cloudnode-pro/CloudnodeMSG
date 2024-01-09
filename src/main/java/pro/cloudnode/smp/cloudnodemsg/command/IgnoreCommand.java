@@ -22,7 +22,7 @@ public final class IgnoreCommand extends Command {
     public static final @NotNull String usage = "<player>";
 
     @Override
-    public boolean onCommand(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, @NotNull String @NotNull [] args) {
+    public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.IGNORE)) return new NoPermissionError().send(sender);
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 0) return sendMessage(player, CloudnodeMSG.getInstance().config().usage(label, usage));

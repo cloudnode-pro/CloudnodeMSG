@@ -15,7 +15,7 @@ import java.util.List;
 public final class MainCommand extends Command {
 
     @Override
-    public boolean onCommand(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, @NotNull String @NotNull [] args) {
+    public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 1) switch (args[0]) {
             case "reload", "rl" -> {
                 return reload(sender);
