@@ -78,4 +78,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         else if (player.isOnline())
             Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer().remove(REPLY_TO);
     }
+
+    public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
+
 }
