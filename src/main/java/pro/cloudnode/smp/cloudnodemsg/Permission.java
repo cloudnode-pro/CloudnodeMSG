@@ -18,4 +18,8 @@ public final class Permission {
      */
     public final static @NotNull String TOGGLE = "cloudnodemsg.toggle";
 
+    /**
+     * Allows using the /togglemsg command for others
+     */
+    public final static @NotNull String TOGGLE_OTHER = "cloudnodemsg.toggle.other";
 }
