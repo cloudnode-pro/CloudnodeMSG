@@ -5,6 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -81,4 +82,8 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
 
     public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
 
+    public static void setNoIncoming(final @NotNull OfflinePlayer player) {
+        final @NotNull PersistentDataContainer container = Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer();
+        container.set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, Objects.requireNonNull(container.get(INCOMING_ENABLED, PersistentDataType.BOOLEAN)).equals(false));
+    }
 }
