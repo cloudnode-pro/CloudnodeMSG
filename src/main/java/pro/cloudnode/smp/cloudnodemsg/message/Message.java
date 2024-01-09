@@ -86,4 +86,9 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         final @NotNull PersistentDataContainer container = Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer();
         container.set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, Objects.requireNonNull(container.get(INCOMING_ENABLED, PersistentDataType.BOOLEAN)).equals(false));
     }
+
+    public static boolean getNoIncoming(final @NotNull OfflinePlayer player) {
+        return Objects.requireNonNull(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
+                .get(INCOMING_ENABLED, PersistentDataType.BOOLEAN));
+    }
 }
