@@ -9,6 +9,15 @@ incoming: '<click:suggest_command:/msg <sender> ><dark_gray>[<#60a5fa><sender></
 # Same placeholders as incoming
 outgoing: '<click:suggest_command:/msg <recipient> ><dark_gray>[<#93c5fd>me</#93c5fd> <white>-></white> <#60a5fa><recipient></#60a5fa>]</dark_gray></click> <reset><#dbeafe><message></#dbeafe>'
 
+# Player has successfully been ignored
+# Placeholders:
+#  <player> - the player's username
+ignored: "<green>(!) You will no longer see messages from <gray><player></gray>.</green>"
+
+# Player has successfully been unignored
+# Same placeholders as ignored
+unignored: "<yellow>(!) You are no longer ignoring <gray><player></gray>.</yellow>"
+
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
 
@@ -54,3 +63,21 @@ errors:
     # Placeholders:
     #  <player> - the player's username
     reply-offline: "<red>(!) Player <gray><player></gray> is no longer online.</red>"
+
+    # Only players can use this command
+    not-player: "<red>(!) You must be a player to use this command.</red>"
+
+    # That player is not ignored
+    # Placeholders:
+    #  <player> - the player's username
+    not-ignored: "<red>(!) You are not ignoring that player.</red>"
+
+    # Player cannot be ignored
+    # Placeholders:
+    #  <player> - the player's username
+    cannot-ignore: "<red>(!) You cannot ignore <gray><player></gray>.</red>"
+
+    # Target player has never joined the server
+    # Placeholders:
+    #  <player> - the player's username
+    never-joined: "<red>(!) <gray><player></gray> has never joined this server.</red>"

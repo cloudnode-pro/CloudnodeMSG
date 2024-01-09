@@ -14,6 +14,21 @@ public final class Permission {
     public final static @NotNull String RELOAD = "cloudnodemsg.reload";
 
     /**
+     * Allows sending messages to vanished players
+     */
+    public final static @NotNull String SEND_VANISHED = "cloudnodemsg.send.vanished";
+
+    /**
+     * Allows ignoring and unignoring players
+     */
+    public final static @NotNull String IGNORE = "cloudnodemsg.ignore";
+
+    /**
+     * Player's messages are immune to ignoring
+     */
+    public final static @NotNull String IGNORE_IMMUNE = "cloudnodemsg.ignore.bypass";
+    
+    /**
      * Allows using the /togglemsg command
      */
     public final static @NotNull String TOGGLE = "cloudnodemsg.toggle";
