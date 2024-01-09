@@ -106,6 +106,10 @@ public final class PluginConfig {
         );
     }
 
+    public @NotNull Component toggleEnable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-disable")));
+    }
+
      * No permission
      */
     public @NotNull Component noPermission() {
