@@ -12,4 +12,10 @@ public final class Permission {
      * Allows reloading the plugin
      */
     public final static @NotNull String RELOAD = "cloudnodemsg.reload";
+
+    /**
+     * Allows using the /togglemsg command
+     */
+    public final static @NotNull String TOGGLE = "cloudnodemsg.toggle";
+
 }
