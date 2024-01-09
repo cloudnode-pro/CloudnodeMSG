@@ -4,9 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 
 /**
- * Player has no username (somehow)
+ * The player that messaged you is no longer online
  */
 public final class ReplyOfflineError extends Error {
+    /**
+     * The player that messaged you is no longer online
+     *
+     * @param player The player's username
+     */
     public ReplyOfflineError(final @NotNull String player) {
         super(CloudnodeMSG.getInstance().config().replyOffline(player));
     }
