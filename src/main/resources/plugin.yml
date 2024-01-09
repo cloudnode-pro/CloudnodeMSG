@@ -15,3 +15,7 @@ commands:
     cloudnodemsg:
         description: CloudnodeMSG
         usage: /<command>
+    togglemsg:
+        description: Toggles a private message channel
+        usage: /<command> <player>
+        aliases: [ "toggledms", "togglepms" ]
