@@ -36,4 +36,8 @@ public class ToggleMessageCommand extends Command {
         return true;
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        return null;
+    }
 }
