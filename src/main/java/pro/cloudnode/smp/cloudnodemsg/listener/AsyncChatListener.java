@@ -30,7 +30,7 @@ public final class AsyncChatListener implements Listener {
                 final @NotNull Server server = CloudnodeMSG.getInstance().getServer();
                 final @NotNull HashSet<@NotNull OfflinePlayer> ignored = Message.getIgnored(player).stream().map(server::getOfflinePlayer).collect(HashSet::new, HashSet::add, HashSet::addAll);
 
-                if (ignored.contains(sender) && !sender.hasPermission(Permission.IGNORE_IMMUNE)) iterator.remove();
+                if (ignored.contains(sender) && !sender.hasPermission(Permission.IGNORE_BYPASS)) iterator.remove();
             }
         }
     }
