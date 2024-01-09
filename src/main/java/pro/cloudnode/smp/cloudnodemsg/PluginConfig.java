@@ -110,6 +110,20 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-disable")));
     }
 
+    /**
+     * The player you enabled private messages
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player the player's username
+     */
+    public @NotNull Component toggleEnableOther(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-disable-other")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
      * No permission
      */
     public @NotNull Component noPermission() {
