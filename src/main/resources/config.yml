@@ -21,6 +21,18 @@ usage: "<yellow>(!) Usage:</yellow> <white>/<command> <usage></white>"
 # Plugin reloaded
 reloaded: "<green>(!) Plugin successfully reloaded.</green>"
 
+# Disable private messages
+togglemsg-disable: "<green>(!) You will not receive private messages anymore.</green>"
+# Placeholders:
+#   <player> - the player's username
+togglemsg-disable-other: "<green>(!) The player <gray><player></gray> will not receive private messages anymore.</green>"
+
+# Enable private messages
+togglemsg-enable: "<green>(!) You will be able to receive private messages now.</green>"
+# Placeholders:
+#   <player> - the player's username
+togglemsg-enable-other: "<green>(!) The player <gray><player></gray> will be able to receive private messages now.</green>"
+
 # Error messages
 errors:
     # No permission
