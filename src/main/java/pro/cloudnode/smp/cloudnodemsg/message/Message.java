@@ -136,14 +136,29 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
 
     public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
 
+    /**
+     * Allows player to receive private messages
+     *
+     * @param player The player
+     */
     public static void incomeEnable(final @NotNull Player player) {
         player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 
+    /**
+     * Denies player to receive private messages
+     *
+     * @param player The player
+     */
     public static void incomeDisable(final @NotNull Player player) {
         player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
     }
 
+    /**
+     * Check if a player allows private messages
+     *
+     * @param player The player
+     */
     public static boolean isIncomeEnabled(final @NotNull Player player) {
         return player.getPersistentDataContainer().getOrDefault(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
