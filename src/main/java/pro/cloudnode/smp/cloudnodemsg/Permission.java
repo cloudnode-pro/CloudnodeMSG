@@ -37,4 +37,9 @@ public final class Permission {
      * Allows using the /togglemsg command for others
      */
     public final static @NotNull String TOGGLE_OTHER = "cloudnodemsg.toggle.other";
+
+    /**
+     * Allows to send private message even when the target have their private messages toggled
+     */
+    public final static @NotNull String TOGGLE_BYPASS = "cloudnodemsg.toggle.bypass";
 }
