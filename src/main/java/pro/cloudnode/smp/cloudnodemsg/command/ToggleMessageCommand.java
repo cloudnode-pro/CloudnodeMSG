@@ -13,7 +13,6 @@ import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.message.Message;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ToggleMessageCommand extends Command {
