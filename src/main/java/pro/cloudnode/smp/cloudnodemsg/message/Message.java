@@ -137,13 +137,13 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
 
     public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
 
-    public static void setNoIncoming(final @NotNull OfflinePlayer player) {
-        final @NotNull PersistentDataContainer container = Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer();
-        container.set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, !getNoIncoming(player));
+    public static void incomeEnable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 
-    public static boolean getNoIncoming(final @NotNull OfflinePlayer player) {
-        return Objects.requireNonNullElse(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
-                .get(INCOMING_ENABLED, PersistentDataType.BOOLEAN), false);
+    public static void incomeDisable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
+    }
+
     }
 }
