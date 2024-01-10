@@ -9,6 +9,7 @@ import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.UnIgnoreCommand;
+import pro.cloudnode.smp.cloudnodemsg.listener.AsyncChatListener;
 
 import java.util.Objects;
 
@@ -32,6 +33,8 @@ public final class CloudnodeMSG extends JavaPlugin {
         Objects.requireNonNull(getCommand("reply")).setExecutor(new ReplyCommand());
         Objects.requireNonNull(getCommand("ignore")).setExecutor(new IgnoreCommand());
         Objects.requireNonNull(getCommand("unignore")).setExecutor(new UnIgnoreCommand());
+
+        getServer().getPluginManager().registerEvents(new AsyncChatListener(), this);
     }
 
     @Override
