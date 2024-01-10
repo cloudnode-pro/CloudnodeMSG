@@ -145,5 +145,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
     }
 
+    public static boolean isIncomeEnabled(final @NotNull Player player) {
+        return player.getPersistentDataContainer().getOrDefault(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 }
