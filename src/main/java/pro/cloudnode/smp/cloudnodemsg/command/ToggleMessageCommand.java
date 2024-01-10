@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.command;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import pro.cloudnode.smp.cloudnodemsg.message.Message;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ToggleMessageCommand extends Command {
     public static final @NotNull String usage = "<player>";
@@ -21,18 +23,19 @@ public class ToggleMessageCommand extends Command {
     public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
         if (args.length == 1) {
-            final @NotNull Player recipient = Objects.requireNonNull(CloudnodeMSG.getInstance().getServer().getPlayer(args[0]));
+            final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
 
-            if (Message.isIncomeEnabled(recipient)) {
-                Message.incomeDisable(recipient);
-                sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Objects.requireNonNull(recipient.getName())));
             if (recipient.getPlayer() == null) return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
+
+            if (Message.isIncomeEnabled(recipient.getPlayer())) {
+                Message.incomeDisable(recipient.getPlayer());
+                sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
 
                 return true;
             }
 
-            Message.incomeEnable(recipient);
-            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Objects.requireNonNull(recipient.getName())));
+            Message.incomeEnable(recipient.getPlayer());
+            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
 
             return true;
         }
