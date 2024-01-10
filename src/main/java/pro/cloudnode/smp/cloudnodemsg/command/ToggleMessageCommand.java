@@ -29,8 +29,10 @@ public class ToggleMessageCommand extends Command {
             return true;
         }
 
-        Message.setNoIncoming(Objects.requireNonNull(Message.offlinePlayer(sender)));
-        sendMessage(sender, Message.getNoIncoming(Message.offlinePlayer(sender)) ?
+        final @NotNull OfflinePlayer player = Message.offlinePlayer(sender);
+
+        Message.setNoIncoming(player);
+        sendMessage(sender, Message.getNoIncoming(player) ?
                 CloudnodeMSG.getInstance().config().toggleDisable() :
                 CloudnodeMSG.getInstance().config().toggleEnable()
         );
