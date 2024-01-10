@@ -24,6 +24,6 @@ commands:
         usage: /<command> <player>
         aliases: [ "unblock" ]
     togglemsg:
-        description: Toggles a private message channel
+        description: Toggles private messages from a player
         usage: /<command> <player>
         aliases: [ "toggledms", "togglepms" ]
