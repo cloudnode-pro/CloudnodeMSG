@@ -1,12 +1,13 @@
 package pro.cloudnode.smp.cloudnodemsg.command;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
+import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.message.Message;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ToggleMessageCommand extends Command {
     @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
+        if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 1) {
             final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
 
