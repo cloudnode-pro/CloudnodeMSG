@@ -16,8 +16,11 @@ concurrency:
 
 jobs:
   build:
-    name: Build JavaDocs
+    name: Build JavaDocs and deploy to GitHub Pages
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -28,14 +31,6 @@ jobs:
           cache: maven
       - name: Generate Javadoc
         run: mvn -B package --file pom.xml
-  deploy:
-    name: Deploy to GitHub Pages
-    environment:
-      name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
