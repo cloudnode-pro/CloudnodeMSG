@@ -34,6 +34,7 @@ public class ToggleMessageCommand extends Command {
 
             return true;
         }
+        if (args.length > 1) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 
         if (Message.isIncomeEnabled(player)) {
