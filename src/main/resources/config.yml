@@ -81,3 +81,8 @@ errors:
     # Placeholders:
     #  <player> - the player's username
     never-joined: "<red>(!) <gray><player></gray> has never joined this server.</red>"
+
+    # Target player have disabled their incoming private messages.
+    # Placeholders:
+    #  <player> - the player's username
+    incoming-disabled: "<red>(!) <gray><player></gray> has disabled their private messages."

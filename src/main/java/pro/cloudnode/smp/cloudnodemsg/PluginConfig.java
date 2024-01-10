@@ -242,5 +242,18 @@ public final class PluginConfig {
                 Placeholder.unparsed("player", player)
         );
     }
+
+    /**
+     * Target player have disabled their incoming private messages.
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component incomingDisabled(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.incoming-disabled")),
+                Placeholder.unparsed("player", player)
+        );
+    }
 }
 
