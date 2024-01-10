@@ -34,6 +34,7 @@ public class ToggleMessageCommand extends Command {
 
             return true;
         }
+        if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 
         if (Message.isIncomeEnabled(player)) {
             Message.incomeDisable(player);
