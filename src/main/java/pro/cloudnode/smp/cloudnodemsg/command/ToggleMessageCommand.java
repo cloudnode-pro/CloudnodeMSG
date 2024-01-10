@@ -19,7 +19,6 @@ public class ToggleMessageCommand extends Command {
     @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
-        if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 1) {
             final @NotNull Player recipient = Objects.requireNonNull(CloudnodeMSG.getInstance().getServer().getPlayer(args[0]));
 
