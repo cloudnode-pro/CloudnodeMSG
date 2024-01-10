@@ -143,7 +143,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
     }
 
     public static boolean getNoIncoming(final @NotNull OfflinePlayer player) {
-        return Objects.requireNonNull(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
-                .get(INCOMING_ENABLED, PersistentDataType.BOOLEAN));
+        return Objects.requireNonNullElse(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
+                .get(INCOMING_ENABLED, PersistentDataType.BOOLEAN), false);
     }
 }
