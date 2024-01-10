@@ -14,8 +14,9 @@ import java.util.Objects;
 
 public class ToggleMessageCommand extends Command {
     public static final @NotNull String usage = "<player>";
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
         if (args.length == 1) {
             final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
