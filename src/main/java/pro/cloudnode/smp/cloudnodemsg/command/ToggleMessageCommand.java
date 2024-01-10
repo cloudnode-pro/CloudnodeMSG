@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.message.Message;
@@ -25,6 +26,7 @@ public class ToggleMessageCommand extends Command {
             if (Message.isIncomeEnabled(recipient)) {
                 Message.incomeDisable(recipient);
                 sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Objects.requireNonNull(recipient.getName())));
+            if (recipient.getPlayer() == null) return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
 
                 return true;
             }
