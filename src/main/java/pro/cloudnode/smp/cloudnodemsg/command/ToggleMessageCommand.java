@@ -21,23 +21,31 @@ public class ToggleMessageCommand extends Command {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 1) {
-            final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
+            final @NotNull Player recipient = Objects.requireNonNull(CloudnodeMSG.getInstance().getServer().getPlayer(args[0]));
 
-            Message.setNoIncoming(recipient);
-            sendMessage(sender, Message.getNoIncoming(recipient) ?
-                    CloudnodeMSG.getInstance().config().toggleDisableOther(Objects.requireNonNull(recipient.getName())) :
-                    CloudnodeMSG.getInstance().config().toggleEnableOther(Objects.requireNonNull(recipient.getName()))
-            );
+            if (!Message.isIncomeEnabled(recipient)) {
+                Message.incomeDisable(recipient);
+                sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Objects.requireNonNull(recipient.getName())));
+
+                return true;
+            }
+
+            Message.incomeEnable(recipient);
+            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Objects.requireNonNull(recipient.getName())));
+
             return true;
         }
 
-        final @NotNull OfflinePlayer player = Message.offlinePlayer(sender);
+        if (Message.isIncomeEnabled(player)) {
+            Message.incomeDisable(player);
+            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisable());
 
-        Message.setNoIncoming(player);
-        sendMessage(sender, Message.getNoIncoming(player) ?
-                CloudnodeMSG.getInstance().config().toggleDisable() :
-                CloudnodeMSG.getInstance().config().toggleEnable()
-        );
+            return true;
+        }
+
+        Message.incomeEnable(player);
+        sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnable());
+
         return true;
     }
 
