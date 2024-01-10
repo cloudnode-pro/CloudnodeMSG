@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Generate Javadoc
-        run: mvn -B package --file pom.xml
+        run: mvn -B javadoc:javadoc --file pom.xml
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
