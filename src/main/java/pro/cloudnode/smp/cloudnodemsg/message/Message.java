@@ -40,7 +40,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         if (
                 (recipient.isOnline() && Message.isIgnored(Objects.requireNonNull(recipient.getPlayer()), sender))
                 &&
-                (sender.isOnline() && !Objects.requireNonNull(sender.getPlayer()).hasPermission(Permission.IGNORE_IMMUNE))
+                (sender.isOnline() && !Objects.requireNonNull(sender.getPlayer()).hasPermission(Permission.IGNORE_BYPASS))
         ) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));

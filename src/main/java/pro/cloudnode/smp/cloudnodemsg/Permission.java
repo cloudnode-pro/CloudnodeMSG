@@ -26,8 +26,8 @@ public final class Permission {
     /**
      * Player's messages are immune to ignoring
      */
-    public final static @NotNull String IGNORE_IMMUNE = "cloudnodemsg.ignore.bypass";
-    
+    public final static @NotNull String IGNORE_BYPASS = "cloudnodemsg.ignore.bypass";
+
     /**
      * Allows using the /togglemsg command
      */
