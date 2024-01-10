@@ -20,11 +20,13 @@ public class ToggleMessageCommand extends Command {
 
     @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER))) return new NoPermissionError().send(sender);
+        if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER)))
+            return new NoPermissionError().send(sender);
         if (args.length == 1) {
             final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
 
-            if (recipient.getPlayer() == null) return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
+            if (recipient.getPlayer() == null)
+                return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
 
             if (Message.isIncomeEnabled(recipient.getPlayer())) {
                 Message.incomeDisable(recipient.getPlayer());
