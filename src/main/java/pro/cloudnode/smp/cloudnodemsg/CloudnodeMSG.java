@@ -31,7 +31,8 @@ public final class CloudnodeMSG extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("cloudnodemsg")).setExecutor(new MainCommand());
         Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand());
-        Objects.requireNonNull(getCommand("reply")).setExecutor(new ReplyCommand());Objects.requireNonNull(getCommand("ignore")).setExecutor(new IgnoreCommand());
+        Objects.requireNonNull(getCommand("reply")).setExecutor(new ReplyCommand());
+        Objects.requireNonNull(getCommand("ignore")).setExecutor(new IgnoreCommand());
         Objects.requireNonNull(getCommand("unignore")).setExecutor(new UnIgnoreCommand());
         Objects.requireNonNull(getCommand("togglemsg")).setExecutor(new ToggleMessageCommand());
 
