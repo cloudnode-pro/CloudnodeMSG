@@ -22,7 +22,7 @@ public class ToggleMessageCommand extends Command {
         if (args.length == 1) {
             final @NotNull Player recipient = Objects.requireNonNull(CloudnodeMSG.getInstance().getServer().getPlayer(args[0]));
 
-            if (!Message.isIncomeEnabled(recipient)) {
+            if (Message.isIncomeEnabled(recipient)) {
                 Message.incomeDisable(recipient);
                 sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Objects.requireNonNull(recipient.getName())));
 
