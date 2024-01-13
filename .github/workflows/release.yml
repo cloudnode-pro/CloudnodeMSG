@@ -4,10 +4,22 @@ on:
   release:
     types: [ published ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  package-and-upload:
-    name: Build and Upload JARs
+  release:
+    name: Build jar & docs
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
 
     steps:
       - name: Checkout code
@@ -28,3 +40,18 @@ jobs:
           args: target/CloudnodeMSG-${{ github.event.release.tag_name }}.jar application/java-archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Javadoc
+        run: mvn -B javadoc:javadoc --file pom.xml
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site/apidocs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
