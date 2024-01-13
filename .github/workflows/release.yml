@@ -1,9 +1,8 @@
-name: JavaDocs
+name: Maven Release
 
 on:
-  push:
-    branches: [ main]
-  workflow_dispatch:
+  release:
+    types: [ published ]
 
 permissions:
   contents: read
@@ -15,28 +14,44 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build JavaDocs and deploy to GitHub Pages
+  release:
+    name: Build jar & docs
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{steps.deployment.outputs.page_url}}
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          distribution: 'corretto'
+
+      - name: Build and package Maven project
+        run: mvn clean package
+
+      - name: Upload to release
+        uses: JasonEtco/upload-to-release@master
+        with:
+          args: target/CloudnodeMSG-${{ github.event.release.tag_name }}.jar application/java-archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate Javadoc
         run: mvn -B javadoc:javadoc --file pom.xml
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: target/site/apidocs
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
