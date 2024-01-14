@@ -44,6 +44,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload to Modrinth
+        uses: cloudnode-pro/modrinth-publish@1.0.0
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: 5Ce4fxJB
+          file: target/CloudnodeMSG-${{ github.event.release.tag_name }}.jar
+          changelog: ${{ github.event.release.body }}
+          loaders: paper
+
       - name: Generate Javadoc
         run: mvn -B javadoc:javadoc --file pom.xml
 
