@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ToggleMessageCommand extends Command {
-    public static final @NotNull String usage = "<player>";
-
     @Override
     public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER)))
@@ -40,7 +38,6 @@ public class ToggleMessageCommand extends Command {
 
             return true;
         }
-        if (args.length > 1) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 
         if (Message.isIncomingEnabled(player)) {
