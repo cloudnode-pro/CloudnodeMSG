@@ -31,8 +31,10 @@ channel:
     closed: <yellow>(!) Your chat messages will now be <gray>public</gray>.</yellow>
 
     # Message channel player is offline and channel closed
-    # Same placeholders as created
-    offline: <red>(!) Player <gray><player></gray> is offline. Your chat messages have been switched back to <gray>public</gray>.</red>
+    # Placeholders:
+    #  <sender> - the username of the message sender
+    #  <recipient> - the username of the message recipient
+    offline: <red>(!) Player <gray><recipient></gray> is offline. Your chat messages have been switched back to <gray>public</gray>.</red>
 
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
