@@ -33,7 +33,7 @@ public final class MessageCommand extends Command {
         if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !sender.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(sender);
         if (sender instanceof final @NotNull Player player && recipient.get().getUniqueId().equals(player.getUniqueId()))
             return new MessageYourselfError().send(sender);
-        if (!Message.isIncomeEnabled(recipient.get()) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(sender);
+        if (!Message.isIncomingEnabled(recipient.get()) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(sender);
 
         try {
             new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", Arrays.copyOfRange(args, 1, args.length))).send();

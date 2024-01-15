@@ -141,7 +141,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
      *
      * @param player The player
      */
-    public static void incomeEnable(final @NotNull Player player) {
+    public static void incomingEnable(final @NotNull Player player) {
         player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 
@@ -150,7 +150,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
      *
      * @param player The player
      */
-    public static void incomeDisable(final @NotNull Player player) {
+    public static void incomingDisable(final @NotNull Player player) {
         player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
     }
 
@@ -159,7 +159,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
      *
      * @param player The player
      */
-    public static boolean isIncomeEnabled(final @NotNull Player player) {
+    public static boolean isIncomingEnabled(final @NotNull Player player) {
         return player.getPersistentDataContainer().getOrDefault(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 }

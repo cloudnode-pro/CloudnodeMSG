@@ -28,14 +28,14 @@ public class ToggleMessageCommand extends Command {
             if (recipient.getPlayer() == null)
                 return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
 
-            if (Message.isIncomeEnabled(recipient.getPlayer())) {
-                Message.incomeDisable(recipient.getPlayer());
+            if (Message.isIncomingEnabled(recipient.getPlayer())) {
+                Message.incomingDisable(recipient.getPlayer());
                 sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
 
                 return true;
             }
 
-            Message.incomeEnable(recipient.getPlayer());
+            Message.incomingEnable(recipient.getPlayer());
             sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
 
             return true;
@@ -43,14 +43,14 @@ public class ToggleMessageCommand extends Command {
         if (args.length > 1) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 
-        if (Message.isIncomeEnabled(player)) {
-            Message.incomeDisable(player);
+        if (Message.isIncomingEnabled(player)) {
+            Message.incomingDisable(player);
             sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisable());
 
             return true;
         }
 
-        Message.incomeEnable(player);
+        Message.incomingEnable(player);
         sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnable());
 
         return true;
