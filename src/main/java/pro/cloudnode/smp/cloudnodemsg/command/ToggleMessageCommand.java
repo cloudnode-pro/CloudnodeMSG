@@ -12,6 +12,7 @@ import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.message.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,8 @@ public class ToggleMessageCommand extends Command {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return null;
+        if (sender.hasPermission(Permission.TOGGLE_OTHER))
+            return null;
+        return new ArrayList<>();
     }
 }
