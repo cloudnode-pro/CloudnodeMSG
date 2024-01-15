@@ -116,7 +116,7 @@ public final class PluginConfig {
     }
 
     public @NotNull Component toggleDisable() {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable")));
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.message")));
     }
 
     /**
@@ -133,7 +133,7 @@ public final class PluginConfig {
     }
 
     public @NotNull Component toggleEnable() {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable")));
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.message")));
     }
 
     /**
