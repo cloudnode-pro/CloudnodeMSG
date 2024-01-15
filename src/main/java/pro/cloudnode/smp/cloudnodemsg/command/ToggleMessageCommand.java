@@ -29,29 +29,21 @@ public final class ToggleMessageCommand extends Command {
 
             if (Message.isIncomingEnabled(recipient.getPlayer())) {
                 Message.incomingDisable(recipient.getPlayer());
-                sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
-
-                return true;
+                return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
             }
 
             Message.incomingEnable(recipient.getPlayer());
-            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
-
-            return true;
+            return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
         }
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 
         if (Message.isIncomingEnabled(player)) {
             Message.incomingDisable(player);
-            sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisable());
-
-            return true;
+            return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisable());
         }
 
         Message.incomingEnable(player);
-        sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnable());
-
-        return true;
+        return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnable());
     }
 
     @Override
