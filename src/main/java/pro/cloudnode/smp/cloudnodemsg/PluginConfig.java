@@ -28,11 +28,11 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("incoming"))
                 .replace("<sender>", sender)
                 .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
         );
     }
 
@@ -49,11 +49,11 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("outgoing"))
                         .replace("<sender>", sender)
                         .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
         );
     }
 

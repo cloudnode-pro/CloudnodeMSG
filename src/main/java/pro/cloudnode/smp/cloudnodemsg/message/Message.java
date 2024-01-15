@@ -18,7 +18,20 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer recipient, @NotNull String message) {
+public final class Message {
+    private final @NotNull OfflinePlayer sender;
+    private final @NotNull OfflinePlayer recipient;
+    private final @NotNull Component message;
+
+    public Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer recipient, @NotNull Component message) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.message = message;
+    }
+
+    public Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer recipient, @NotNull String message) {
+        this(sender, recipient, Component.text(message));
+    }
 
     private @NotNull String playerOrServerUsername(final @NotNull OfflinePlayer player) throws InvalidPlayerError {
         if (player.getUniqueId().equals(console.getUniqueId()))
