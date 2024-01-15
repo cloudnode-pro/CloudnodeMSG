@@ -30,6 +30,20 @@ usage: "<yellow>(!) Usage:</yellow> <white>/<command> <usage></white>"
 # Plugin reloaded
 reloaded: "<green>(!) Plugin successfully reloaded.</green>"
 
+toggle:
+    disable:
+        # Disable private messages
+        message: "<yellow>(!) You've disabled private messages. Run again to re-enable.</yellow>"
+        # Placeholders:
+        #  <player> - the player's username
+        other: "<green>(!) Disabled private messages for <gray><player></gray>.</green>"
+    enable:
+        # Enable private messages
+        message: "<green>(!) You can now receive private messages again.</green>"
+        # Placeholders:
+        #  <player> - the player's username
+        other: "<green>(!) Re-enabled private messages for <gray><player></gray>.</green>"
+
 # Error messages
 errors:
     # No permission
@@ -69,3 +83,8 @@ errors:
     # Placeholders:
     #  <player> - the player's username
     never-joined: "<red>(!) <gray><player></gray> has never joined this server.</red>"
+
+    # Target player have disabled their incoming private messages.
+    # Placeholders:
+    #  <player> - the player's username
+    incoming-disabled: "<red>(!) You cannot message <gray><player></gray> because they have disabled private messages.</red>"

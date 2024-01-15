@@ -5,7 +5,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -133,5 +132,34 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         final @NotNull HashSet<@NotNull UUID> ignoredPlayers = getIgnored(player);
         ignoredPlayers.remove(ignored.getUniqueId());
         player.getPersistentDataContainer().set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream().map(UUID::toString).toList()));
+    }
+
+    public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
+
+    /**
+     * Allows player to receive private messages
+     *
+     * @param player The player
+     */
+    public static void incomingEnable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
+    }
+
+    /**
+     * Denies player to receive private messages
+     *
+     * @param player The player
+     */
+    public static void incomingDisable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
+    }
+
+    /**
+     * Check if a player allows private messages
+     *
+     * @param player The player
+     */
+    public static boolean isIncomingEnabled(final @NotNull Player player) {
+        return player.getPersistentDataContainer().getOrDefault(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
     }
 }

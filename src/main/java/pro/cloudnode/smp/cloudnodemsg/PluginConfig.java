@@ -115,6 +115,40 @@ public final class PluginConfig {
         return Objects.requireNonNull(config.getString("console-name"));
     }
 
+    public @NotNull Component toggleDisable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.message")));
+    }
+
+    /**
+     * Player's private messages have been toggled off
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player the player's username
+     */
+    public @NotNull Component toggleDisableOther(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.other")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    public @NotNull Component toggleEnable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.message")));
+    }
+
+    /**
+     * Player's private messages have been toggled on
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player the player's username
+     */
+    public @NotNull Component toggleEnableOther(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
     /**
      * No permission
      */
@@ -205,6 +239,19 @@ public final class PluginConfig {
      */
     public @NotNull Component neverJoined(final @NotNull String player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.never-joined")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
+     * Target player have disabled their incoming private messages.
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component incomingDisabled(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.incoming-disabled")),
                 Placeholder.unparsed("player", player)
         );
     }
