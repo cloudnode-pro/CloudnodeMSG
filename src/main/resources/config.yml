@@ -18,6 +18,22 @@ ignored: "<green>(!) You will no longer see messages from <gray><player></gray>.
 # Same placeholders as ignored
 unignored: "<yellow>(!) You are no longer ignoring <gray><player></gray>.</yellow>"
 
+channel:
+    # Message channel created
+    # Placeholders:
+    #  <sender> - the username of the message sender
+    #  <recipient> - the username of the message recipient
+    #  <command> - the command used, e.g. `msg`, `dm`, etc.
+    created: <green>(!) Your chat messages will now be sent as private messages to <gray><recipient></gray>. To re-enable public messages, run <click:suggest_command:/<command> <recipient>><gray>/<command> <recipient></gray></click></green>
+
+    # Message channel closed
+    # Same placeholders as created
+    closed: <yellow>(!) Your chat messages will now be <gray>public</gray>.</yellow>
+
+    # Message channel player is offline and channel closed
+    # Same placeholders as created
+    offline: <red>(!) Player <gray><player></gray> is offline. Your chat messages have been switched back to <gray>public</gray>.</red>
+
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
 

@@ -84,6 +84,63 @@ public final class PluginConfig {
     }
 
     /**
+     * Message channel created
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelCreated(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.created"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelClosed(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.closed"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel player is offline and channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     */
+    public @NotNull Component channelOffline(final @NotNull String sender, final @NotNull String recipient) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.offline"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient));
+    }
+
+    /**
      * Command usage format
      * <p>Placeholders:</p>
      * <ul>
