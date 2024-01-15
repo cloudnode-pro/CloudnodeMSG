@@ -88,6 +88,7 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
     }
 
     public static final @NotNull NamespacedKey IGNORED_PLAYERS = new NamespacedKey(CloudnodeMSG.getInstance(), "ignored");
+    public static final @NotNull NamespacedKey CHANNEL_RECIPIENT = new NamespacedKey(CloudnodeMSG.getInstance(), "channel-recipient");
 
     /**
      * Get UUID set of ignored players from PDC string
@@ -132,5 +133,34 @@ public record Message(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer reci
         final @NotNull HashSet<@NotNull UUID> ignoredPlayers = getIgnored(player);
         ignoredPlayers.remove(ignored.getUniqueId());
         player.getPersistentDataContainer().set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream().map(UUID::toString).toList()));
+    }
+
+    /**
+     * Create DM channel to player
+     *
+     * @param player    The player (you)
+     * @param recipient The other end of the channel
+     */
+    public static void createChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
+        player.getPersistentDataContainer().set(CHANNEL_RECIPIENT, PersistentDataType.STRING, recipient.getUniqueId().toString());
+    }
+
+    /**
+     * Exit DM channel
+     *
+     * @param player The player (you)
+     */
+    public static void exitChannel(final @NotNull Player player) {
+        player.getPersistentDataContainer().remove(CHANNEL_RECIPIENT);
+    }
+
+    /**
+     * Get DM channel recipient
+     *
+     * @param player The player
+     */
+    public static @NotNull Optional<@NotNull OfflinePlayer> getChannel(final @NotNull Player player) {
+        return Optional.ofNullable(player.getPersistentDataContainer().get(CHANNEL_RECIPIENT, PersistentDataType.STRING))
+                .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
     }
 }
