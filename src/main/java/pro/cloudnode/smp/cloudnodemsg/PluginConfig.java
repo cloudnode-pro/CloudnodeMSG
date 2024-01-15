@@ -120,7 +120,7 @@ public final class PluginConfig {
     }
 
     /**
-     * The player you disabled private messages
+     * Player's private messages have been toggled off
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
@@ -137,7 +137,7 @@ public final class PluginConfig {
     }
 
     /**
-     * The player you enabled private messages
+     * Player's private messages have been toggled on
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
