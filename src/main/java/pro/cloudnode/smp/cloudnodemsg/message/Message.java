@@ -51,7 +51,8 @@ public final class Message {
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
-        setReplyTo(sender, recipient);
+        if (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient))
+            setReplyTo(sender, recipient);
 
         if (
                 (recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender))
@@ -60,7 +61,8 @@ public final class Message {
         ) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
-        setReplyTo(recipient, sender);
+        if (recipientPlayer.isPresent() && !Message.hasChannel(recipientPlayer.get(), sender))
+            setReplyTo(recipient, sender);
     }
 
     public final static @NotNull OfflinePlayer console = CloudnodeMSG.getInstance().getServer()
@@ -178,5 +180,16 @@ public final class Message {
     public static @NotNull Optional<@NotNull OfflinePlayer> getChannel(final @NotNull Player player) {
         return Optional.ofNullable(player.getPersistentDataContainer().get(CHANNEL_RECIPIENT, PersistentDataType.STRING))
                 .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
+    }
+
+    /**
+     * Check whether player has DM channel with recipient
+     *
+     * @param player The player
+     * @param recipient The recipient
+     */
+    public static boolean hasChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
+        final @NotNull Optional<@NotNull OfflinePlayer> channel = getChannel(player);
+        return channel.isPresent() && channel.get().getUniqueId().equals(recipient.getUniqueId());
     }
 }
