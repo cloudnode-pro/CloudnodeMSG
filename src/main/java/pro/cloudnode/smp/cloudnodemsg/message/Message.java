@@ -47,13 +47,16 @@ public final class Message {
         final @NotNull String senderUsername = playerOrServerUsername(this.sender);
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
+        final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
+        final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
+
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         setReplyTo(sender, recipient);
 
         if (
-                (recipient.isOnline() && Message.isIgnored(Objects.requireNonNull(recipient.getPlayer()), sender))
+                (recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender))
                 &&
-                (sender.isOnline() && !Objects.requireNonNull(sender.getPlayer()).hasPermission(Permission.IGNORE_BYPASS))
+                (senderPlayer.isPresent() && !senderPlayer.get().hasPermission(Permission.IGNORE_BYPASS))
         ) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
