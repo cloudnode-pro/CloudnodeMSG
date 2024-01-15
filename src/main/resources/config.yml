@@ -87,4 +87,4 @@ errors:
     # Target player have disabled their incoming private messages.
     # Placeholders:
     #  <player> - the player's username
-    incoming-disabled: "<red>(!) <gray><player></gray> has disabled their private messages."
+    incoming-disabled: "<red>(!) You cannot message <gray><player></gray> because they have disabled private messages.</red>"
