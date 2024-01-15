@@ -116,7 +116,7 @@ public final class PluginConfig {
     }
 
     public @NotNull Component toggleDisable() {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-message-disable")));
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable")));
     }
 
     /**
@@ -127,13 +127,13 @@ public final class PluginConfig {
      * @param player the player's username
      */
     public @NotNull Component toggleDisableOther(final @NotNull String player) {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-message-disable-other")),
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.other")),
                 Placeholder.unparsed("player", player)
         );
     }
 
     public @NotNull Component toggleEnable() {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-message-enable")));
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable")));
     }
 
     /**
@@ -144,7 +144,7 @@ public final class PluginConfig {
      * @param player the player's username
      */
     public @NotNull Component toggleEnableOther(final @NotNull String player) {
-        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle-message-enable-other")),
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
                 Placeholder.unparsed("player", player)
         );
     }
