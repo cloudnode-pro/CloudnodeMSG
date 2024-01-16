@@ -23,3 +23,7 @@ commands:
         description: Unignore a player
         usage: /<command> <player>
         aliases: [ "unblock" ]
+    togglemsg:
+        description: Toggles private messages from a player
+        usage: /<command> <player>
+        aliases: [ "toggledms", "togglepms" ]

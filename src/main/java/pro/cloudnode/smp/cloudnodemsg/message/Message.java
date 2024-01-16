@@ -153,6 +153,35 @@ public final class Message {
         player.getPersistentDataContainer().set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream().map(UUID::toString).toList()));
     }
 
+    public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
+
+    /**
+     * Allows player to receive private messages
+     *
+     * @param player The player
+     */
+    public static void incomingEnable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
+    }
+
+    /**
+     * Denies player to receive private messages
+     *
+     * @param player The player
+     */
+    public static void incomingDisable(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(INCOMING_ENABLED, PersistentDataType.BOOLEAN, false);
+    }
+
+    /**
+     * Check if a player allows private messages
+     *
+     * @param player The player
+     */
+    public static boolean isIncomingEnabled(final @NotNull Player player) {
+        return player.getPersistentDataContainer().getOrDefault(INCOMING_ENABLED, PersistentDataType.BOOLEAN, true);
+    }
+
     /**
      * Create DM channel to player
      *
