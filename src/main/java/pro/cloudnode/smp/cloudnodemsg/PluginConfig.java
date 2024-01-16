@@ -28,11 +28,11 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("incoming"))
                 .replace("<sender>", sender)
                 .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
         );
     }
 
@@ -49,11 +49,11 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("outgoing"))
                         .replace("<sender>", sender)
                         .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
         );
     }
 
@@ -81,6 +81,63 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("unignored")),
                 Placeholder.unparsed("player", player)
         );
+    }
+
+    /**
+     * Message channel created
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelCreated(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.created"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelClosed(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.closed"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel player is offline and channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     */
+    public @NotNull Component channelOffline(final @NotNull String sender, final @NotNull String recipient) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.offline"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient));
     }
 
     /**
