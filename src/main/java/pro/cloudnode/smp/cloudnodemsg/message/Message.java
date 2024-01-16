@@ -54,6 +54,8 @@ public final class Message {
         if (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient))
             setReplyTo(sender, recipient);
 
+        sendSpyMessage(sender, recipient, message);
+
         if (
                 (recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender))
                 &&
@@ -76,6 +78,24 @@ public final class Message {
         if (recipient.getUniqueId() == console.getUniqueId())
             CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
         else if (recipient.isOnline()) Objects.requireNonNull(recipient.getPlayer()).sendMessage(message);
+    }
+
+    /**
+     * Send social spy to online players with permission
+     */
+    public static void sendSpyMessage(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
+        final @NotNull String senderName = sender.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG.getInstance().config().consoleName() : Optional.ofNullable(sender.getName()).orElse("Unknown Player");
+        final @NotNull String recipientName = recipient.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG.getInstance().config().consoleName() : Optional.ofNullable(recipient.getName()).orElse("Unknown Player");
+        for (final @NotNull Player player : CloudnodeMSG.getInstance().getServer().getOnlinePlayers()) {
+            if (
+                    !player.hasPermission(Permission.SPY)
+                    || player.getUniqueId().equals(sender.getUniqueId())
+                    || player.getUniqueId().equals(recipient.getUniqueId())
+            ) continue;
+            sendMessage(player, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
+        }
+        if (!sender.getUniqueId().equals(console.getUniqueId()) && !recipient.getUniqueId().equals(console.getUniqueId()))
+            sendMessage(console, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
     }
 
     private static @Nullable UUID consoleReply;

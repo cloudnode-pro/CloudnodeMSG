@@ -9,6 +9,10 @@ incoming: '<click:suggest_command:/msg <sender> ><dark_gray>[<#60a5fa><sender></
 # Same placeholders as incoming
 outgoing: '<click:suggest_command:/msg <recipient> ><dark_gray>[<#93c5fd>me</#93c5fd> <white>-></white> <#60a5fa><recipient></#60a5fa>]</dark_gray></click> <reset><#dbeafe><message></#dbeafe>'
 
+# Private message format as seen by people with the spy permission and console
+# Same placeholders as incoming
+spy: '<dark_gray>[SPY] [<click:suggest_command:/msg <sender> ><gray><sender></gray></click> -> <click:suggest_command:/msg <recipient> ><gray><recipient></gray></click>] <gray><message></gray></dark_gray>'
+
 # Player has successfully been ignored
 # Placeholders:
 #  <player> - the player's username
