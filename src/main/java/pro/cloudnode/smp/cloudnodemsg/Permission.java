@@ -42,4 +42,9 @@ public final class Permission {
      * Allows to send private message even when the target have their private messages toggled
      */
     public final static @NotNull String TOGGLE_BYPASS = "cloudnodemsg.toggle.bypass";
+
+    /**
+     * Allows to see the private messages of other players
+     */
+    public final static @NotNull String SPY = "cloudnodemsg.spy";
 }
