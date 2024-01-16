@@ -58,6 +58,27 @@ public final class PluginConfig {
     }
 
     /**
+     * Private message format as seen by people with the spy permission and console
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <message>} - the message text</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param message The message text
+     */
+    public @NotNull Component spy(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("spy"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient),
+                Placeholder.component("message", message)
+        );
+    }
+
+    /**
      * Player has successfully been ignored
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the username of the player</li></ul>
