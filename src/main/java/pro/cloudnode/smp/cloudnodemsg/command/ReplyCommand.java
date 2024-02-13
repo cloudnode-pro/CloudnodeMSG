@@ -10,7 +10,7 @@ import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NobodyReplyError;
 import pro.cloudnode.smp.cloudnodemsg.error.ReplyOfflineError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
-import pro.cloudnode.smp.cloudnodemsg.message.Message;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.List;

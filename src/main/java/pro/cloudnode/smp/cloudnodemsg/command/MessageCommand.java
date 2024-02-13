@@ -1,6 +1,5 @@
 package pro.cloudnode.smp.cloudnodemsg.command;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +11,7 @@ import pro.cloudnode.smp.cloudnodemsg.error.MessageYourselfError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
-import pro.cloudnode.smp.cloudnodemsg.message.Message;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
