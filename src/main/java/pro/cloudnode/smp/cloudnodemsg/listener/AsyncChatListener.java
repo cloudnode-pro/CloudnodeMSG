@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
-import pro.cloudnode.smp.cloudnodemsg.message.Message;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.HashSet;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package pro.cloudnode.smp.cloudnodemsg.message;
+package pro.cloudnode.smp.cloudnodemsg;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 
 import java.util.Arrays;
