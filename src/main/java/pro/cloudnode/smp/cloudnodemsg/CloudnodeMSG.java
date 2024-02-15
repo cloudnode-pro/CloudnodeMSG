@@ -5,6 +5,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.command.IgnoreCommand;
@@ -50,11 +52,14 @@ public final class CloudnodeMSG extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new AsyncChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+
+        minuteLoop = minuteLoop();
     }
 
     @Override
     public void onDisable() {
-        dbSource.close();
+        if (dbSource != null) dbSource.close();
+        if (minuteLoop != null) minuteLoop.cancel();
     }
 
     public static boolean isVanished(final @NotNull Player player) {
@@ -124,4 +129,11 @@ public final class CloudnodeMSG extends JavaPlugin {
     public static void runAsync(final @NotNull Runnable runnable) {
         getInstance().getServer().getScheduler().runTaskAsynchronously(getInstance(), runnable);
     }
+
+    private @NotNull BukkitTask minuteLoop() {
+        return getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+            Mail.notifyUnread();
+        }, 0, 20 * 60);
+    }
+    private @Nullable BukkitTask minuteLoop;
 }
