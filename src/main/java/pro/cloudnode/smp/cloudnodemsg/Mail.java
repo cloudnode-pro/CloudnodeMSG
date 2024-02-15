@@ -2,6 +2,7 @@ package pro.cloudnode.smp.cloudnodemsg;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
@@ -101,5 +102,18 @@ public final class Mail {
             CloudnodeMSG.getInstance().getLogger().log(Level.SEVERE, "Could not get unread mails: " + player.getName(), exception);
             return 0;
         }
+    }
+
+    /**
+     * Notify online players for their unread mail
+     */
+    public static void notifyUnread() {
+        CloudnodeMSG.runAsync(() -> {
+            for (final @NotNull Player player : CloudnodeMSG.getInstance().getServer().getOnlinePlayers()) {
+                if (!player.hasPermission(Permission.MAIL)) continue;
+                final int unread = Mail.unread(player);
+                if (unread > 0) player.sendMessage(CloudnodeMSG.getInstance().config().mailNotify(unread));
+            }
+        });
     }
 }

@@ -18,7 +18,7 @@ public abstract class Command implements TabCompleter, CommandExecutor {
 
     @Override
     public final boolean onCommand(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, @NotNull String @NotNull [] args) {
-        CloudnodeMSG.getInstance().getServer().getScheduler().runTaskAsynchronously(CloudnodeMSG.getInstance(), () -> {
+        CloudnodeMSG.runAsync(() -> {
             final boolean ignored = run(sender, label, args);
         });
         return true;

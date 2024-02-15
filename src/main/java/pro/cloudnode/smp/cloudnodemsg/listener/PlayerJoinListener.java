@@ -12,7 +12,7 @@ import pro.cloudnode.smp.cloudnodemsg.Permission;
 public final class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(final @NotNull PlayerJoinEvent event) {
-        event.getPlayer().getServer().getScheduler().runTaskAsynchronously(CloudnodeMSG.getInstance(), () -> {
+        CloudnodeMSG.runAsync(() -> {
             if (!CloudnodeMSG.getInstance().config().mailNotifyOnLogin()) return;
             final @NotNull Player player = event.getPlayer();
             if (!player.hasPermission(Permission.MAIL)) return;

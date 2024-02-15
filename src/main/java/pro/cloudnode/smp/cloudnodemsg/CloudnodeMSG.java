@@ -117,4 +117,11 @@ public final class CloudnodeMSG extends JavaPlugin {
         }
         getLogger().info("Database successfully initialised with DDL");
     }
+
+    /**
+     * Run code asynchronously
+     */
+    public static void runAsync(final @NotNull Runnable runnable) {
+        getInstance().getServer().getScheduler().runTaskAsynchronously(getInstance(), runnable);
+    }
 }
