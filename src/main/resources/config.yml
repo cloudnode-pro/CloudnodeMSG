@@ -98,6 +98,18 @@ toggle:
         #  <player> - the player's username
         other: "<green>(!) Re-enabled private messages for <gray><player></gray>.</green>"
 
+mail:
+  # Should players be notified for unread mail on login?
+  notify-on-login: true
+
+  # Interval (in seconds) to notify players of unread mail. Set to 0 to disable.
+  notify-interval: 180
+
+  # Unread mail notification message
+  # Placeholders:
+  #  <unread> - the number of unread mail messages
+  notify: "<green>(!) You have <gray><unread></gray> unread messages.</green> <hover:show_text:'Click to view mail'><click:run_command:/mail read><gray>View mail</gray></click></hover>"
+
 # Error messages
 errors:
     # No permission

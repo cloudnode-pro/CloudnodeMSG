@@ -257,6 +257,33 @@ public final class PluginConfig {
     }
 
     /**
+     * Should players be notified for unread mail on login?
+     */
+    public boolean mailNotifyOnLogin() {
+        return config.getBoolean("mail.notify-on-login");
+    }
+
+    /**
+     * Interval (in seconds) to notify players of unread mail. Set to 0 to disable.
+     */
+    public int mailNotifyInterval() {
+        return config.getInt("mail.notify-interval");
+    }
+
+    /**
+     * Unread mail notification message
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <unread>} - the number of unread mail messages</li></ul>
+     *
+     * @param unread the number of unread mail messages
+     */
+    public @NotNull Component mailNotify(final int unread) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.notify")),
+                Placeholder.unparsed("unread", String.valueOf(unread))
+        );
+    }
+
+    /**
      * No permission
      */
     public @NotNull Component noPermission() {

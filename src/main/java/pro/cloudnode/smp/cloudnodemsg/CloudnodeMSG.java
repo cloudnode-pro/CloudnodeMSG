@@ -14,6 +14,7 @@ import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ToggleMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.UnIgnoreCommand;
 import pro.cloudnode.smp.cloudnodemsg.listener.AsyncChatListener;
+import pro.cloudnode.smp.cloudnodemsg.listener.PlayerJoinListener;
 
 import java.io.InputStream;
 import java.sql.PreparedStatement;
@@ -48,6 +49,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         Objects.requireNonNull(getCommand("togglemsg")).setExecutor(new ToggleMessageCommand());
 
         getServer().getPluginManager().registerEvents(new AsyncChatListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
     }
 
     @Override
