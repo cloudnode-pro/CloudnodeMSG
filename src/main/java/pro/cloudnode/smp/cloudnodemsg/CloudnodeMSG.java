@@ -68,9 +68,10 @@ public final class CloudnodeMSG extends JavaPlugin {
     }
 
     public final @NotNull HikariConfig hikariConfig = new HikariConfig();
-    private HikariDataSource dbSource;
+    private @Nullable HikariDataSource dbSource;
 
     public @NotNull HikariDataSource db() {
+        assert dbSource != null;
         return dbSource;
     }
 
