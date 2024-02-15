@@ -264,7 +264,7 @@ public final class PluginConfig {
     }
 
     /**
-     * Interval (in seconds) to notify players of unread mail. Set to 0 to disable.
+     * Interval (in minutes) to notify players of unread mail. Set to 0 to disable.
      */
     public int mailNotifyInterval() {
         return config.getInt("mail.notify-interval");

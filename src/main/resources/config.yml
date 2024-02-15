@@ -102,8 +102,8 @@ mail:
   # Should players be notified for unread mail on login?
   notify-on-login: true
 
-  # Interval (in seconds) to notify players of unread mail. Set to 0 to disable.
-  notify-interval: 180
+  # Interval (in minutes) to notify players of unread mail. Set to 0 to disable.
+  notify-interval: 3
 
   # Unread mail notification message
   # Placeholders:
