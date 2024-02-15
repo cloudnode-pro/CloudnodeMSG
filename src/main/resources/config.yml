@@ -1,3 +1,35 @@
+# Database configuration
+db:
+    sqlite:
+        # Database file name (in the plugin's folder)
+        # If the file does not exist, it will be created
+        file: 'cloudnodemsg.db'
+
+    # Advanced DB configuration / HikariCP properties
+    # Only change if you know what you're doing; you can add or remove any property you want
+    hikaricp:
+        - name: "cachePrepStmts"
+          value: "true"
+        - name: "prepStmtCacheSize"
+          value: "250"
+        - name: "prepStmtCacheSqlLimit"
+          value: "2048"
+        - name: "useServerPrepStmts"
+          value: "true"
+        - name: "useLocalSessionState"
+          value: "true"
+        - name: "rewriteBatchedStatements"
+          value: "true"
+        - name: "cacheResultSetMetadata"
+          value: "true"
+        - name: "cacheServerConfiguration"
+          value: "true"
+        - name: "elideSetAutoCommits"
+          value: "true"
+        - name: "maintainTimeStats"
+          value: "false"
+
+
 # Incoming message format (recipient's point of view)
 # Placeholders:
 #  <sender> - the username of the message sender

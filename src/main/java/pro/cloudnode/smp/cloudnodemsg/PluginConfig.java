@@ -6,6 +6,10 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class PluginConfig {
@@ -13,6 +17,31 @@ public final class PluginConfig {
 
     public PluginConfig(final @NotNull FileConfiguration config) {
         this.config = config;
+    }
+
+    /**
+     * Database file name (in the plugin's folder)
+     * <p>If the file does not exist, it will be created</p>
+     */
+    public @NotNull String dbSqliteFile() {
+        return Objects.requireNonNull(config.getString("db.sqlite.file"));
+    }
+
+    /**
+     * Advanced DB configuration / HikariCP properties
+     * <p>Only change if you know what you're doing; you can add or remove any property you want</p>
+     */
+    public @NotNull HashMap<@NotNull String, @NotNull String> dbHikariProperties() {
+        final @NotNull List<@NotNull Map<?, ?>> mapList = config.getMapList("db.hikaricp");
+        final @NotNull HashMap<@NotNull String, @NotNull String> properties = new HashMap<>(mapList.size());
+
+        for (final @NotNull Map<?, ?> map : mapList)
+            if (
+                map.get("name") instanceof final @NotNull String name
+             && map.get("value") instanceof final @NotNull String value
+            ) properties.put(name, value);
+
+        return properties;
     }
 
     /**
