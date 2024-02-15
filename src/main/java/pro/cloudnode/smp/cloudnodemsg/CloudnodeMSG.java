@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.command.IgnoreCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
@@ -14,8 +15,13 @@ import pro.cloudnode.smp.cloudnodemsg.command.ToggleMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.UnIgnoreCommand;
 import pro.cloudnode.smp.cloudnodemsg.listener.AsyncChatListener;
 
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class CloudnodeMSG extends JavaPlugin {
     public static @NotNull CloudnodeMSG getInstance() {
@@ -26,6 +32,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         getInstance().reloadConfig();
         getInstance().config.config = getInstance().getConfig();
         setupDbSource();
+        runDDL();
     }
 
     @Override
@@ -76,5 +83,35 @@ public final class CloudnodeMSG extends JavaPlugin {
             hikariConfig.addDataSourceProperty(entry.getKey(), entry.getValue());
 
         dbSource = new HikariDataSource(hikariConfig);
+    }
+
+    /**
+     * Run DDL script
+     */
+    public void runDDL() {
+        final @NotNull String file = "ddl/sqlite.sql";
+        final @NotNull String @NotNull [] queries;
+        try (final @Nullable InputStream inputStream = getClassLoader().getResourceAsStream(file)) {
+            queries = Arrays.stream(
+                    new String(Objects.requireNonNull(inputStream).readAllBytes()).split(";")
+            ).map(q -> q.stripTrailing().stripIndent().replaceAll("^\\s+(?:--.+)*", "")).toArray(String[]::new);
+        }
+        catch (final @NotNull Exception exception) {
+            getLogger().log(Level.SEVERE, "Could not read DDL script: " + file, exception);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        for (final @NotNull String query : queries) {
+            if (query.isBlank()) continue;
+            try (final @NotNull PreparedStatement stmt = db().getConnection().prepareStatement(query)) {
+                stmt.execute();
+            }
+            catch (final @NotNull SQLException exception) {
+                getLogger().log(Level.SEVERE, "Could not execute DDL query: " + query, exception);
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+        }
+        getLogger().info("Database successfully initialised with DDL");
     }
 }
