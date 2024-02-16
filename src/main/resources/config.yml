@@ -75,6 +75,9 @@ channel:
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
 
+# Name for player when name not found (usually very unlikely to happen)
+unknown-name: "Unknown Player"
+
 # Command usage format
 # Placeholders:
 #  <command> - the command name

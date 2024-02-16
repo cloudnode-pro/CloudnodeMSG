@@ -6,15 +6,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
-import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public final class ToggleMessageCommand extends Command {
     @Override
@@ -25,15 +24,15 @@ public final class ToggleMessageCommand extends Command {
             final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
 
             if (recipient.getPlayer() == null)
-                return new NeverJoinedError(Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(sender);
+                return new NeverJoinedError(recipient).send(sender);
 
             if (Message.isIncomingEnabled(recipient.getPlayer())) {
                 Message.incomingDisable(recipient.getPlayer());
-                return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
+                return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleDisableOther(recipient));
             }
 
             Message.incomingEnable(recipient.getPlayer());
-            return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(Optional.of(recipient.getPlayer().getName()).orElse("Unknown Player")));
+            return sendMessage(sender, CloudnodeMSG.getInstance().config().toggleEnableOther(recipient));
         }
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
 

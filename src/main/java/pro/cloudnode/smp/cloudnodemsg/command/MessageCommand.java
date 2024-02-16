@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.command;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -31,25 +32,25 @@ public final class MessageCommand extends Command {
         if (args.length == 1 && !(sender instanceof Player)) return sendMessage(sender, CloudnodeMSG.getInstance().config()
                     .usage(label, usageConsole.replace("<player>", args[0])));
 
-        final @NotNull Optional<@NotNull Player> recipient = Optional.ofNullable(CloudnodeMSG.getInstance().getServer()
-                .getPlayer(args[0]));
-        if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !sender.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(sender);
-        if (sender instanceof final @NotNull Player player && recipient.get().getUniqueId().equals(player.getUniqueId()))
+        final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
+        final @NotNull Optional<@NotNull Player> onlineRecipient = Optional.ofNullable(recipient.getPlayer());
+        if (onlineRecipient.isEmpty() || (CloudnodeMSG.isVanished(onlineRecipient.get()) && !sender.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(recipient).send(sender);
+        if (sender instanceof final @NotNull Player player && recipient.getUniqueId().equals(player.getUniqueId()))
             return new MessageYourselfError().send(sender);
-        if (!Message.isIncomingEnabled(recipient.get()) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(sender);
+        if (!Message.isIncomingEnabled(onlineRecipient.get()) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(recipient).send(sender);
 
         if (args.length == 1) {
             final @NotNull Player player = (Player) sender;
-            if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipient.get().getUniqueId())).orElse(false)) {
+            if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipient.getUniqueId())).orElse(false)) {
                 Message.exitChannel(player);
-                return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), recipient.get().getName(), label));
+                return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player, recipient, label));
             }
-            Message.createChannel(player, recipient.get());
-            return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player.getName(), recipient.get().getName(), label));
+            Message.createChannel(player, recipient);
+            return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player, recipient, label));
         }
 
         try {
-            new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", Arrays.copyOfRange(args, 1, args.length))).send();
+            new Message(Message.offlinePlayer(sender), recipient, String.join(" ", Arrays.copyOfRange(args, 1, args.length))).send();
             return true;
         }
         catch (final @NotNull InvalidPlayerError e) {

@@ -6,17 +6,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.CannotIgnoreError;
 import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
-import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public final class IgnoreCommand extends Command {
     public static final @NotNull String usage = "<player>";
@@ -32,15 +31,15 @@ public final class IgnoreCommand extends Command {
     }
 
     public static boolean ignore(final @NotNull Player player, final @NotNull OfflinePlayer target) {
-        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permission.IGNORE_BYPASS)) return new CannotIgnoreError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
-        if (!target.isOnline() && !target.hasPlayedBefore()) return new NeverJoinedError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
+        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permission.IGNORE_BYPASS)) return new CannotIgnoreError(target).send(player);
+        if (!target.isOnline() && !target.hasPlayedBefore()) return new NeverJoinedError(target).send(player);
         Message.ignore(player, target);
-        return sendMessage(player, CloudnodeMSG.getInstance().config().ignored(Optional.ofNullable(target.getName()).orElse("Unknown Player")));
+        return sendMessage(player, CloudnodeMSG.getInstance().config().ignored(target));
     }
 
     public static boolean unignore(final @NotNull Player player, final @NotNull OfflinePlayer target) {
         Message.unignore(player, target);
-        return sendMessage(player, CloudnodeMSG.getInstance().config().unignored(Optional.ofNullable(target.getName()).orElse("Unknown Player")));
+        return sendMessage(player, CloudnodeMSG.getInstance().config().unignored(target));
     }
 
     @Override

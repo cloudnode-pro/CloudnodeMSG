@@ -29,7 +29,7 @@ public final class UnIgnoreCommand extends Command {
         if (args.length == 0) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
         final @NotNull OfflinePlayer target = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
         if (Message.isIgnored(player, target)) return IgnoreCommand.unignore(player, target);
-        return new NotIgnoredError(args[0]).send(sender);
+        return new NotIgnoredError(target).send(sender);
     }
 
     @Override

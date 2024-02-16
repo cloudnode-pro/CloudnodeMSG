@@ -4,10 +4,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +54,14 @@ public final class PluginConfig {
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component incoming(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("incoming"))
-                .replace("<sender>", sender)
-                .replace("<recipient>", recipient),
+                .replace("<sender>", Message.name(sender))
+                .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -70,19 +70,19 @@ public final class PluginConfig {
      * Outgoing message format (sender's point of view)
      * <p>Placeholders:</p>
      * <ul>
-     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <sender>} - the message sender</li>
      *     <li>{@code <recipient>} - the username of the message recipient</li>
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component outgoing(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("outgoing"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient),
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -96,14 +96,14 @@ public final class PluginConfig {
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component spy(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component spy(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("spy"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient),
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -113,11 +113,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the username of the player</li></ul>
      *
-     * @param player The username of the player
+     * @param player The player
      */
-    public @NotNull Component ignored(final @NotNull String player) {
+    public @NotNull Component ignored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("ignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -126,11 +126,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the username of the player</li></ul>
      *
-     * @param player The username of the player
+     * @param player The player
      */
-    public @NotNull Component unignored(final @NotNull String player) {
+    public @NotNull Component unignored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("unignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -143,14 +143,14 @@ public final class PluginConfig {
      *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param command The command used, e.g. `msg`, `dm`, etc.
      */
-    public @NotNull Component channelCreated(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+    public @NotNull Component channelCreated(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull String command) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.created"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient)
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient))
                         .replace("<command>", command));
     }
 
@@ -163,14 +163,14 @@ public final class PluginConfig {
      *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param command The command used, e.g. `msg`, `dm`, etc.
      */
-    public @NotNull Component channelClosed(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+    public @NotNull Component channelClosed(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull String command) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.closed"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient)
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient))
                         .replace("<command>", command));
     }
 
@@ -182,13 +182,13 @@ public final class PluginConfig {
      *     <li>{@code <recipient>} - the username of the message recipient</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      */
-    public @NotNull Component channelOffline(final @NotNull String sender, final @NotNull String recipient) {
+    public @NotNull Component channelOffline(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.offline"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient));
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)));
     }
 
     /**
@@ -223,6 +223,13 @@ public final class PluginConfig {
         return Objects.requireNonNull(config.getString("console-name"));
     }
 
+    /**
+     * Name for player when name not found (usually very unlikely to happen)
+     */
+    public @NotNull String unknownName() {
+        return Objects.requireNonNull(config.getString("unknown-name"));
+    }
+
     public @NotNull Component toggleDisable() {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.message")));
     }
@@ -232,11 +239,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player the player's username
+     * @param player the player
      */
-    public @NotNull Component toggleDisableOther(final @NotNull String player) {
+    public @NotNull Component toggleDisableOther(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.other")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -249,11 +256,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player the player's username
+     * @param player the player
      */
-    public @NotNull Component toggleEnableOther(final @NotNull String player) {
+    public @NotNull Component toggleEnableOther(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -325,11 +332,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component playerNotFound(final @NotNull String player) {
+    public @NotNull Component playerNotFound(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.player-not-found")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -346,11 +353,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component replyOffline(final @NotNull String player) {
+    public @NotNull Component replyOffline(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.reply-offline")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -366,11 +373,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component notIgnored(final @NotNull String player) {
+    public @NotNull Component notIgnored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-ignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -379,11 +386,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component cannotIgnore(final @NotNull String player) {
+    public @NotNull Component cannotIgnore(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.cannot-ignore")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -392,11 +399,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component neverJoined(final @NotNull String player) {
+    public @NotNull Component neverJoined(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.never-joined")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -405,11 +412,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component incomingDisabled(final @NotNull String player) {
+    public @NotNull Component incomingDisabled(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.incoming-disabled")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 }

@@ -36,7 +36,7 @@ public final class MailCommand extends Command {
         if (args.length == 1) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, args[0] + " <message>"));
         final @NotNull String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
-        if (!recipient.hasPlayedBefore()) return sendMessage(sender, CloudnodeMSG.getInstance().config().playerNotFound(args[0]));
+        if (!recipient.hasPlayedBefore()) return sendMessage(sender, CloudnodeMSG.getInstance().config().playerNotFound(recipient));
         final @NotNull Mail mail = new Mail(Message.offlinePlayer(sender), recipient, message);
         mail.insert();
         // TODO: notify recipient (if online)

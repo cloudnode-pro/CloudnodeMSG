@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.error;
 
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 
@@ -12,7 +13,7 @@ public final class PlayerNotFoundError extends Error {
      *
      * @param player the player's username
      */
-    public PlayerNotFoundError(final @NotNull String player) {
+    public PlayerNotFoundError(final @NotNull OfflinePlayer player) {
         super(CloudnodeMSG.getInstance().config().playerNotFound(player));
     }
 }
