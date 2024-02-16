@@ -110,6 +110,15 @@ mail:
   #  <unread> - the number of unread mail messages
   notify: "<green>(!) You have <gray><unread></gray> unread messages.</green> <hover:show_text:'Click to view mail'><click:run_command:/mail read><gray>View mail</gray></click></hover>"
 
+  # Successfully sent mail
+  # Placeholders:
+  #  <sender> - the username of the sender
+  #  <recipient> - the username of the recipient
+  #  <message> - the message
+  #  <seen> - whether the mail was read/opened by the recipient (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <starred> - whether the recipient has starred the mail (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  sent: "<green>(!) Successfully sent mail to <gray><recipient></gray>.</green>"
+
 # Error messages
 errors:
     # No permission

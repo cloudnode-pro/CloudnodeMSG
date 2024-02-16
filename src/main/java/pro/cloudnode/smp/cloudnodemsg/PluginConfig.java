@@ -2,6 +2,7 @@ package pro.cloudnode.smp.cloudnodemsg;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -281,6 +282,28 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.notify")),
                 Placeholder.unparsed("unread", String.valueOf(unread))
         );
+    }
+
+    /**
+     * Successfully sent mail
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the sender</li>
+     *     <li>{@code <recipient>} - the username of the recipient</li>
+     *     <li>{@code <message>} - the message</li>
+     *     <li>{@code <seen>} - whether the mail was read/opened by the recipient (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <starred>} - whether the recipient has starred the mail (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     * </ul>
+     *
+     * @param mail the mail
+     */
+    public @NotNull Component mailSent(final @NotNull Mail mail) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.sent"))
+                .replace("<sender>", Message.name(mail.sender))
+                .replace("<recipient>", Message.name(mail.recipient)),
+                Formatter.booleanChoice("seen", mail.seen),
+                Formatter.booleanChoice("starred", mail.starred)
+        ).replaceText(configurer -> configurer.matchLiteral("<message>").replacement(Component.text(mail.message)));
     }
 
     /**

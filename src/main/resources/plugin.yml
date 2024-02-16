@@ -27,3 +27,7 @@ commands:
         description: Toggles private messages from a player
         usage: /<command> <player>
         aliases: [ "toggledms", "togglepms" ]
+    mail:
+        description: Send and receive offline messages
+        usage: /<command>
+        aliases: [ "post" ]

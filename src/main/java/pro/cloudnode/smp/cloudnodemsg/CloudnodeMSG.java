@@ -5,11 +5,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.command.IgnoreCommand;
+import pro.cloudnode.smp.cloudnodemsg.command.MailCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
@@ -49,6 +49,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         Objects.requireNonNull(getCommand("ignore")).setExecutor(new IgnoreCommand());
         Objects.requireNonNull(getCommand("unignore")).setExecutor(new UnIgnoreCommand());
         Objects.requireNonNull(getCommand("togglemsg")).setExecutor(new ToggleMessageCommand());
+        Objects.requireNonNull(getCommand("mail")).setExecutor(new MailCommand());
 
         getServer().getPluginManager().registerEvents(new AsyncChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);

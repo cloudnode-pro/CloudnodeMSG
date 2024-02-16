@@ -72,6 +72,12 @@ public final class Message {
         return executor instanceof final @NotNull Player player ? player : console;
     }
 
+    public static @NotNull String name(final @NotNull OfflinePlayer player) {
+        if (player.getUniqueId().equals(console.getUniqueId())) return CloudnodeMSG.getInstance().config().consoleName();
+        final @NotNull Optional<@NotNull String> name = Optional.ofNullable(player.getName());
+        return name.orElse("Unknown Player");
+    }
+
     public static void sendMessage(final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         if (recipient.getUniqueId() == console.getUniqueId())
             CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
