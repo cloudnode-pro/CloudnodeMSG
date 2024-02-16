@@ -132,7 +132,7 @@ public final class CloudnodeMSG extends JavaPlugin {
 
     private @NotNull BukkitTask minuteLoop() {
         return getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            Mail.notifyUnread();
+            if ((System.currentTimeMillis() / 1000) % config().mailNotifyInterval() == 0) Mail.notifyUnread();
         }, 0, 20 * 60);
     }
     private @Nullable BukkitTask minuteLoop;
