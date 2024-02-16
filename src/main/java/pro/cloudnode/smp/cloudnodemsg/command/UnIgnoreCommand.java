@@ -33,7 +33,7 @@ public final class UnIgnoreCommand extends Command {
     }
 
     @Override
-    public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @Nullable List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         if (args.length == 1 && sender.hasPermission(Permission.IGNORE) && sender instanceof final @NotNull Player player) {
             final @NotNull HashSet<@NotNull UUID> ignored = Message.getIgnored(player);
             final @NotNull Server server = CloudnodeMSG.getInstance().getServer();

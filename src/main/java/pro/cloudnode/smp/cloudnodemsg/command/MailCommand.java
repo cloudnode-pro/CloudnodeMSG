@@ -15,7 +15,7 @@ import java.util.List;
 public final class MailCommand extends Command {
 
     @Override
-    public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+    public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.MAIL)) return sendMessage(sender, CloudnodeMSG.getInstance().config().noPermission());
         if (args.length == 0) return help(sender);
         final @NotNull String @NotNull [] subCommandArgs = Arrays.copyOfRange(args, 1, args.length);
@@ -44,7 +44,7 @@ public final class MailCommand extends Command {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         return null;
     }
 }
