@@ -46,7 +46,7 @@ public final class AsyncChatListener implements Listener {
         final @NotNull Optional<@NotNull Player> recipient = channelRecipient.map(p -> p.isOnline() ? p.getPlayer() : null);
         if (recipient.isEmpty()) {
             Message.exitChannel(sender);
-            sender.sendMessage(CloudnodeMSG.getInstance().config().channelOffline(sender.getName(), Optional.ofNullable(channelRecipient.get().getName()).orElse("Unknown Player")));
+            sender.sendMessage(CloudnodeMSG.getInstance().config().channelOffline(sender, channelRecipient.get()));
             return;
         }
 

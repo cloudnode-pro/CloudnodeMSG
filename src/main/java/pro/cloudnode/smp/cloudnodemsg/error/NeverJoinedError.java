@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.error;
 
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 
@@ -12,7 +13,7 @@ public final class NeverJoinedError extends Error {
      *
      * @param player the player's username
      */
-    public NeverJoinedError(final @NotNull String player) {
+    public NeverJoinedError(final @NotNull OfflinePlayer player) {
         super(CloudnodeMSG.getInstance().config().neverJoined(player));
     }
 }
