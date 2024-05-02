@@ -9,7 +9,8 @@ import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NobodyReplyError;
 import pro.cloudnode.smp.cloudnodemsg.error.ReplyOfflineError;
-import pro.cloudnode.smp.cloudnodemsg.message.Message;
+import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public final class ReplyCommand extends Command {
 
         final @NotNull Optional<@NotNull OfflinePlayer> recipient = Message.getReplyTo(Message.offlinePlayer(sender));
         if (recipient.isEmpty()) return new NobodyReplyError().send(sender);
+        if (!recipient.get().getUniqueId().equals(Message.console.getUniqueId()) && !Message.isIncomingEnabled(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(Objects.requireNonNull(recipient.get().getName())).send(sender);
         if (
             !recipient.get().getUniqueId().equals(Message.console.getUniqueId())
             && (

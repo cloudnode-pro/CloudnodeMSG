@@ -11,7 +11,7 @@ import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotIgnoredError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
-import pro.cloudnode.smp.cloudnodemsg.message.Message;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.HashSet;

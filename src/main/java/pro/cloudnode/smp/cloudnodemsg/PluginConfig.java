@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -28,11 +29,11 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("incoming"))
                 .replace("<sender>", sender)
                 .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
         );
     }
 
@@ -49,11 +50,75 @@ public final class PluginConfig {
      * @param recipient The username of the message recipient
      * @param message The message text
      */
-    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull String message) {
+    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("outgoing"))
                         .replace("<sender>", sender)
                         .replace("<recipient>", recipient),
-                Placeholder.unparsed("message", message)
+                Placeholder.component("message", message)
+        );
+    }
+
+    /**
+     * Team message
+     * <p>Uses the vanilla teams from `/team`</p>
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <team>} - team</li>
+     *     <li>{@code <message>} - the message text</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param team The team
+     * @param message The message text
+     */
+    public @NotNull Component team(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team"))
+                        .replace("<sender>", sender),
+                Placeholder.component("team", team.displayName()),
+                Placeholder.component("message", message)
+        );
+    }
+
+    /**
+     * Private message format as seen by people with the spy permission and console
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <message>} - the message text</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param message The message text
+     */
+    public @NotNull Component spy(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("spy"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient),
+                Placeholder.component("message", message)
+        );
+    }
+
+    /**
+     * Team message format as seen by people with the spy permission and console
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <team>} - team</li>
+     *     <li>{@code <message>} - the message text</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param team The team
+     * @param message The message text
+     */
+    public @NotNull Component teamSpy(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team-spy"))
+                        .replace("<sender>", sender),
+                Placeholder.component("team", team.displayName()),
+                Placeholder.component("message", message)
         );
     }
 
@@ -81,6 +146,97 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("unignored")),
                 Placeholder.unparsed("player", player)
         );
+    }
+
+    /**
+     * Message channel created
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelCreated(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.created"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     * @param command The command used, e.g. `msg`, `dm`, etc.
+     */
+    public @NotNull Component channelClosed(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.closed"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient)
+                        .replace("<command>", command));
+    }
+
+    /**
+     * Message channel player is offline and channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <recipient>} - the username of the message recipient</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param recipient The username of the message recipient
+     */
+    public @NotNull Component channelOffline(final @NotNull String sender, final @NotNull String recipient) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.offline"))
+                        .replace("<sender>", sender)
+                        .replace("<recipient>", recipient));
+    }
+
+    /**
+     * Team chat channel created
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <team>} - team</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param team The team@
+     */
+    public @NotNull Component channelTeamCreated(final @NotNull String sender, final @NotNull Team team) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-created"))
+                        .replace("<sender>", sender),
+                Placeholder.component("team", team.displayName()));
+    }
+
+    /**
+     * Team chat channel closed
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <team>} - team</li>
+     * </ul>
+     *
+     * @param sender The username of the message sender
+     * @param team The team
+     */
+    public @NotNull Component channelTeamClosed(final @NotNull String sender, final @NotNull Team team) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-closed"))
+                        .replace("<sender>", sender),
+                Placeholder.component("team", team.displayName()));
     }
 
     /**
@@ -113,6 +269,40 @@ public final class PluginConfig {
      */
     public @NotNull String consoleName() {
         return Objects.requireNonNull(config.getString("console-name"));
+    }
+
+    public @NotNull Component toggleDisable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.message")));
+    }
+
+    /**
+     * Player's private messages have been toggled off
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player the player's username
+     */
+    public @NotNull Component toggleDisableOther(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.other")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    public @NotNull Component toggleEnable() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.message")));
+    }
+
+    /**
+     * Player's private messages have been toggled on
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player the player's username
+     */
+    public @NotNull Component toggleEnableOther(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
+                Placeholder.unparsed("player", player)
+        );
     }
 
     /**
@@ -207,6 +397,26 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.never-joined")),
                 Placeholder.unparsed("player", player)
         );
+    }
+
+    /**
+     * Target player have disabled their incoming private messages.
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <player>} - the player's username</li></ul>
+     *
+     * @param player The player's username
+     */
+    public @NotNull Component incomingDisabled(final @NotNull String player) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.incoming-disabled")),
+                Placeholder.unparsed("player", player)
+        );
+    }
+
+    /**
+     * Trying to message a team, but not in one
+     */
+    public @NotNull Component notInTeam() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-in-team")));
     }
 }
 

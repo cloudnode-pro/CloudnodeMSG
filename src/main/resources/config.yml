@@ -9,6 +9,22 @@ incoming: '<click:suggest_command:/msg <sender> ><dark_gray>[<#60a5fa><sender></
 # Same placeholders as incoming
 outgoing: '<click:suggest_command:/msg <recipient> ><dark_gray>[<#93c5fd>me</#93c5fd> <white>-></white> <#60a5fa><recipient></#60a5fa>]</dark_gray></click> <reset><#dbeafe><message></#dbeafe>'
 
+# Team message
+# Uses the vanilla teams from `/team`
+# Placeholders:
+#  <sender> - the username of the message sender
+#  <team> - team display name
+#  <message> - the message text
+team: '<click:suggest_command:/tm ><dark_gray>[<white><team></white>] <gray><sender></gray>:</dark_gray> <white><message></white></click>'
+
+# Private message format as seen by people with the spy permission and console
+# Same placeholders as incoming
+spy: '<dark_gray>[SPY] [<click:suggest_command:/msg <sender> ><gray><sender></gray></click> -> <click:suggest_command:/msg <recipient> ><gray><recipient></gray></click>] <gray><message></gray></dark_gray>'
+
+# Team message format as seen by people with the spy permission and console
+# Same placeholders as team
+team-spy: '<dark_gray>[SPY]</dark_gray> <dark_gray>[<white><team></white>] <gray><click:suggest_command:/msg <sender> ><sender></click></gray>:</dark_gray> <gray><message></gray>'
+
 # Player has successfully been ignored
 # Placeholders:
 #  <player> - the player's username
@@ -17,6 +33,34 @@ ignored: "<green>(!) You will no longer see messages from <gray><player></gray>.
 # Player has successfully been unignored
 # Same placeholders as ignored
 unignored: "<yellow>(!) You are no longer ignoring <gray><player></gray>.</yellow>"
+
+channel:
+    # Message channel created
+    # Placeholders:
+    #  <sender> - the username of the message sender
+    #  <recipient> - the username of the message recipient
+    #  <command> - the command used, e.g. `msg`, `dm`, etc.
+    created: <green>(!) Your chat messages will now be sent as private messages to <gray><recipient></gray>. To re-enable public messages, run <click:suggest_command:/<command> <recipient>><gray>/<command> <recipient></gray></click></green>
+
+    # Message channel closed
+    # Same placeholders as created
+    closed: <yellow>(!) Your chat messages will now be <gray>public</gray>.</yellow>
+
+    # Message channel player is offline and channel closed
+    # Placeholders:
+    #  <sender> - the username of the message sender
+    #  <recipient> - the username of the message recipient
+    offline: <red>(!) Player <gray><recipient></gray> is offline. Your chat messages have been switched back to <gray>public</gray>.</red>
+
+    # Team chat channel created
+    # Placeholders:
+    #  <sender> - the username of the message sender
+    #  <team> - team display name
+    team-created: <green>(!) Your chat messages will now be sent as private team messages in <gray><team></gray>. To re-enable public messages, run <click:suggest_command:/teammsg><gray>/teammsg</gray></click></green>
+
+    # Team chat channel closed
+    # Same placeholders as created
+    team-closed: <yellow>(!) Your chat messages will now be <gray>public</gray>.</yellow>
 
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
@@ -29,6 +73,20 @@ usage: "<yellow>(!) Usage:</yellow> <white>/<command> <usage></white>"
 
 # Plugin reloaded
 reloaded: "<green>(!) Plugin successfully reloaded.</green>"
+
+toggle:
+    disable:
+        # Disable private messages
+        message: "<yellow>(!) You've disabled private messages. Run again to re-enable.</yellow>"
+        # Placeholders:
+        #  <player> - the player's username
+        other: "<green>(!) Disabled private messages for <gray><player></gray>.</green>"
+    enable:
+        # Enable private messages
+        message: "<green>(!) You can now receive private messages again.</green>"
+        # Placeholders:
+        #  <player> - the player's username
+        other: "<green>(!) Re-enabled private messages for <gray><player></gray>.</green>"
 
 # Error messages
 errors:
@@ -69,3 +127,11 @@ errors:
     # Placeholders:
     #  <player> - the player's username
     never-joined: "<red>(!) <gray><player></gray> has never joined this server.</red>"
+
+    # Target player have disabled their incoming private messages.
+    # Placeholders:
+    #  <player> - the player's username
+    incoming-disabled: "<red>(!) You cannot message <gray><player></gray> because they have disabled private messages.</red>"
+
+    # Trying to message a team, but not in one
+    not-in-team: "<red>(!) You are not in a team.</red>"

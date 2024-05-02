@@ -9,6 +9,11 @@ public final class Permission {
     public final static @NotNull String USE = "cloudnodemsg.use";
 
     /**
+     * Allow using the team message command (/teammsg)
+     */
+    public final static @NotNull String USE_TEAM = "cloudnodemsg.use.team";
+
+    /**
      * Allows reloading the plugin
      */
     public final static @NotNull String RELOAD = "cloudnodemsg.reload";
@@ -27,4 +32,24 @@ public final class Permission {
      * Player's messages are immune to ignoring
      */
     public final static @NotNull String IGNORE_BYPASS = "cloudnodemsg.ignore.bypass";
+
+    /**
+     * Allows using the /togglemsg command
+     */
+    public final static @NotNull String TOGGLE = "cloudnodemsg.toggle";
+
+    /**
+     * Allows using the /togglemsg command for others
+     */
+    public final static @NotNull String TOGGLE_OTHER = "cloudnodemsg.toggle.other";
+
+    /**
+     * Allows to send private message even when the target have their private messages toggled
+     */
+    public final static @NotNull String TOGGLE_BYPASS = "cloudnodemsg.toggle.bypass";
+
+    /**
+     * Allows to see the private messages of other players
+     */
+    public final static @NotNull String SPY = "cloudnodemsg.spy";
 }
