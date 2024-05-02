@@ -125,6 +125,7 @@ public final class Message {
 
     public static final @NotNull NamespacedKey IGNORED_PLAYERS = new NamespacedKey(CloudnodeMSG.getInstance(), "ignored");
     public static final @NotNull NamespacedKey CHANNEL_RECIPIENT = new NamespacedKey(CloudnodeMSG.getInstance(), "channel-recipient");
+    public static final @NotNull NamespacedKey CHANNEL_TEAM = new NamespacedKey(CloudnodeMSG.getInstance(), "channel-team");
 
     /**
      * Get UUID set of ignored players from PDC string
@@ -208,6 +209,7 @@ public final class Message {
      */
     public static void createChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
         player.getPersistentDataContainer().set(CHANNEL_RECIPIENT, PersistentDataType.STRING, recipient.getUniqueId().toString());
+        player.getPersistentDataContainer().remove(CHANNEL_TEAM);
     }
 
     /**
@@ -238,5 +240,33 @@ public final class Message {
     public static boolean hasChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
         final @NotNull Optional<@NotNull OfflinePlayer> channel = getChannel(player);
         return channel.isPresent() && channel.get().getUniqueId().equals(recipient.getUniqueId());
+    }
+
+    /**
+     * Team message channel
+     *
+     * @param player The player
+     */
+    public static void createTeamChannel(final @NotNull Player player) {
+        player.getPersistentDataContainer().set(CHANNEL_TEAM, PersistentDataType.BOOLEAN, true);
+        player.getPersistentDataContainer().remove(CHANNEL_RECIPIENT);
+    }
+
+    /**
+     * Exit team message channel
+     *
+     * @param player The player
+     */
+    public static void exitTeamChannel(final @NotNull Player player) {
+        player.getPersistentDataContainer().remove(CHANNEL_TEAM);
+    }
+
+    /**
+     * Check whether player has a team message channel
+     *
+     * @param player The player
+     */
+    public static boolean hasTeamChannel(final @NotNull Player player) {
+        return player.getPersistentDataContainer().getOrDefault(CHANNEL_TEAM, PersistentDataType.BOOLEAN, false);
     }
 }
