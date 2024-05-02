@@ -56,7 +56,7 @@ channel:
     # Placeholders:
     #  <sender> - the username of the message sender
     #  <team> - team display name
-    team-created: <green>(!) Your chat messages will now be sent as private messages to <gray><team></gray>. To re-enable public messages, run <click:suggest_command:/teammsg><gray>/teammsg</gray></click></green>
+    team-created: <green>(!) Your chat messages will now be sent as private team messages in <gray><team></gray>. To re-enable public messages, run <click:suggest_command:/teammsg><gray>/teammsg</gray></click></green>
 
     # Team chat channel closed
     # Same placeholders as created
