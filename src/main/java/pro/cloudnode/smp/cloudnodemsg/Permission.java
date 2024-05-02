@@ -9,6 +9,11 @@ public final class Permission {
     public final static @NotNull String USE = "cloudnodemsg.use";
 
     /**
+     * Allow using the team message command (/teammsg)
+     */
+    public final static @NotNull String USE_TEAM = "cloudnodemsg.use.team";
+
+    /**
      * Allows reloading the plugin
      */
     public final static @NotNull String RELOAD = "cloudnodemsg.reload";
