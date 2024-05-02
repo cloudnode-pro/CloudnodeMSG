@@ -23,7 +23,7 @@ spy: '<dark_gray>[SPY] [<click:suggest_command:/msg <sender> ><gray><sender></gr
 
 # Team message format as seen by people with the spy permission and console
 # Same placeholders as team
-team-spy: '<dark_gray>[SPY]</dark_gray> <click:suggest_command:/tm ><dark_gray>[<white><team></white>] <gray><sender></gray>:</dark_gray> <gray><message></gray></click>'
+team-spy: '<dark_gray>[SPY]</dark_gray> <dark_gray>[<white><team></white>] <gray><click:suggest_command:/msg <sender> ><sender></click></gray>:</dark_gray> <gray><message></gray>'
 
 # Player has successfully been ignored
 # Placeholders:
