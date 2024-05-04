@@ -49,6 +49,7 @@ public final class CloudnodeMSG extends JavaPlugin {
         Objects.requireNonNull(getCommand("ignore")).setExecutor(new IgnoreCommand());
         Objects.requireNonNull(getCommand("unignore")).setExecutor(new UnIgnoreCommand());
         Objects.requireNonNull(getCommand("togglemsg")).setExecutor(new ToggleMessageCommand());
+        Objects.requireNonNull(getCommand("teammsg")).setExecutor(new TeamMessageCommand());
         Objects.requireNonNull(getCommand("mail")).setExecutor(new MailCommand());
 
         getServer().getPluginManager().registerEvents(new AsyncChatListener(), this);

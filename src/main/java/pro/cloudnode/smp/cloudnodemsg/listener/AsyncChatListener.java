@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.command.TeamMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.Message;
 
@@ -56,5 +58,19 @@ public final class AsyncChatListener implements Listener {
         catch (final @NotNull InvalidPlayerError e) {
             e.log().send(sender);
         }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void teamChannel(final @NotNull AsyncChatEvent event) {
+        final @NotNull Player sender = event.getPlayer();
+        if (!Message.hasTeamChannel(sender)) return;
+        event.setCancelled(true);
+        final @NotNull Optional<@NotNull Team> team = Optional.ofNullable(sender.getScoreboard().getPlayerTeam(sender));
+        if (team.isEmpty()) {
+            Message.exitTeamChannel(sender);
+            sender.sendMessage(CloudnodeMSG.getInstance().config().notInTeam());
+            return;
+        }
+        TeamMessageCommand.sendTeamMessage(sender, team.get(), event.message());
     }
 }

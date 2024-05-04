@@ -27,6 +27,10 @@ commands:
         description: Toggles private messages from a player
         usage: /<command> <player>
         aliases: [ "toggledms", "togglepms" ]
+    teammsg:
+        description: Send a private message to your teammates
+        usage: /<command> <message>
+        aliases: [ "tmsg", "teamchat" , "tm" ]
     mail:
         description: Send and receive offline messages
         usage: /<command>
