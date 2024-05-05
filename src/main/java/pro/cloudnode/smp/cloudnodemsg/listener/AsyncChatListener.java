@@ -11,10 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.command.TeamMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
-import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,15 +45,8 @@ public final class AsyncChatListener implements Listener {
         final @NotNull Optional<@NotNull OfflinePlayer> channelRecipient = Message.getChannel(sender);
         if (channelRecipient.isEmpty()) return;
         event.setCancelled(true);
-        final @NotNull Optional<@NotNull Player> recipient = channelRecipient.map(p -> p.isOnline() ? p.getPlayer() : null);
-        if (recipient.isEmpty()) {
-            Message.exitChannel(sender);
-            sender.sendMessage(CloudnodeMSG.getInstance().config().channelOffline(sender.getName(), Optional.ofNullable(channelRecipient.get().getName()).orElse("Unknown Player")));
-            return;
-        }
-
         try {
-            new Message(sender, recipient.get(), event.message()).send();
+            new Message(sender, channelRecipient.get(), event.message()).send(true);
         }
         catch (final @NotNull InvalidPlayerError e) {
             e.log().send(sender);

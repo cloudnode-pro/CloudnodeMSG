@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pro.cloudnode.smp.cloudnodemsg.error.ChannelOfflineError;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
+import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,11 +44,24 @@ public final class Message {
     }
 
     public void send() throws InvalidPlayerError {
+        send(false);
+    }
+
+    public void send(final boolean channel) throws InvalidPlayerError {
         final @NotNull String senderUsername = playerOrServerUsername(this.sender);
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
+
+        if (senderPlayer.isPresent() && (recipientPlayer.isEmpty() || (CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED)))) {
+            if (!channel) new PlayerNotFoundError(senderPlayer.get().getName()).send(senderPlayer.get());
+            else {
+                Message.exitChannel(senderPlayer.get());
+                new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(senderPlayer.get());
+            }
+            return;
+        }
 
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         if (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient))
