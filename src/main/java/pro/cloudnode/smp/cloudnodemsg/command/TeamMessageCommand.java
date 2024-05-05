@@ -48,6 +48,7 @@ public class TeamMessageCommand extends Command {
      */
     public static boolean sendTeamMessage(final @NotNull Player sender, final @NotNull Team team, final @NotNull Component message) {
         for (final @NotNull Player player : sender.getServer().getOnlinePlayers()) {
+            if (Message.isIgnored(player, sender)) continue;
             if (Optional.ofNullable(player.getScoreboard().getPlayerTeam(player)).map(t -> t.equals(team)).orElse(false))
                 sendMessage(player, CloudnodeMSG.getInstance().config().team(sender.getName(), team, message));
             else if (player.hasPermission(Permission.SPY)) sendMessage(player, CloudnodeMSG.getInstance().config().teamSpy(sender.getName(), team, message));
