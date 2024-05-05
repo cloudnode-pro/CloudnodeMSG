@@ -77,16 +77,16 @@ reloaded: "<green>(!) Plugin successfully reloaded.</green>"
 toggle:
     disable:
         # Disable private messages
-        message: "<yellow>(!) You've disabled private messages. Run again to re-enable.</yellow>"
+        message: "<yellow>(!) Receiving private messages is now disabled. Run again to re-enable.</yellow>"
         # Placeholders:
         #  <player> - the player's username
-        other: "<green>(!) Disabled private messages for <gray><player></gray>.</green>"
+        other: "<green>(!) Receiving private messages now disabled for <gray><player></gray>.</green>"
     enable:
         # Enable private messages
         message: "<green>(!) You can now receive private messages again.</green>"
         # Placeholders:
         #  <player> - the player's username
-        other: "<green>(!) Re-enabled private messages for <gray><player></gray>.</green>"
+        other: "<green>(!) Re-enabled receiving of private messages for <gray><player></gray>.</green>"
 
 # Error messages
 errors:
