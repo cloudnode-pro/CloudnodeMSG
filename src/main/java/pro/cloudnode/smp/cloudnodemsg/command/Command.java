@@ -14,7 +14,7 @@ public abstract class Command implements TabCompleter, CommandExecutor {
         return true;
     }
 
-    public abstract boolean run(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String[] args);
+    public abstract boolean run(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args);
 
     @Override
     public final boolean onCommand(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, @NotNull String @NotNull [] args) {

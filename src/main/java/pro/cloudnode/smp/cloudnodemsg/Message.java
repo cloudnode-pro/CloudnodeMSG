@@ -8,7 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pro.cloudnode.smp.cloudnodemsg.error.ChannelOfflineError;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
+import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
+import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,11 +45,32 @@ public final class Message {
     }
 
     public void send() throws InvalidPlayerError {
+        send(false);
+    }
+
+    public void send(final boolean channel) throws InvalidPlayerError {
         final @NotNull String senderUsername = playerOrServerUsername(this.sender);
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
+
+        if (senderPlayer.isPresent() && (recipientPlayer.isEmpty() || (CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer
+                .get().hasPermission(Permission.SEND_VANISHED)))) {
+            if (!channel) new PlayerNotFoundError(senderPlayer.get().getName()).send(senderPlayer.get());
+            else {
+                Message.exitChannel(senderPlayer.get());
+                new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName())
+                        .orElse("Unknown Player")).send(senderPlayer.get());
+            }
+            return;
+        }
+
+        if (recipientPlayer.isPresent() && senderPlayer.isPresent() && !Message.isIncomingEnabled(recipientPlayer.get()) && !senderPlayer
+                .get().hasPermission(Permission.TOGGLE_BYPASS)) {
+            new PlayerHasIncomingDisabledError(recipientPlayer.get().getName()).send(senderPlayer.get());
+            return;
+        }
 
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         if (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient))
@@ -54,11 +78,8 @@ public final class Message {
 
         sendSpyMessage(sender, recipient, message);
 
-        if (
-                (recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender))
-                &&
-                (senderPlayer.isPresent() && !senderPlayer.get().hasPermission(Permission.IGNORE_BYPASS))
-        ) return;
+        if ((recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender)) && (senderPlayer.isPresent() && !senderPlayer
+                .get().hasPermission(Permission.IGNORE_BYPASS))) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
         if (recipientPlayer.isPresent() && !Message.hasChannel(recipientPlayer.get(), sender))
@@ -82,17 +103,18 @@ public final class Message {
      * Send social spy to online players with permission
      */
     public static void sendSpyMessage(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
-        final @NotNull String senderName = sender.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG.getInstance().config().consoleName() : Optional.ofNullable(sender.getName()).orElse("Unknown Player");
-        final @NotNull String recipientName = recipient.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG.getInstance().config().consoleName() : Optional.ofNullable(recipient.getName()).orElse("Unknown Player");
+        final @NotNull String senderName = sender.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG
+                .getInstance().config().consoleName() : Optional.ofNullable(sender.getName()).orElse("Unknown Player");
+        final @NotNull String recipientName = recipient.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG
+                .getInstance().config().consoleName() : Optional.ofNullable(recipient.getName())
+                                                      .orElse("Unknown Player");
         for (final @NotNull Player player : CloudnodeMSG.getInstance().getServer().getOnlinePlayers()) {
-            if (
-                    !player.hasPermission(Permission.SPY)
-                    || player.getUniqueId().equals(sender.getUniqueId())
-                    || player.getUniqueId().equals(recipient.getUniqueId())
-            ) continue;
+            if (!player.hasPermission(Permission.SPY) || player.getUniqueId().equals(sender.getUniqueId()) || player
+                    .getUniqueId().equals(recipient.getUniqueId())) continue;
             sendMessage(player, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
         }
-        if (!sender.getUniqueId().equals(console.getUniqueId()) && !recipient.getUniqueId().equals(console.getUniqueId()))
+        if (!sender.getUniqueId().equals(console.getUniqueId()) && !recipient.getUniqueId()
+                .equals(console.getUniqueId()))
             sendMessage(console, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
     }
 
@@ -102,18 +124,17 @@ public final class Message {
 
     public static void setReplyTo(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient) {
         if (sender.getUniqueId().equals(console.getUniqueId())) consoleReply = recipient.getUniqueId();
-        else if (sender.isOnline())
-            Objects.requireNonNull(sender.getPlayer()).getPersistentDataContainer()
-                    .set(REPLY_TO, PersistentDataType.STRING, recipient.getUniqueId().toString());
+        else if (sender.isOnline()) Objects.requireNonNull(sender.getPlayer()).getPersistentDataContainer()
+                .set(REPLY_TO, PersistentDataType.STRING, recipient.getUniqueId().toString());
     }
 
     public static @NotNull Optional<@NotNull OfflinePlayer> getReplyTo(final @NotNull OfflinePlayer player) {
         if (player.getUniqueId().equals(console.getUniqueId())) return Optional.ofNullable(consoleReply)
                 .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(uuid));
-        if (player.isOnline())
-            return Optional.ofNullable(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
-                    .get(REPLY_TO, PersistentDataType.STRING))
-                    .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
+        if (player.isOnline()) return Optional
+                .ofNullable(Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer()
+                        .get(REPLY_TO, PersistentDataType.STRING))
+                .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
         return Optional.empty();
     }
 
@@ -133,15 +154,16 @@ public final class Message {
      * @param player The player
      */
     public static @NotNull HashSet<@NotNull UUID> getIgnored(final @NotNull Player player) {
-        final @NotNull Optional<@NotNull String> str = Optional.ofNullable(player.getPersistentDataContainer().get(IGNORED_PLAYERS, PersistentDataType.STRING));
-        return str.map(s -> new HashSet<>(Arrays.stream(s.split(";")).filter(e -> !e.isEmpty()).map(UUID::fromString).toList()))
-                .orElseGet(HashSet::new);
+        final @NotNull Optional<@NotNull String> str = Optional.ofNullable(player.getPersistentDataContainer()
+                .get(IGNORED_PLAYERS, PersistentDataType.STRING));
+        return str.map(s -> new HashSet<>(Arrays.stream(s.split(";")).filter(e -> !e.isEmpty()).map(UUID::fromString)
+                .toList())).orElseGet(HashSet::new);
     }
 
     /**
      * Check if a player is ignored
      *
-     * @param player The player
+     * @param player  The player
      * @param ignored The ignored player
      */
     public static boolean isIgnored(final @NotNull Player player, final @NotNull OfflinePlayer ignored) {
@@ -157,19 +179,23 @@ public final class Message {
     public static void ignore(final @NotNull Player player, final @NotNull OfflinePlayer ignore) {
         final @NotNull HashSet<@NotNull UUID> ignoredPlayers = getIgnored(player);
         ignoredPlayers.add(ignore.getUniqueId());
-        player.getPersistentDataContainer().set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream().map(UUID::toString).toList()));
+        player.getPersistentDataContainer()
+                .set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream()
+                        .map(UUID::toString).toList()));
     }
 
     /**
      * Unignore a player
      *
-     * @param player The player
+     * @param player  The player
      * @param ignored The player to unignore
      */
     public static void unignore(final @NotNull Player player, final @NotNull OfflinePlayer ignored) {
         final @NotNull HashSet<@NotNull UUID> ignoredPlayers = getIgnored(player);
         ignoredPlayers.remove(ignored.getUniqueId());
-        player.getPersistentDataContainer().set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream().map(UUID::toString).toList()));
+        player.getPersistentDataContainer()
+                .set(IGNORED_PLAYERS, PersistentDataType.STRING, String.join(";", ignoredPlayers.stream()
+                        .map(UUID::toString).toList()));
     }
 
     public static final @NotNull NamespacedKey INCOMING_ENABLED = new NamespacedKey(CloudnodeMSG.getInstance(), "incoming_enabled");
@@ -208,7 +234,8 @@ public final class Message {
      * @param recipient The other end of the channel
      */
     public static void createChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
-        player.getPersistentDataContainer().set(CHANNEL_RECIPIENT, PersistentDataType.STRING, recipient.getUniqueId().toString());
+        player.getPersistentDataContainer()
+                .set(CHANNEL_RECIPIENT, PersistentDataType.STRING, recipient.getUniqueId().toString());
         player.getPersistentDataContainer().remove(CHANNEL_TEAM);
     }
 
@@ -227,19 +254,29 @@ public final class Message {
      * @param player The player
      */
     public static @NotNull Optional<@NotNull OfflinePlayer> getChannel(final @NotNull Player player) {
-        return Optional.ofNullable(player.getPersistentDataContainer().get(CHANNEL_RECIPIENT, PersistentDataType.STRING))
+        return Optional
+                .ofNullable(player.getPersistentDataContainer().get(CHANNEL_RECIPIENT, PersistentDataType.STRING))
                 .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
     }
 
     /**
      * Check whether player has DM channel with recipient
      *
-     * @param player The player
+     * @param player    The player
      * @param recipient The recipient
      */
     public static boolean hasChannel(final @NotNull Player player, final @NotNull OfflinePlayer recipient) {
         final @NotNull Optional<@NotNull OfflinePlayer> channel = getChannel(player);
         return channel.isPresent() && channel.get().getUniqueId().equals(recipient.getUniqueId());
+    }
+
+    /**
+     * Check whether player has DM channel
+     *
+     * @param player The player
+     */
+    public static boolean hasChannel(final @NotNull Player player) {
+        return getChannel(player).isPresent();
     }
 
     /**

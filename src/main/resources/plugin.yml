@@ -6,12 +6,14 @@ author: Cloudnode
 commands:
     message:
         description: Send a private message
-        usage: /<command> <player> <message>
+        usage: /<command> <player> [message]
         aliases: [ "msg", "tell", "t", "whisper", "dm", "m", "pm" ]
+        permission: cloudnodemsg.use
     reply:
-        description: Reply to a private message
+        description: Privately reply to the last message your received
         usage: /<command> <message>
         aliases: [ "r", "re" ]
+        permission: cloudnodemsg.use
     cloudnodemsg:
         description: CloudnodeMSG
         usage: /<command>
@@ -19,15 +21,19 @@ commands:
         description: Ignore a player
         usage: /<command> <player>
         aliases: [ "block" ]
+        permission: cloudnodemsg.ignore
     unignore:
         description: Unignore a player
         usage: /<command> <player>
         aliases: [ "unblock" ]
+        permission: cloudnodemsg.ignore
     togglemsg:
-        description: Toggles private messages from a player
-        usage: /<command> <player>
+        description: Toggle receiving private messages
+        usage: /<command> [player]
         aliases: [ "toggledms", "togglepms" ]
+        permission: cloudnodemsg.toggle
     teammsg:
         description: Send a private message to your teammates
-        usage: /<command> <message>
+        usage: /<command> [message]
         aliases: [ "tmsg", "teamchat" , "tm" ]
+        permission: cloudnodemsg.use.team

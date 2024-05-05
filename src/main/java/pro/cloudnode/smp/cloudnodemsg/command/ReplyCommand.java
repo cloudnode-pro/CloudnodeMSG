@@ -27,15 +27,15 @@ public final class ReplyCommand extends Command {
 
         final @NotNull Optional<@NotNull OfflinePlayer> recipient = Message.getReplyTo(Message.offlinePlayer(sender));
         if (recipient.isEmpty()) return new NobodyReplyError().send(sender);
-        if (!recipient.get().getUniqueId().equals(Message.console.getUniqueId()) && !Message.isIncomingEnabled(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(Objects.requireNonNull(recipient.get().getName())).send(sender);
-        if (
-            !recipient.get().getUniqueId().equals(Message.console.getUniqueId())
-            && (
-                    !recipient.get().isOnline()
-                    || (CloudnodeMSG.isVanished(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.SEND_VANISHED))
-            )
-        )
-            return new ReplyOfflineError(Optional.ofNullable(recipient.get().getName()).orElse("Unknown Player")).send(sender);
+        if (!recipient.get().getUniqueId()
+                .equals(Message.console.getUniqueId()) && !Message.isIncomingEnabled(Objects.requireNonNull(recipient
+                .get().getPlayer())) && !sender.hasPermission(Permission.TOGGLE_BYPASS))
+            return new PlayerHasIncomingDisabledError(Objects.requireNonNull(recipient.get().getName())).send(sender);
+        if (!recipient.get().getUniqueId().equals(Message.console.getUniqueId()) && (!recipient.get()
+                .isOnline() || (CloudnodeMSG.isVanished(Objects.requireNonNull(recipient.get()
+                .getPlayer())) && !sender.hasPermission(Permission.SEND_VANISHED))))
+            return new ReplyOfflineError(Optional.ofNullable(recipient.get().getName())
+                    .orElse("Unknown Player")).send(sender);
 
         try {
             new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", args)).send();
