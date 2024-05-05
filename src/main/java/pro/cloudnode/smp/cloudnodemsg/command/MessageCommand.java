@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.command;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -32,16 +33,16 @@ public final class MessageCommand extends Command {
 
         final @NotNull Optional<@NotNull Player> recipient = Optional.ofNullable(CloudnodeMSG.getInstance().getServer()
                 .getPlayer(args[0]));
-        if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !sender.hasPermission(Permission.SEND_VANISHED)))
-            return new PlayerNotFoundError(args[0]).send(sender);
-        if (sender instanceof final @NotNull Player player && recipient.get().getUniqueId().equals(player.getUniqueId()))
+        if (sender instanceof final @NotNull Player player && recipient.isPresent() && recipient.get().getUniqueId().equals(player.getUniqueId()))
             return new MessageYourselfError().send(sender);
         if (args.length == 1) {
             final @NotNull Player player = (Player) sender;
-            if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipient.get().getUniqueId())).orElse(false)) {
+            final @NotNull OfflinePlayer recipientOffline = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
+            if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipientOffline.getUniqueId())).orElse(false)) {
                 Message.exitChannel(player);
-                return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), recipient.get().getName(), label));
+                return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
             }
+            if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
             Message.createChannel(player, recipient.get());
             return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player.getName(), recipient.get().getName(), label));
         }
