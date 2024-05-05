@@ -50,6 +50,7 @@ public final class MessageCommand extends Command {
         }
 
         try {
+            if (recipient.isEmpty()) return new PlayerNotFoundError(args[0]).send(sender);
             new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", Arrays.copyOfRange(args, 1, args.length))).send();
             return true;
         }
