@@ -264,6 +264,15 @@ public final class Message {
     }
 
     /**
+     * Check whether player has DM channel
+     *
+     * @param player The player
+     */
+    public static boolean hasChannel(final @NotNull Player player) {
+        return getChannel(player).isPresent();
+    }
+
+    /**
      * Team message channel
      *
      * @param player The player

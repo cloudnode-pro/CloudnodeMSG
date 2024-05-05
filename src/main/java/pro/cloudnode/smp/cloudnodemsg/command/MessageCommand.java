@@ -38,10 +38,12 @@ public final class MessageCommand extends Command {
             return new MessageYourselfError().send(sender);
         if (args.length == 1) {
             final @NotNull Player player = (Player) sender;
-            final @NotNull OfflinePlayer recipientOffline = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
-            if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipientOffline.getUniqueId())).orElse(false)) {
-                Message.exitChannel(player);
-                return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
+            if (Message.hasChannel(player)) {
+                final @NotNull OfflinePlayer recipientOffline = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
+                if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipientOffline.getUniqueId())).orElse(false)) {
+                    Message.exitChannel(player);
+                    return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
+                }
             }
             if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
             if (!Message.isIncomingEnabled(recipient.get())) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(player);
