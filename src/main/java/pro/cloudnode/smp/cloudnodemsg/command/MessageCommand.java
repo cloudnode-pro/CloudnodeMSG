@@ -5,13 +5,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.MessageYourselfError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
-import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
-import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +36,6 @@ public final class MessageCommand extends Command {
             return new PlayerNotFoundError(args[0]).send(sender);
         if (sender instanceof final @NotNull Player player && recipient.get().getUniqueId().equals(player.getUniqueId()))
             return new MessageYourselfError().send(sender);
-        if (!Message.isIncomingEnabled(recipient.get()) && !sender.hasPermission(Permission.TOGGLE_BYPASS))
-            return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(sender);
-
         if (args.length == 1) {
             final @NotNull Player player = (Player) sender;
             if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipient.get().getUniqueId())).orElse(false)) {

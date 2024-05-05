@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.error.ChannelOfflineError;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
+import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
 
 import java.util.Arrays;
@@ -60,6 +61,11 @@ public final class Message {
                 Message.exitChannel(senderPlayer.get());
                 new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName()).orElse("Unknown Player")).send(senderPlayer.get());
             }
+            return;
+        }
+
+        if (recipientPlayer.isPresent() && senderPlayer.isPresent() && !Message.isIncomingEnabled(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.TOGGLE_BYPASS)) {
+            new PlayerHasIncomingDisabledError(recipientPlayer.get().getName()).send(senderPlayer.get());
             return;
         }
 
