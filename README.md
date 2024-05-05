@@ -1,4 +1,5 @@
 # CloudnodeMSG
+
 A Minecraft Java plugin for private messages.
 
 Supports message channels (so you don't have to use a command for every DM) and integrates with vanish plugins.
@@ -6,11 +7,13 @@ Supports message channels (so you don't have to use a command for every DM) and 
 [See the default config](https://github.com/cloudnode-pro/CloudnodeMSG/blob/main/src/main/resources/config.yml)
 
 ## Commands
+
 The following are all commands from this plugin.
 
 ***
 
 ### `/msg <player> <message>`
+
 Send a private message to another player.
 
 <dl>
@@ -21,6 +24,7 @@ Send a private message to another player.
 ***
 
 ### `/msg <player>`
+
 Create a private message channel to a player;
 i.e. all of your chat messages will be sent as private messages to this player.
 Run the command again to disable the message channel.
@@ -33,6 +37,7 @@ Run the command again to disable the message channel.
 ***
 
 ### `/reply <message>`
+
 Send a private message to the last player that messaged you.
 
 <dl>
@@ -43,6 +48,7 @@ Send a private message to the last player that messaged you.
 ***
 
 ### `/teammsg <message>`
+
 Send a private message to your [scoreboard team](https://minecraft.fandom.com/wiki/Scoreboard#Teams).
 
 <dl>
@@ -53,6 +59,7 @@ Send a private message to your [scoreboard team](https://minecraft.fandom.com/wi
 ***
 
 ### `/teammsg`
+
 Create a private message channel to your [scoreboard team](https://minecraft.fandom.com/wiki/Scoreboard#Teams);
 i.e. all of your chat messages will be sent as private team messages.
 Run the command again to disable the message channel.
@@ -65,6 +72,7 @@ Run the command again to disable the message channel.
 ***
 
 ### `/ignore <player>`
+
 Ignore a player—you will stop seeing all of their messages (including public chat messages).
 
 <dl>
@@ -75,6 +83,7 @@ Ignore a player—you will stop seeing all of their messages (including public c
 ***
 
 ### `/unignore <player>`
+
 You will stop ignoring the player and will be able to see their messages again.
 
 <dl>
@@ -85,6 +94,7 @@ You will stop ignoring the player and will be able to see their messages again.
 ***
 
 ### `/togglemsg`
+
 Enable or disable receiving private messages.
 When your private messages are disabled, nobody can message you, but you can still send messages.
 
@@ -96,6 +106,7 @@ When your private messages are disabled, nobody can message you, but you can sti
 ***
 
 ### `/togglemsg <player>`
+
 Enable or disable receiving private messages of another player.
 
 <dl>
@@ -108,6 +119,7 @@ Enable or disable receiving private messages of another player.
 ***
 
 ### `/cloudnodemsg reload`
+
 Reload the plugin configuration.
 
 <dl>
@@ -116,6 +128,7 @@ Reload the plugin configuration.
 </dl>
 
 ## Permissions
+
 Here is a list of the permissions used by this plugin.
 
 | Permission                   | Description                                                             | Recommended Group |
@@ -138,13 +151,16 @@ with new features or changes typically released every **Tuesday**.
 When we merge critical bug fixes, we may publish out-of-band releases on any day of the week.
 
 ## Report Issues
+
 Please ensure
 that you are using the [latest version](https://modrinth.com/plugin/5Ce4fxJB/version/latest) of CloudnodeMSG.
 The newest bug fixes are only available in the most recent version,
 and support is provided exclusively for this version.
 
 If you encounter any problems with the plugin,
-please first check the [list of known issues](https://github.com/cloudnode-pro/CloudnodeMSG/issues?q=is%3Aopen+is%3Aissue+label%3Abug) on our GitHub repository.
+please first check
+the [list of known issues](https://github.com/cloudnode-pro/CloudnodeMSG/issues?q=is%3Aopen+is%3Aissue+label%3Abug) on
+our GitHub repository.
 If you don’t find a similar fault listed there,
 we encourage you to [submit a new issue](https://github.com/cloudnode-pro/CloudnodeMSG/issues/new?labels=bug).
 Resolving bugs is the highest priority for this project.
@@ -158,14 +174,15 @@ To suggest a new feature, please [create a new issue](https://github.com/cloudno
 providing a detailed description of your idea.
 
 ## Contributing
-CloudnodeMSG is licensed under the [GPL-3.0 licence](https://github.com/cloudnode-pro/CloudnodeMSG/blob/main/LICENSE). 
+
+CloudnodeMSG is licensed under the [GPL-3.0 licence](https://github.com/cloudnode-pro/CloudnodeMSG/blob/main/LICENSE).
 The source code is available on [GitHub](https://github.com/cloudnode-pro/CloudnodeMSG).
 
 New contributors are most welcome to the project. If you're interested in contributing, follow these steps:
 
-1.  [Fork the repository](https://github.com/cloudnode-pro/CloudnodeMSG/fork)
-2.  Create a new branch for your contributions.
-3.  Make your changes and ensure they align with the project’s goals.
-4.  Commit your changes with clear and descriptive messages.
-5.  Push your changes to your fork.
-6.  Submit a pull request.
+1. [Fork the repository](https://github.com/cloudnode-pro/CloudnodeMSG/fork)
+2. Create a new branch for your contributions.
+3. Make your changes and ensure they align with the project’s goals.
+4. Commit your changes with clear and descriptive messages.
+5. Push your changes to your fork.
+6. Submit a pull request.

@@ -26,11 +26,8 @@ public final class MainCommand extends Command {
 
     private boolean info(final @NotNull CommandSender sender) {
         final @NotNull PluginMeta meta = CloudnodeMSG.getInstance().getPluginMeta();
-        return sendMessage(sender, MiniMessage.miniMessage().deserialize("<green><name> by <author></green><newline><green>Version: <white><version></white></green>",
-                Placeholder.unparsed("name", meta.getName()),
-                Placeholder.unparsed("author", String.join(", ", meta.getAuthors())),
-                Placeholder.unparsed("version", meta.getVersion())
-        ));
+        return sendMessage(sender, MiniMessage.miniMessage()
+                .deserialize("<green><name> by <author></green><newline><green>Version: <white><version></white></green>", Placeholder.unparsed("name", meta.getName()), Placeholder.unparsed("author", String.join(", ", meta.getAuthors())), Placeholder.unparsed("version", meta.getVersion())));
     }
 
     private boolean reload(final @NotNull CommandSender sender) {
@@ -42,8 +39,8 @@ public final class MainCommand extends Command {
     @Override
     public @NotNull List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
         final @NotNull List<@NotNull String> completions = new ArrayList<>();
-        if (args.length == 1)
-            if (sender.hasPermission(Permission.RELOAD) && "reload".startsWith(args[0].toLowerCase())) completions.add("reload");
+        if (args.length == 1) if (sender.hasPermission(Permission.RELOAD) && "reload".startsWith(args[0].toLowerCase()))
+            completions.add("reload");
         return completions;
     }
 }

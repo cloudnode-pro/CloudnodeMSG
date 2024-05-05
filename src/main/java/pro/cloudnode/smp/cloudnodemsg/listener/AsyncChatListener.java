@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public final class AsyncChatListener implements Listener {
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void ignore(final @NotNull AsyncChatEvent event) {
         final @NotNull Set<@NotNull Audience> audience = event.viewers();
         final @NotNull Iterator<@NotNull Audience> iterator = audience.iterator();
@@ -33,14 +33,15 @@ public final class AsyncChatListener implements Listener {
         while (iterator.hasNext()) {
             final @NotNull Audience a = iterator.next();
             if (a instanceof final @NotNull Player player) {
-                final @NotNull HashSet<@NotNull OfflinePlayer> ignored = Message.getIgnored(player).stream().map(server::getOfflinePlayer).collect(HashSet::new, HashSet::add, HashSet::addAll);
+                final @NotNull HashSet<@NotNull OfflinePlayer> ignored = Message.getIgnored(player).stream()
+                        .map(server::getOfflinePlayer).collect(HashSet::new, HashSet::add, HashSet::addAll);
 
                 if (ignored.contains(sender) && !sender.hasPermission(Permission.IGNORE_BYPASS)) iterator.remove();
             }
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void channels(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         final @NotNull Optional<@NotNull OfflinePlayer> channelRecipient = Message.getChannel(sender);
@@ -54,7 +55,7 @@ public final class AsyncChatListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void teamChannel(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         if (!Message.hasTeamChannel(sender)) return;
