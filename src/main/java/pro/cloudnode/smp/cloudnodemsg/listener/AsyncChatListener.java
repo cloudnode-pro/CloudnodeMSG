@@ -15,6 +15,7 @@ import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.command.TeamMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
+import pro.cloudnode.smp.cloudnodemsg.error.NotInTeamError;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,11 +28,11 @@ public final class AsyncChatListener implements Listener {
         final @NotNull Set<@NotNull Audience> audience = event.viewers();
         final @NotNull Iterator<@NotNull Audience> iterator = audience.iterator();
         final @NotNull Player sender = event.getPlayer();
+        final @NotNull Server server = CloudnodeMSG.getInstance().getServer();
 
         while (iterator.hasNext()) {
             final @NotNull Audience a = iterator.next();
             if (a instanceof final @NotNull Player player) {
-                final @NotNull Server server = CloudnodeMSG.getInstance().getServer();
                 final @NotNull HashSet<@NotNull OfflinePlayer> ignored = Message.getIgnored(player).stream().map(server::getOfflinePlayer).collect(HashSet::new, HashSet::add, HashSet::addAll);
 
                 if (ignored.contains(sender) && !sender.hasPermission(Permission.IGNORE_BYPASS)) iterator.remove();
@@ -61,7 +62,7 @@ public final class AsyncChatListener implements Listener {
         final @NotNull Optional<@NotNull Team> team = Optional.ofNullable(sender.getScoreboard().getPlayerTeam(sender));
         if (team.isEmpty()) {
             Message.exitTeamChannel(sender);
-            sender.sendMessage(CloudnodeMSG.getInstance().config().notInTeam());
+            new NotInTeamError().send(sender);
             return;
         }
         TeamMessageCommand.sendTeamMessage(sender, team.get(), event.message());

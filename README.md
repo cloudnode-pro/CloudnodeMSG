@@ -65,7 +65,7 @@ Run the command again to disable the message channel.
 ***
 
 ### `/ignore <player>`
-Ignore a player—you will stop seeing all of their private messages to you.
+Ignore a player—you will stop seeing all of their messages (including public chat messages).
 
 <dl>
     <dt>Aliases:</dt> <dd><code>/block</code></dd>
@@ -75,7 +75,7 @@ Ignore a player—you will stop seeing all of their private messages to you.
 ***
 
 ### `/unignore <player>`
-You will stop ignoring the player and will be able to receive their private messages again.
+You will stop ignoring the player and will be able to see their messages again.
 
 <dl>
     <dt>Aliases:</dt> <dd><code>/unblock</code></dd>

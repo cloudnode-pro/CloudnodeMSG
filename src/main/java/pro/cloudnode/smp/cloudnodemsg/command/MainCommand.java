@@ -40,7 +40,7 @@ public final class MainCommand extends Command {
     }
 
     @Override
-    public @NotNull List<@NotNull String> onTabComplete(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+    public @NotNull List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
         final @NotNull List<@NotNull String> completions = new ArrayList<>();
         if (args.length == 1)
             if (sender.hasPermission(Permission.RELOAD) && "reload".startsWith(args[0].toLowerCase())) completions.add("reload");

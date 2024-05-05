@@ -26,9 +26,8 @@ public final class MessageCommand extends Command {
     @Override
     public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.USE)) return new NoPermissionError().send(sender);
-        if (args.length == 0) {
+        if (args.length == 0)
             return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, sender instanceof Player ? usage : usageConsole));
-        }
         if (args.length == 1 && !(sender instanceof Player)) return sendMessage(sender, CloudnodeMSG.getInstance().config()
                     .usage(label, usageConsole.replace("<player>", args[0])));
 
