@@ -99,7 +99,7 @@ public final class Message {
 
     public static void sendMessage(final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         if (recipient.getUniqueId() == console.getUniqueId())
-            CloudnodeMSG.getInstance().getServer().sendMessage(message);
+            CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
         else if (recipient.isOnline()) Objects.requireNonNull(recipient.getPlayer()).sendMessage(message);
     }
 
