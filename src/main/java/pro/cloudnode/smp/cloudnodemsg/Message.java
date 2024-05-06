@@ -59,7 +59,7 @@ public final class Message {
 
         if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
             if (!channel) {
-                final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer();
+                final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer().getConsoleSender();
                 if (inReply) new ReplyOfflineError(recipientUsername).send(senderAudience);
                 else new PlayerNotFoundError(recipientUsername).send(senderAudience);
             }
