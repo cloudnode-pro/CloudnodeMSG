@@ -27,7 +27,6 @@ public final class ReplyCommand extends Command {
 
         final @NotNull Optional<@NotNull OfflinePlayer> recipient = Message.getReplyTo(Message.offlinePlayer(sender));
         if (recipient.isEmpty()) return new NobodyReplyError().send(sender);
-        if (!recipient.get().getUniqueId().equals(Message.console.getUniqueId()) && !Message.isIncomingEnabled(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.TOGGLE_BYPASS)) return new PlayerHasIncomingDisabledError(recipient.get()).send(sender);
         if (
             !recipient.get().getUniqueId().equals(Message.console.getUniqueId())
             && (

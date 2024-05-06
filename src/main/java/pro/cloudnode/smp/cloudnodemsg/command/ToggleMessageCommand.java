@@ -17,7 +17,7 @@ import java.util.List;
 
 public final class ToggleMessageCommand extends Command {
     @Override
-    public boolean run(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
+    public boolean run(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER)))
             return new NoPermissionError().send(sender);
         if (args.length == 1) {
