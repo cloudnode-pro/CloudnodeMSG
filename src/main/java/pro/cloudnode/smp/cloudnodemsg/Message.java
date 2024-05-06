@@ -47,15 +47,14 @@ public final class Message {
             if (!channel) new PlayerNotFoundError(senderPlayer.get().getName()).send(senderPlayer.get());
             else {
                 Message.exitChannel(senderPlayer.get());
-                new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName())
-                        .orElse("Unknown Player")).send(senderPlayer.get());
+                new ChannelOfflineError(senderPlayer.get(), recipient).send(senderPlayer.get());
             }
             return;
         }
 
         if (recipientPlayer.isPresent() && senderPlayer.isPresent() && !Message.isIncomingEnabled(recipientPlayer.get()) && !senderPlayer
                 .get().hasPermission(Permission.TOGGLE_BYPASS)) {
-            new PlayerHasIncomingDisabledError(recipientPlayer.get().getName()).send(senderPlayer.get());
+            new PlayerHasIncomingDisabledError(recipientPlayer.get()).send(senderPlayer.get());
             return;
         }
 

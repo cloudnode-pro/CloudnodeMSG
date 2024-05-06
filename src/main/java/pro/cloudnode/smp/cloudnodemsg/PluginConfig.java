@@ -102,9 +102,9 @@ public final class PluginConfig {
      * @param team The team
      * @param message The message text
      */
-    public @NotNull Component team(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+    public @NotNull Component team(final @NotNull OfflinePlayer sender, final @NotNull Team team, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()),
                 Placeholder.component("message", message)
         );
@@ -144,9 +144,9 @@ public final class PluginConfig {
      * @param team The team
      * @param message The message text
      */
-    public @NotNull Component teamSpy(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+    public @NotNull Component teamSpy(final @NotNull OfflinePlayer sender, final @NotNull Team team, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team-spy"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()),
                 Placeholder.component("message", message)
         );
@@ -246,9 +246,9 @@ public final class PluginConfig {
      * @param sender The username of the message sender
      * @param team The team@
      */
-    public @NotNull Component channelTeamCreated(final @NotNull String sender, final @NotNull Team team) {
+    public @NotNull Component channelTeamCreated(final @NotNull OfflinePlayer sender, final @NotNull Team team) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-created"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()));
     }
 
@@ -263,9 +263,9 @@ public final class PluginConfig {
      * @param sender The username of the message sender
      * @param team The team
      */
-    public @NotNull Component channelTeamClosed(final @NotNull String sender, final @NotNull Team team) {
+    public @NotNull Component channelTeamClosed(final @NotNull OfflinePlayer sender, final @NotNull Team team) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-closed"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()));
     }
 
@@ -412,9 +412,9 @@ public final class PluginConfig {
      *
      * @param player The player
      */
-    public @NotNull Component playerNotFound(final @NotNull OfflinePlayer player) {
+    public @NotNull Component playerNotFound(final @NotNull String player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.player-not-found")),
-                Placeholder.unparsed("player", Message.name(player))
+                Placeholder.unparsed("player", player)
         );
     }
 

@@ -13,6 +13,7 @@ import pro.cloudnode.smp.cloudnodemsg.command.MailCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MainCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.MessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ReplyCommand;
+import pro.cloudnode.smp.cloudnodemsg.command.TeamMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.ToggleMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.command.UnIgnoreCommand;
 import pro.cloudnode.smp.cloudnodemsg.listener.AsyncChatListener;
