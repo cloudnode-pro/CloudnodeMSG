@@ -26,7 +26,7 @@ public final class ReplyCommand extends Command {
         if (recipient.isEmpty()) return new NobodyReplyError().send(sender);
 
         try {
-            new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", args)).send(false, true);
+            new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", args)).send(Message.Context.REPLY);
             return true;
         }
         catch (final @NotNull InvalidPlayerError e) {

@@ -47,10 +47,10 @@ public final class Message {
     }
 
     public void send() throws InvalidPlayerError {
-        send(false, false);
+        send(Context.REGULAR);
     }
 
-    public void send(final boolean channel, final boolean inReply) throws InvalidPlayerError {
+    public void send(final @NotNull Context context) throws InvalidPlayerError {
         final @NotNull String senderUsername = playerOrServerUsername(this.sender);
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
@@ -58,15 +58,16 @@ public final class Message {
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
         if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
-            if (!channel) {
-                final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer().getConsoleSender();
-                if (inReply) new ReplyOfflineError(recipientUsername).send(senderAudience);
-                else new PlayerNotFoundError(recipientUsername).send(senderAudience);
+            if (context == Context.CHANNEL) {
+                final @NotNull Player player = Objects.requireNonNull(sender.getPlayer());
+                Message.exitChannel(player);
+                new ChannelOfflineError(player.getName(), Optional.ofNullable(recipient.getName())
+                        .orElse("Unknown Player")).send(player);
             }
             else {
-                Message.exitChannel(senderPlayer.get());
-                new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName())
-                        .orElse("Unknown Player")).send(senderPlayer.get());
+                final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer().getConsoleSender();
+                if (context == Context.REPLY) new ReplyOfflineError(recipientUsername).send(senderAudience);
+                else new PlayerNotFoundError(recipientUsername).send(senderAudience);
             }
             return;
         }
@@ -309,5 +310,25 @@ public final class Message {
      */
     public static boolean hasTeamChannel(final @NotNull Player player) {
         return player.getPersistentDataContainer().getOrDefault(CHANNEL_TEAM, PersistentDataType.BOOLEAN, false);
+    }
+
+    /**
+     * The context in which this message is sent
+     */
+    public static enum Context {
+        /**
+         * Message sent via command (i.e. no special context)
+         */
+        REGULAR,
+
+        /**
+         * Message sent via messaging channel
+         */
+        CHANNEL,
+
+        /**
+         * Message sent as a reply
+         */
+        REPLY;
     }
 }

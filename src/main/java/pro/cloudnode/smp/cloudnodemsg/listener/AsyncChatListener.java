@@ -48,7 +48,7 @@ public final class AsyncChatListener implements Listener {
         if (channelRecipient.isEmpty()) return;
         event.setCancelled(true);
         try {
-            new Message(sender, channelRecipient.get(), event.message()).send(true, false);
+            new Message(sender, channelRecipient.get(), event.message()).send(Message.Context.CHANNEL);
         }
         catch (final @NotNull InvalidPlayerError e) {
             e.log().send(sender);
