@@ -56,7 +56,7 @@ public class TeamMessageCommand extends Command {
             else if (player.hasPermission(Permission.SPY))
                 sendMessage(player, CloudnodeMSG.getInstance().config().teamSpy(sender.getName(), team, message));
         }
-        sender.getServer().getConsoleSender()
+        sender.getServer()
                 .sendMessage(CloudnodeMSG.getInstance().config().teamSpy(sender.getName(), team, message));
 
         return true;
