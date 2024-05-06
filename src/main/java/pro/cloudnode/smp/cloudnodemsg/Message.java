@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -12,6 +13,7 @@ import pro.cloudnode.smp.cloudnodemsg.error.ChannelOfflineError;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
 import pro.cloudnode.smp.cloudnodemsg.error.PlayerNotFoundError;
+import pro.cloudnode.smp.cloudnodemsg.error.ReplyOfflineError;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,23 +47,27 @@ public final class Message {
     }
 
     public void send() throws InvalidPlayerError {
-        send(false);
+        send(Context.REGULAR);
     }
 
-    public void send(final boolean channel) throws InvalidPlayerError {
+    public void send(final @NotNull Context context) throws InvalidPlayerError {
         final @NotNull String senderUsername = playerOrServerUsername(this.sender);
         final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
 
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
-        if (senderPlayer.isPresent() && (recipientPlayer.isEmpty() || (CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer
-                .get().hasPermission(Permission.SEND_VANISHED)))) {
-            if (!channel) new PlayerNotFoundError(senderPlayer.get().getName()).send(senderPlayer.get());
+        if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
+            if (context == Context.CHANNEL) {
+                final @NotNull Player player = Objects.requireNonNull(sender.getPlayer());
+                Message.exitChannel(player);
+                new ChannelOfflineError(player.getName(), Optional.ofNullable(recipient.getName())
+                        .orElse("Unknown Player")).send(player);
+            }
             else {
-                Message.exitChannel(senderPlayer.get());
-                new ChannelOfflineError(senderPlayer.get().getName(), Optional.ofNullable(recipient.getName())
-                        .orElse("Unknown Player")).send(senderPlayer.get());
+                final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer().getConsoleSender();
+                if (context == Context.REPLY) new ReplyOfflineError(recipientUsername).send(senderAudience);
+                else new PlayerNotFoundError(recipientUsername).send(senderAudience);
             }
             return;
         }
@@ -72,17 +78,16 @@ public final class Message {
             return;
         }
 
-        sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
-        if (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient))
-            setReplyTo(sender, recipient);
-
         sendSpyMessage(sender, recipient, message);
-
+        sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         if ((recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender)) && (senderPlayer.isPresent() && !senderPlayer
                 .get().hasPermission(Permission.IGNORE_BYPASS))) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
-        if (recipientPlayer.isPresent() && !Message.hasChannel(recipientPlayer.get(), sender))
+
+        if (sender.getUniqueId().equals(console.getUniqueId()) || (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient)))
+            setReplyTo(sender, recipient);
+        if (recipient.getUniqueId().equals(console.getUniqueId()) || (recipientPlayer.isPresent() && !Message.hasChannel(recipientPlayer.get(), sender)))
             setReplyTo(recipient, sender);
     }
 
@@ -305,5 +310,25 @@ public final class Message {
      */
     public static boolean hasTeamChannel(final @NotNull Player player) {
         return player.getPersistentDataContainer().getOrDefault(CHANNEL_TEAM, PersistentDataType.BOOLEAN, false);
+    }
+
+    /**
+     * The context in which this message is sent
+     */
+    public static enum Context {
+        /**
+         * Message sent via command (i.e. no special context)
+         */
+        REGULAR,
+
+        /**
+         * Message sent via messaging channel
+         */
+        CHANNEL,
+
+        /**
+         * Message sent as a reply
+         */
+        REPLY;
     }
 }
