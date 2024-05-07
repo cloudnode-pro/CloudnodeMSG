@@ -29,12 +29,15 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'corretto'
+          distribution: 'temurin'
 
       - name: Set release version
         run: |
           TAG=${{ github.event.release.tag_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+      
+      - name: Echo version
+        run: "echo Version: $VERSION"
 
       - name: Set project version
         run: mvn -B versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
