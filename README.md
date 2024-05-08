@@ -123,7 +123,6 @@ Enable or disable receiving private messages of another player.
 Reload the plugin configuration.
 
 <dl>
-    <dt>Aliases:</dt> <dd><code>/toggledms</code>, <code>/togglepms</code></dd>
     <dt>Permission:</dt> <dd><code>cloudnodemsg.reload</code></dd>
 </dl>
 
