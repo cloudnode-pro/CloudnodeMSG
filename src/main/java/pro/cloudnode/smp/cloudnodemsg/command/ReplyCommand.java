@@ -4,17 +4,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
+import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permission;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NobodyReplyError;
-import pro.cloudnode.smp.cloudnodemsg.error.ReplyOfflineError;
-import pro.cloudnode.smp.cloudnodemsg.error.PlayerHasIncomingDisabledError;
-import pro.cloudnode.smp.cloudnodemsg.Message;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public final class ReplyCommand extends Command {
@@ -27,17 +24,9 @@ public final class ReplyCommand extends Command {
 
         final @NotNull Optional<@NotNull OfflinePlayer> recipient = Message.getReplyTo(Message.offlinePlayer(sender));
         if (recipient.isEmpty()) return new NobodyReplyError().send(sender);
-        if (
-            !recipient.get().getUniqueId().equals(Message.console.getUniqueId())
-            && (
-                    !recipient.get().isOnline()
-                    || (CloudnodeMSG.isVanished(Objects.requireNonNull(recipient.get().getPlayer())) && !sender.hasPermission(Permission.SEND_VANISHED))
-            )
-        )
-            return new ReplyOfflineError(recipient.get()).send(sender);
 
         try {
-            new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", args)).send();
+            new Message(Message.offlinePlayer(sender), recipient.get(), String.join(" ", args)).send(Message.Context.REPLY);
             return true;
         }
         catch (final @NotNull InvalidPlayerError e) {
