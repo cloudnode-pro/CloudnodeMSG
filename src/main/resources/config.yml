@@ -142,7 +142,18 @@ mail:
   #  <message> - the message
   #  <seen> - whether the mail was read/opened by the recipient (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
   #  <starred> - whether the recipient has starred the mail (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <id> - the ID of the mail
   sent: "<green>(!) Successfully sent mail to <gray><recipient></gray>.</green>"
+
+  # Received mail while online
+  # Placeholders:
+  #  <sender> - the username of the sender
+  #  <recipient> - the username of the recipient
+  #  <message> - the message
+  #  <seen> - whether the mail was read/opened by the recipient (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <starred> - whether the recipient has starred the mail (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <id> - the ID of the mail
+  received: "<green>(!) You have new mail from <gray><sender></gray>. <hover:show_text:Click to see the message><click:run_command:/mail view <id>><white>Click to view</white></click></hover>"
 
 # Error messages
 errors:

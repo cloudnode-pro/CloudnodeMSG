@@ -378,12 +378,38 @@ public final class PluginConfig {
      *     <li>{@code <message>} - the message</li>
      *     <li>{@code <seen>} - whether the mail was read/opened by the recipient (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
      *     <li>{@code <starred>} - whether the recipient has starred the mail (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <id>} - the ID of the mail</li>
      * </ul>
      *
      * @param mail the mail
      */
     public @NotNull Component mailSent(final @NotNull Mail mail) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.sent"))
+                .replace("<id>", mail.id.toString())
+                .replace("<sender>", Message.name(mail.sender))
+                .replace("<recipient>", Message.name(mail.recipient)),
+                Formatter.booleanChoice("seen", mail.seen),
+                Formatter.booleanChoice("starred", mail.starred)
+        ).replaceText(configurer -> configurer.matchLiteral("<message>").replacement(Component.text(mail.message)));
+    }
+
+    /**
+     * Received mail while online
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the sender</li>
+     *     <li>{@code <recipient>} - the username of the recipient</li>
+     *     <li>{@code <message>} - the message</li>
+     *     <li>{@code <seen>} - whether the mail was read/opened by the recipient (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <starred>} - whether the recipient has starred the mail (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <id>} - the ID of the mail</li>
+     * </ul>
+     *
+     * @param mail the mail
+     */
+    public @NotNull Component mailReceived(final @NotNull Mail mail) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.received"))
+                .replace("<id>", mail.id.toString())
                 .replace("<sender>", Message.name(mail.sender))
                 .replace("<recipient>", Message.name(mail.recipient)),
                 Formatter.booleanChoice("seen", mail.seen),

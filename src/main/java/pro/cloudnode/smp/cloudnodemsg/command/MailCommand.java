@@ -2,6 +2,7 @@ package pro.cloudnode.smp.cloudnodemsg.command;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
@@ -11,6 +12,7 @@ import pro.cloudnode.smp.cloudnodemsg.Permission;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class MailCommand extends Command {
 
@@ -39,7 +41,11 @@ public final class MailCommand extends Command {
         if (!recipient.hasPlayedBefore()) return sendMessage(sender, CloudnodeMSG.getInstance().config().playerNotFound(Message.name(recipient)));
         final @NotNull Mail mail = new Mail(Message.offlinePlayer(sender), recipient, message);
         mail.insert();
-        // TODO: notify recipient (if online)
+        final @NotNull OfflinePlayer senderOfflinePlayer = Message.offlinePlayer(sender);
+        final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(senderOfflinePlayer.getPlayer());
+        final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(recipient.getPlayer());
+        if (recipientPlayer.isPresent() && (!Message.isIgnored(recipientPlayer.get(), senderOfflinePlayer) || senderPlayer.isEmpty() || senderPlayer.get().hasPermission(Permission.IGNORE_BYPASS)))
+            sendMessage(recipientPlayer.get(), CloudnodeMSG.getInstance().config().mailReceived(mail));
         return sendMessage(sender, CloudnodeMSG.getInstance().config().mailSent(mail));
     }
 
