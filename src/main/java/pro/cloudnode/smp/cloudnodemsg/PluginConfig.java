@@ -387,6 +387,13 @@ public final class PluginConfig {
     }
 
     /**
+     * You are trying to ignore yourself
+     */
+    public @NotNull Component ignoreYourself() {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.ignore-yourself")));
+    }
+
+    /**
      * Target player has never joined the server
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>

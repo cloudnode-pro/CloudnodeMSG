@@ -123,6 +123,9 @@ errors:
     #  <player> - the player's username
     cannot-ignore: "<red>(!) You cannot ignore <gray><player></gray>.</red>"
 
+    # You are trying to ignore yourself
+    ignore-yourself: "<red>(!) You cannot ignore yourself.</red>"
+
     # Target player has never joined the server
     # Placeholders:
     #  <player> - the player's username
