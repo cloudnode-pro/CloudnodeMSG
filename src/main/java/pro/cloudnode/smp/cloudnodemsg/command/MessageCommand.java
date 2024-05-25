@@ -41,13 +41,13 @@ public final class MessageCommand extends Command {
                 final @NotNull OfflinePlayer recipientOffline = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
                 if (Message.getChannel(player).map(r -> r.getUniqueId().equals(recipientOffline.getUniqueId())).orElse(false)) {
                     Message.exitChannel(player);
-                    return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
+                    return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player, recipientOffline, label));
                 }
             }
             if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
-            if (!Message.isIncomingEnabled(recipient.get())) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(player);
+            if (!Message.isIncomingEnabled(recipient.get())) return new PlayerHasIncomingDisabledError(recipient.get()).send(player);
             Message.createChannel(player, recipient.get());
-            return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player.getName(), recipient.get().getName(), label));
+            return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player, recipient.get(), label));
         }
 
         try {
@@ -61,7 +61,7 @@ public final class MessageCommand extends Command {
     }
 
     @Override
-    public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @Nullable List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         if (!sender.hasPermission(Permission.USE)) return new ArrayList<>();
         // `null` works for list of players
         if (args.length == 1) return null;
