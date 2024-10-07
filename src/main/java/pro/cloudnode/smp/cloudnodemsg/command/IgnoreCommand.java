@@ -26,6 +26,7 @@ public final class IgnoreCommand extends Command {
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 0) return sendMessage(player, CloudnodeMSG.getInstance().config().usage(label, usage));
         final @NotNull OfflinePlayer target = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
+        if (target.getUniqueId().equals(player.getUniqueId())) return sendMessage(player, CloudnodeMSG.getInstance().config().ignoreYourself());
         if (Message.isIgnored(player, target)) return unignore(player, target);
         return ignore(player, target);
     }
