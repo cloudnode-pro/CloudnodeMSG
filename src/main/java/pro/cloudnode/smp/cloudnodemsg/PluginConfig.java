@@ -2,11 +2,16 @@ package pro.cloudnode.smp.cloudnodemsg;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class PluginConfig {
@@ -14,6 +19,31 @@ public final class PluginConfig {
 
     public PluginConfig(final @NotNull FileConfiguration config) {
         this.config = config;
+    }
+
+    /**
+     * Database file name (in the plugin's folder)
+     * <p>If the file does not exist, it will be created</p>
+     */
+    public @NotNull String dbSqliteFile() {
+        return Objects.requireNonNull(config.getString("db.sqlite.file"));
+    }
+
+    /**
+     * Advanced DB configuration / HikariCP properties
+     * <p>Only change if you know what you're doing; you can add or remove any property you want</p>
+     */
+    public @NotNull HashMap<@NotNull String, @NotNull String> dbHikariProperties() {
+        final @NotNull List<@NotNull Map<?, ?>> mapList = config.getMapList("db.hikaricp");
+        final @NotNull HashMap<@NotNull String, @NotNull String> properties = new HashMap<>(mapList.size());
+
+        for (final @NotNull Map<?, ?> map : mapList)
+            if (
+                map.get("name") instanceof final @NotNull String name
+             && map.get("value") instanceof final @NotNull String value
+            ) properties.put(name, value);
+
+        return properties;
     }
 
     /**
@@ -25,14 +55,14 @@ public final class PluginConfig {
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component incoming(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component incoming(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("incoming"))
-                .replace("<sender>", sender)
-                .replace("<recipient>", recipient),
+                .replace("<sender>", Message.name(sender))
+                .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -41,19 +71,19 @@ public final class PluginConfig {
      * Outgoing message format (sender's point of view)
      * <p>Placeholders:</p>
      * <ul>
-     *     <li>{@code <sender>} - the username of the message sender</li>
+     *     <li>{@code <sender>} - the message sender</li>
      *     <li>{@code <recipient>} - the username of the message recipient</li>
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component outgoing(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component outgoing(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("outgoing"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient),
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -72,9 +102,9 @@ public final class PluginConfig {
      * @param team The team
      * @param message The message text
      */
-    public @NotNull Component team(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+    public @NotNull Component team(final @NotNull OfflinePlayer sender, final @NotNull Team team, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()),
                 Placeholder.component("message", message)
         );
@@ -89,14 +119,14 @@ public final class PluginConfig {
      *     <li>{@code <message>} - the message text</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param message The message text
      */
-    public @NotNull Component spy(final @NotNull String sender, final @NotNull String recipient, final @NotNull Component message) {
+    public @NotNull Component spy(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("spy"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient),
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)),
                 Placeholder.component("message", message)
         );
     }
@@ -114,9 +144,9 @@ public final class PluginConfig {
      * @param team The team
      * @param message The message text
      */
-    public @NotNull Component teamSpy(final @NotNull String sender, final @NotNull Team team, final @NotNull Component message) {
+    public @NotNull Component teamSpy(final @NotNull OfflinePlayer sender, final @NotNull Team team, final @NotNull Component message) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("team-spy"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()),
                 Placeholder.component("message", message)
         );
@@ -127,11 +157,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the username of the player</li></ul>
      *
-     * @param player The username of the player
+     * @param player The player
      */
-    public @NotNull Component ignored(final @NotNull String player) {
+    public @NotNull Component ignored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("ignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -140,11 +170,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the username of the player</li></ul>
      *
-     * @param player The username of the player
+     * @param player The player
      */
-    public @NotNull Component unignored(final @NotNull String player) {
+    public @NotNull Component unignored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("unignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -157,14 +187,14 @@ public final class PluginConfig {
      *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param command The command used, e.g. `msg`, `dm`, etc.
      */
-    public @NotNull Component channelCreated(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+    public @NotNull Component channelCreated(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull String command) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.created"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient)
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient))
                         .replace("<command>", command));
     }
 
@@ -177,14 +207,14 @@ public final class PluginConfig {
      *     <li>{@code <command>} - the command used, e.g. `msg`, `dm`, etc.</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      * @param command The command used, e.g. `msg`, `dm`, etc.
      */
-    public @NotNull Component channelClosed(final @NotNull String sender, final @NotNull String recipient, final @NotNull String command) {
+    public @NotNull Component channelClosed(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull String command) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.closed"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient)
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient))
                         .replace("<command>", command));
     }
 
@@ -196,13 +226,13 @@ public final class PluginConfig {
      *     <li>{@code <recipient>} - the username of the message recipient</li>
      * </ul>
      *
-     * @param sender The username of the message sender
-     * @param recipient The username of the message recipient
+     * @param sender The message sender
+     * @param recipient The message recipient
      */
-    public @NotNull Component channelOffline(final @NotNull String sender, final @NotNull String recipient) {
+    public @NotNull Component channelOffline(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.offline"))
-                        .replace("<sender>", sender)
-                        .replace("<recipient>", recipient));
+                        .replace("<sender>", Message.name(sender))
+                        .replace("<recipient>", Message.name(recipient)));
     }
 
     /**
@@ -216,9 +246,9 @@ public final class PluginConfig {
      * @param sender The username of the message sender
      * @param team The team@
      */
-    public @NotNull Component channelTeamCreated(final @NotNull String sender, final @NotNull Team team) {
+    public @NotNull Component channelTeamCreated(final @NotNull OfflinePlayer sender, final @NotNull Team team) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-created"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()));
     }
 
@@ -233,9 +263,9 @@ public final class PluginConfig {
      * @param sender The username of the message sender
      * @param team The team
      */
-    public @NotNull Component channelTeamClosed(final @NotNull String sender, final @NotNull Team team) {
+    public @NotNull Component channelTeamClosed(final @NotNull OfflinePlayer sender, final @NotNull Team team) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("channel.team-closed"))
-                        .replace("<sender>", sender),
+                        .replace("<sender>", Message.name(sender)),
                 Placeholder.component("team", team.displayName()));
     }
 
@@ -271,6 +301,13 @@ public final class PluginConfig {
         return Objects.requireNonNull(config.getString("console-name"));
     }
 
+    /**
+     * Name for player when name not found (usually very unlikely to happen)
+     */
+    public @NotNull String unknownName() {
+        return Objects.requireNonNull(config.getString("unknown-name"));
+    }
+
     public @NotNull Component toggleDisable() {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.message")));
     }
@@ -280,11 +317,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player the player's username
+     * @param player the player
      */
-    public @NotNull Component toggleDisableOther(final @NotNull String player) {
+    public @NotNull Component toggleDisableOther(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.disable.other")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -297,12 +334,87 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player the player's username
+     * @param player the player
      */
-    public @NotNull Component toggleEnableOther(final @NotNull String player) {
+    public @NotNull Component toggleEnableOther(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
+    }
+
+    /**
+     * Should players be notified for unread mail on login?
+     */
+    public boolean mailNotifyOnLogin() {
+        return config.getBoolean("mail.notify-on-login");
+    }
+
+    /**
+     * Interval (in minutes) to notify players of unread mail. Set to 0 to disable.
+     */
+    public int mailNotifyInterval() {
+        return config.getInt("mail.notify-interval");
+    }
+
+    /**
+     * Unread mail notification message
+     * <p>Placeholders:</p>
+     * <ul><li>{@code <unread>} - the number of unread mail messages</li></ul>
+     *
+     * @param unread the number of unread mail messages
+     */
+    public @NotNull Component mailNotify(final int unread) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.notify")),
+                Placeholder.unparsed("unread", String.valueOf(unread))
+        );
+    }
+
+    /**
+     * Successfully sent mail
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the sender</li>
+     *     <li>{@code <recipient>} - the username of the recipient</li>
+     *     <li>{@code <message>} - the message</li>
+     *     <li>{@code <seen>} - whether the mail was read/opened by the recipient (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <starred>} - whether the recipient has starred the mail (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <id>} - the ID of the mail</li>
+     * </ul>
+     *
+     * @param mail the mail
+     */
+    public @NotNull Component mailSent(final @NotNull Mail mail) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.sent"))
+                .replace("<id>", mail.id.toString())
+                .replace("<sender>", Message.name(mail.sender))
+                .replace("<recipient>", Message.name(mail.recipient)),
+                Formatter.booleanChoice("seen", mail.seen),
+                Formatter.booleanChoice("starred", mail.starred)
+        ).replaceText(configurer -> configurer.matchLiteral("<message>").replacement(Component.text(mail.message)));
+    }
+
+    /**
+     * Received mail while online
+     * <p>Placeholders:</p>
+     * <ul>
+     *     <li>{@code <sender>} - the username of the sender</li>
+     *     <li>{@code <recipient>} - the username of the recipient</li>
+     *     <li>{@code <message>} - the message</li>
+     *     <li>{@code <seen>} - whether the mail was read/opened by the recipient (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <starred>} - whether the recipient has starred the mail (see: <a href="https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice">Insert a choice</a>)</li>
+     *     <li>{@code <id>} - the ID of the mail</li>
+     * </ul>
+     *
+     * @param mail the mail
+     */
+    public @NotNull Component mailReceived(final @NotNull Mail mail) {
+        return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("mail.received"))
+                .replace("<id>", mail.id.toString())
+                .replace("<sender>", Message.name(mail.sender))
+                .replace("<recipient>", Message.name(mail.recipient)),
+                Formatter.booleanChoice("seen", mail.seen),
+                Formatter.booleanChoice("starred", mail.starred)
+        ).replaceText(configurer -> configurer.matchLiteral("<message>").replacement(Component.text(mail.message)));
     }
 
     /**
@@ -324,7 +436,7 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
     public @NotNull Component playerNotFound(final @NotNull String player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.player-not-found")),
@@ -345,11 +457,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component replyOffline(final @NotNull String player) {
+    public @NotNull Component replyOffline(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.reply-offline")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -365,11 +477,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component notIgnored(final @NotNull String player) {
+    public @NotNull Component notIgnored(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-ignored")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -378,11 +490,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component cannotIgnore(final @NotNull String player) {
+    public @NotNull Component cannotIgnore(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.cannot-ignore")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -398,11 +510,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component neverJoined(final @NotNull String player) {
+    public @NotNull Component neverJoined(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.never-joined")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 
@@ -411,11 +523,11 @@ public final class PluginConfig {
      * <p>Placeholders:</p>
      * <ul><li>{@code <player>} - the player's username</li></ul>
      *
-     * @param player The player's username
+     * @param player The player
      */
-    public @NotNull Component incomingDisabled(final @NotNull String player) {
+    public @NotNull Component incomingDisabled(final @NotNull OfflinePlayer player) {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.incoming-disabled")),
-                Placeholder.unparsed("player", player)
+                Placeholder.unparsed("player", Message.name(player))
         );
     }
 

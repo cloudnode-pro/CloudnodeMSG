@@ -37,3 +37,7 @@ commands:
         usage: /<command> [message]
         aliases: [ "tmsg", "teamchat" , "tm" ]
         permission: cloudnodemsg.use.team
+    mail:
+        description: Send and receive offline messages
+        usage: /<command>
+        aliases: [ "post" ]
