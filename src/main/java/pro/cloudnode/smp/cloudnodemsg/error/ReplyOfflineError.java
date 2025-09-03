@@ -1,5 +1,6 @@
 package pro.cloudnode.smp.cloudnodemsg.error;
 
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 
@@ -12,7 +13,7 @@ public final class ReplyOfflineError extends Error {
      *
      * @param player The player's username
      */
-    public ReplyOfflineError(final @NotNull String player) {
+    public ReplyOfflineError(final @NotNull OfflinePlayer player) {
         super(CloudnodeMSG.getInstance().config().replyOffline(player));
     }
 }

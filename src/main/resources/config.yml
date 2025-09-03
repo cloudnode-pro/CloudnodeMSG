@@ -1,3 +1,35 @@
+# Database configuration
+db:
+    sqlite:
+        # Database file name (in the plugin's folder)
+        # If the file does not exist, it will be created
+        file: 'cloudnodemsg.db'
+
+    # Advanced DB configuration / HikariCP properties
+    # Only change if you know what you're doing; you can add or remove any property you want
+    hikaricp:
+        - name: "cachePrepStmts"
+          value: "true"
+        - name: "prepStmtCacheSize"
+          value: "250"
+        - name: "prepStmtCacheSqlLimit"
+          value: "2048"
+        - name: "useServerPrepStmts"
+          value: "true"
+        - name: "useLocalSessionState"
+          value: "true"
+        - name: "rewriteBatchedStatements"
+          value: "true"
+        - name: "cacheResultSetMetadata"
+          value: "true"
+        - name: "cacheServerConfiguration"
+          value: "true"
+        - name: "elideSetAutoCommits"
+          value: "true"
+        - name: "maintainTimeStats"
+          value: "false"
+
+
 # Incoming message format (recipient's point of view)
 # Placeholders:
 #  <sender> - the username of the message sender
@@ -65,6 +97,9 @@ channel:
 # Name for console/server that should appear as <sender> or <recipient> in messages
 console-name: "Server"
 
+# Name for player when name not found (usually very unlikely to happen)
+unknown-name: "Unknown Player"
+
 # Command usage format
 # Placeholders:
 #  <command> - the command name
@@ -87,6 +122,38 @@ toggle:
         # Placeholders:
         #  <player> - the player's username
         other: "<green>(!) Re-enabled receiving of private messages for <gray><player></gray>.</green>"
+
+mail:
+  # Should players be notified for unread mail on login?
+  notify-on-login: true
+
+  # Interval (in minutes) to notify players of unread mail. Set to 0 to disable.
+  notify-interval: 3
+
+  # Unread mail notification message
+  # Placeholders:
+  #  <unread> - the number of unread mail messages
+  notify: "<green>(!) You have <gray><unread></gray> unread messages.</green> <hover:show_text:'Click to view mail'><click:run_command:/mail read><gray>View mail</gray></click></hover>"
+
+  # Successfully sent mail
+  # Placeholders:
+  #  <sender> - the username of the sender
+  #  <recipient> - the username of the recipient
+  #  <message> - the message
+  #  <seen> - whether the mail was read/opened by the recipient (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <starred> - whether the recipient has starred the mail (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <id> - the ID of the mail
+  sent: "<green>(!) Successfully sent mail to <gray><recipient></gray>.</green>"
+
+  # Received mail while online
+  # Placeholders:
+  #  <sender> - the username of the sender
+  #  <recipient> - the username of the recipient
+  #  <message> - the message
+  #  <seen> - whether the mail was read/opened by the recipient (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <starred> - whether the recipient has starred the mail (see: https://docs.advntr.dev/minimessage/dynamic-replacements.html#insert-a-choice)
+  #  <id> - the ID of the mail
+  received: "<green>(!) You have new mail from <gray><sender></gray>. <hover:show_text:Click to see the message><click:run_command:/mail view <id>><white>Click to view</white></click></hover>"
 
 # Error messages
 errors:

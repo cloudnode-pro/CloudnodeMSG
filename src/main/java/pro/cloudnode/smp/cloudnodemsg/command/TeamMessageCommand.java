@@ -28,19 +28,19 @@ public class TeamMessageCommand extends Command {
             if (Message.hasTeamChannel(player)) {
                 Message.exitTeamChannel(player);
                 return sendMessage(player, CloudnodeMSG.getInstance().config()
-                        .channelTeamClosed(player.getName(), team.get()));
+                        .channelTeamClosed(player, team.get()));
             }
             else {
                 Message.createTeamChannel(player);
                 return sendMessage(player, CloudnodeMSG.getInstance().config()
-                        .channelTeamCreated(player.getName(), team.get()));
+                        .channelTeamCreated(player, team.get()));
             }
         }
         return sendTeamMessage(player, team.get(), Component.text(String.join(" ", args)));
     }
 
     @Override
-    public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final org.bukkit.command.@NotNull Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @Nullable List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         return new ArrayList<>();
     }
 
@@ -52,12 +52,12 @@ public class TeamMessageCommand extends Command {
             if (Message.isIgnored(player, sender)) continue;
             if (Optional.ofNullable(player.getScoreboard().getPlayerTeam(player)).map(t -> t.equals(team))
                     .orElse(false))
-                sendMessage(player, CloudnodeMSG.getInstance().config().team(sender.getName(), team, message));
+                sendMessage(player, CloudnodeMSG.getInstance().config().team(sender, team, message));
             else if (player.hasPermission(Permission.SPY))
-                sendMessage(player, CloudnodeMSG.getInstance().config().teamSpy(sender.getName(), team, message));
+                sendMessage(player, CloudnodeMSG.getInstance().config().teamSpy(sender, team, message));
         }
         sender.getServer().getConsoleSender()
-                .sendMessage(CloudnodeMSG.getInstance().config().teamSpy(sender.getName(), team, message));
+                .sendMessage(CloudnodeMSG.getInstance().config().teamSpy(sender, team, message));
 
         return true;
     }

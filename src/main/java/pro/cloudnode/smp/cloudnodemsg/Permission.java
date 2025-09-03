@@ -52,4 +52,9 @@ public final class Permission {
      * Allows to see the private messages of other players
      */
     public final static @NotNull String SPY = "cloudnodemsg.spy";
+
+    /**
+     * Allows using the /mail command
+     */
+    public final static @NotNull String MAIL = "cloudnodemsg.mail";
 }

@@ -35,7 +35,7 @@ public final class ReplyCommand extends Command {
     }
 
     @Override
-    public @NotNull List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @NotNull List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         return new ArrayList<>();
     }
 }

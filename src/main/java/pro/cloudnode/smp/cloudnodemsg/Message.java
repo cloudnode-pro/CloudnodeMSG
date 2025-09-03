@@ -36,24 +36,11 @@ public final class Message {
         this(sender, recipient, Component.text(message));
     }
 
-    private @NotNull String playerOrServerUsername(final @NotNull OfflinePlayer player) throws InvalidPlayerError {
-        if (player.getUniqueId().equals(console.getUniqueId()))
-            return CloudnodeMSG.getInstance().config().consoleName();
-        else {
-            final @NotNull Optional<@NotNull String> name = Optional.ofNullable(player.getName());
-            if (name.isEmpty()) throw new InvalidPlayerError();
-            else return name.get();
-        }
-    }
-
     public void send() throws InvalidPlayerError {
         send(Context.REGULAR);
     }
 
     public void send(final @NotNull Context context) throws InvalidPlayerError {
-        final @NotNull String senderUsername = playerOrServerUsername(this.sender);
-        final @NotNull String recipientUsername = playerOrServerUsername(this.recipient);
-
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
@@ -61,29 +48,28 @@ public final class Message {
             if (context == Context.CHANNEL) {
                 final @NotNull Player player = Objects.requireNonNull(sender.getPlayer());
                 Message.exitChannel(player);
-                new ChannelOfflineError(player.getName(), Optional.ofNullable(recipient.getName())
-                        .orElse("Unknown Player")).send(player);
+                new ChannelOfflineError(sender, recipient).send(player);
             }
             else {
                 final @NotNull Audience senderAudience = senderPlayer.isPresent() ? senderPlayer.get() : CloudnodeMSG.getInstance().getServer().getConsoleSender();
-                if (context == Context.REPLY) new ReplyOfflineError(recipientUsername).send(senderAudience);
-                else new PlayerNotFoundError(recipientUsername).send(senderAudience);
+                if (context == Context.REPLY) new ReplyOfflineError(recipient).send(senderAudience);
+                else new PlayerNotFoundError(name(this.recipient)).send(senderAudience);
             }
             return;
         }
 
         if (recipientPlayer.isPresent() && senderPlayer.isPresent() && !Message.isIncomingEnabled(recipientPlayer.get()) && !senderPlayer
                 .get().hasPermission(Permission.TOGGLE_BYPASS)) {
-            new PlayerHasIncomingDisabledError(recipientPlayer.get().getName()).send(senderPlayer.get());
+            new PlayerHasIncomingDisabledError(recipientPlayer.get()).send(senderPlayer.get());
             return;
         }
 
         sendSpyMessage(sender, recipient, message);
-        sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
+        sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(sender, recipient, message));
         if ((recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender)) && (senderPlayer.isPresent() && !senderPlayer
                 .get().hasPermission(Permission.IGNORE_BYPASS))) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
-                .incoming(senderUsername, recipientUsername, message));
+                .incoming(sender, recipient, message));
 
         if (sender.getUniqueId().equals(console.getUniqueId()) || (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient)))
             setReplyTo(sender, recipient);
@@ -98,6 +84,12 @@ public final class Message {
         return executor instanceof final @NotNull Player player ? player : console;
     }
 
+    public static @NotNull String name(final @NotNull OfflinePlayer player) {
+        if (player.getUniqueId().equals(console.getUniqueId())) return CloudnodeMSG.getInstance().config().consoleName();
+        final @NotNull Optional<@NotNull String> name = Optional.ofNullable(player.getName());
+        return name.orElse(CloudnodeMSG.getInstance().config().unknownName());
+    }
+
     public static void sendMessage(final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
         if (recipient.getUniqueId() == console.getUniqueId())
             CloudnodeMSG.getInstance().getServer().getConsoleSender().sendMessage(message);
@@ -108,19 +100,16 @@ public final class Message {
      * Send social spy to online players with permission
      */
     public static void sendSpyMessage(final @NotNull OfflinePlayer sender, final @NotNull OfflinePlayer recipient, final @NotNull Component message) {
-        final @NotNull String senderName = sender.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG
-                .getInstance().config().consoleName() : Optional.ofNullable(sender.getName()).orElse("Unknown Player");
-        final @NotNull String recipientName = recipient.getUniqueId().equals(console.getUniqueId()) ? CloudnodeMSG
-                .getInstance().config().consoleName() : Optional.ofNullable(recipient.getName())
-                                                      .orElse("Unknown Player");
         for (final @NotNull Player player : CloudnodeMSG.getInstance().getServer().getOnlinePlayers()) {
-            if (!player.hasPermission(Permission.SPY) || player.getUniqueId().equals(sender.getUniqueId()) || player
-                    .getUniqueId().equals(recipient.getUniqueId())) continue;
-            sendMessage(player, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
+            if (
+                    !player.hasPermission(Permission.SPY)
+                    || player.getUniqueId().equals(sender.getUniqueId())
+                    || player.getUniqueId().equals(recipient.getUniqueId())
+            ) continue;
+            sendMessage(player, CloudnodeMSG.getInstance().config().spy(sender, recipient, message));
         }
-        if (!sender.getUniqueId().equals(console.getUniqueId()) && !recipient.getUniqueId()
-                .equals(console.getUniqueId()))
-            sendMessage(console, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
+        if (!sender.getUniqueId().equals(console.getUniqueId()) && !recipient.getUniqueId().equals(console.getUniqueId()))
+            sendMessage(console, CloudnodeMSG.getInstance().config().spy(sender, recipient, message));
     }
 
     private static @Nullable UUID consoleReply;
@@ -141,12 +130,6 @@ public final class Message {
                         .get(REPLY_TO, PersistentDataType.STRING))
                 .map(uuid -> CloudnodeMSG.getInstance().getServer().getOfflinePlayer(UUID.fromString(uuid)));
         return Optional.empty();
-    }
-
-    public static void removeReplyTo(final @NotNull OfflinePlayer player) {
-        if (player.getUniqueId().equals(console.getUniqueId())) consoleReply = null;
-        else if (player.isOnline())
-            Objects.requireNonNull(player.getPlayer()).getPersistentDataContainer().remove(REPLY_TO);
     }
 
     public static final @NotNull NamespacedKey IGNORED_PLAYERS = new NamespacedKey(CloudnodeMSG.getInstance(), "ignored");

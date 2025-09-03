@@ -29,11 +29,11 @@ public final class UnIgnoreCommand extends Command {
         if (args.length == 0) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
         final @NotNull OfflinePlayer target = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
         if (Message.isIgnored(player, target)) return IgnoreCommand.unignore(player, target);
-        return new NotIgnoredError(args[0]).send(sender);
+        return new NotIgnoredError(target).send(sender);
     }
 
     @Override
-    public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
+    public @Nullable List<@NotNull String> tab(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
         if (args.length == 1 && sender.hasPermission(Permission.IGNORE) && sender instanceof final @NotNull Player player) {
             final @NotNull HashSet<@NotNull UUID> ignored = Message.getIgnored(player);
             final @NotNull Server server = CloudnodeMSG.getInstance().getServer();
