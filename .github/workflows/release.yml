@@ -44,20 +44,24 @@ jobs:
         run: mvn clean package
 
       - name: Upload to release
-        uses: JasonEtco/upload-to-release@master
+        uses: cloudnode-pro/release-upload-asset@1.0.2
         with:
-          args: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar application/java-archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh-token: ${{ github.token }}
+          files: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar; type=application/java-archive
 
       - name: Upload to Modrinth
-        uses: cloudnode-pro/modrinth-publish@1.0.0
+        uses: cloudnode-pro/modrinth-publish@v2
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
-          project: 5Ce4fxJB
-          file: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar
+          project: ${{ github.event.repository.custom_properties.modrinth_id }}
+          name: ${{ github.event.release.name == github.event.release.tag_name && format('BankAccounts {0}', github.event.release.name) || github.event.release.name }}
+          version: ${{ github.event.release.tag_name }}
           changelog: ${{ github.event.release.body }}
           loaders: paper
+          game-versions: |-
+            1.20.x
+            1.21.x
+          files: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar
 
       - name: Generate Javadoc
         run: mvn -B javadoc:javadoc --file pom.xml
