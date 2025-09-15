@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public final class AsyncChatListener implements Listener {
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void ignore(final @NotNull AsyncChatEvent event) {
         final @NotNull Set<@NotNull Audience> audience = event.viewers();
         final @NotNull Iterator<@NotNull Audience> iterator = audience.iterator();
@@ -43,7 +43,7 @@ public final class AsyncChatListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void channels(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         final @NotNull Optional<@NotNull OfflinePlayer> channelRecipient = Message.getChannel(sender);
@@ -57,7 +57,7 @@ public final class AsyncChatListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void teamChannel(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         if (!Message.hasTeamChannel(sender)) return;
