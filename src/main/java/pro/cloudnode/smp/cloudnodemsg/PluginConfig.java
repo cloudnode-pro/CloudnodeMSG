@@ -1,13 +1,26 @@
 package pro.cloudnode.smp.cloudnodemsg;
 
+import io.papermc.paper.chat.ChatRenderer;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public final class PluginConfig {
     public @NotNull FileConfiguration config;
@@ -303,6 +316,44 @@ public final class PluginConfig {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("toggle.enable.other")),
                 Placeholder.unparsed("player", player)
         );
+    }
+
+    /**
+     * Chat format
+     */
+    public @NotNull Optional<@NotNull ChatRenderer> chatFormat() {
+        final @Nullable String str = config.getString("chat-format");
+        if (str == null || str.equals("null") || str.isBlank())
+            return Optional.empty();
+        return Optional.of((source, sourceDisplayName, message, viewer) -> MiniMessage.miniMessage().deserialize(
+                str,
+                Placeholder.component("message", message),
+                TagResolver.resolver("papi", (args, ctx) -> {
+                    String placeholder = args.popOr("placeholder expected").value().trim();
+                    if (!placeholder.startsWith("%") && !placeholder.endsWith("%"))
+                        placeholder = "%" + placeholder + "%";
+                    if (!CloudnodeMSG.getInstance().getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
+                        CloudnodeMSG.getInstance().getLogger().severe("Attempted to use PlaceholderAPI placeholder `" + placeholder
+                                + "` in chat format, but PlaceholderAPI is not present!");
+                    return Tag.inserting(Component.text(PlaceholderAPI.setPlaceholders(source, placeholder)));
+                }),
+                TagResolver.resolver("has-team", (args, ctx) -> {
+                    final String text = args.popOr("text expected").value();
+                    final Team team = source.getScoreboard().getPlayerTeam(source);
+                    if (team == null) {
+                        if (args.hasNext())
+                            return Tag.inserting(MiniMessage.miniMessage().deserialize(args.popOr("expected fallback value").value()));
+                        else return Tag.inserting(Component.empty());
+                    }
+                    return Tag.inserting(ctx.deserialize(text,
+                            Placeholder.component("team", team.displayName())
+                    ));
+                }),
+                TagResolver.resolver("player", (args, ctx) -> Tag.inserting(
+                        Component.text(source.getName())
+                                 .clickEvent(ClickEvent.suggestCommand("/tell " + source.getName() + " "))
+                ))
+        ));
     }
 
     /**

@@ -1,7 +1,9 @@
 package pro.cloudnode.smp.cloudnodemsg.listener;
 
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -23,7 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public final class AsyncChatListener implements Listener {
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void ignore(final @NotNull AsyncChatEvent event) {
         final @NotNull Set<@NotNull Audience> audience = event.viewers();
         final @NotNull Iterator<@NotNull Audience> iterator = audience.iterator();
@@ -41,7 +43,7 @@ public final class AsyncChatListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void channels(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         final @NotNull Optional<@NotNull OfflinePlayer> channelRecipient = Message.getChannel(sender);
@@ -55,7 +57,7 @@ public final class AsyncChatListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void teamChannel(final @NotNull AsyncChatEvent event) {
         final @NotNull Player sender = event.getPlayer();
         if (!Message.hasTeamChannel(sender)) return;
@@ -67,5 +69,11 @@ public final class AsyncChatListener implements Listener {
             return;
         }
         TeamMessageCommand.sendTeamMessage(sender, team.get(), event.message());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void chatFormat(final @NotNull AsyncChatEvent event) {
+        final @NotNull Optional<@NotNull ChatRenderer> format = CloudnodeMSG.getInstance().config().chatFormat();
+        format.ifPresent(event::renderer);
     }
 }
