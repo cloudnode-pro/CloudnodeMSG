@@ -1,7 +1,9 @@
 package pro.cloudnode.smp.cloudnodemsg.listener;
 
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -67,5 +69,11 @@ public final class AsyncChatListener implements Listener {
             return;
         }
         TeamMessageCommand.sendTeamMessage(sender, team.get(), event.message());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void chatFormat(final @NotNull AsyncChatEvent event) {
+        final @NotNull Optional<@NotNull ChatRenderer> format = CloudnodeMSG.getInstance().config().chatFormat();
+        format.ifPresent(event::renderer);
     }
 }

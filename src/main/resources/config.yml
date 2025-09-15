@@ -88,6 +88,20 @@ toggle:
         #  <player> - the player's username
         other: "<green>(!) Re-enabled receiving of private messages for <gray><player></gray>.</green>"
 
+# Set custom global/public chat format. Disabled by default.
+#
+# Placeholders:
+#  <has-team:'if yes':'if no'> - show a different message based on whether the player is in a team
+#  <team> - the player's team display name (only works in <has-team>)
+#  <player> - the name of the player, when clicked suggests command `/tell` followed by the player's name
+#  <message> - the message being sent in chat
+#  <papi:…> - use a PlaceholderAPI placeholder, example `<papi:%player_displayname%>` or `<papi:player_displayname>`.
+#             Requires PlaceholderAPI to be installed.
+#
+# Example:
+#chat-format: <has-team:'<dark_gray>[<white><team></white>]</dark_gray> '><white><player></white><dark_gray>:</dark_gray> <gray><message></gray>
+chat-format: null
+
 # Error messages
 errors:
     # No permission
