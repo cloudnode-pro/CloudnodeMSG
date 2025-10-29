@@ -152,3 +152,15 @@ errors:
 
     # Trying to message a team, but not in one
     not-in-team: "<red>(!) You are not in a team.</red>"
+
+
+pm-sound:
+    # Enable or disable playing a sound when a private message is received
+    enabled: true
+    # Sound to play on private message (Minecraft sound identifier)
+    # Examples: ENTITY_ALLAY_AMBIENT_WITH_ITEM, ENTITY_PLAYER_LEVELUP, etc.
+    sound: BLOCK_NOTE_BLOCK_PLINGt
+    # Volume of the sound (float). 1.0 is normal volume, increase to be louder.
+    volume: 1.0
+    # Pitch of the sound (float). 1.0 is normal pitch, lower for deeper, higher for sharper.
+    pitch: 1.0

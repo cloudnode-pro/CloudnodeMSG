@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.error.ChannelOfflineError;
@@ -84,6 +85,34 @@ public final class Message {
                 .get().hasPermission(Permission.IGNORE_BYPASS))) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
+
+        // Play PM notification sound for the recipient (if online and enabled in config)
+        recipientPlayer.ifPresent(recPlayer -> {
+            try {
+                // Don't play sound if recipient is the same as sender (e.g., self-message)
+                if (sender.getUniqueId().equals(recipient.getUniqueId())) return;
+
+                if (!CloudnodeMSG.getInstance().getConfig().getBoolean("pm-sound.enabled", true)) return;
+
+                final String soundName = CloudnodeMSG.getInstance().getConfig().getString("pm-sound.sound", "BLOCK_NOTE_BLOCK_PLING");
+                final float volume = (float) CloudnodeMSG.getInstance().getConfig().getDouble("pm-sound.volume", 1.0);
+                final float pitch = (float) CloudnodeMSG.getInstance().getConfig().getDouble("pm-sound.pitch", 1.0);
+
+                try {
+                    final Sound sound = Sound.valueOf(soundName);
+                    recPlayer.playSound(recPlayer.getLocation(), sound, volume, pitch);
+                } catch (IllegalArgumentException | NoSuchFieldError | NullPointerException e) {
+                    // fallback to a safe default if configured sound isn't available on this server version
+                    try {
+                        recPlayer.playSound(recPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, volume, pitch);
+                    } catch (Throwable ignored) {
+                        // silently ignore if no sound is available
+                    }
+                }
+            } catch (Throwable ignored) {
+                // Ensure message sending never fails because of sound errors
+            }
+        });
 
         if (sender.getUniqueId().equals(console.getUniqueId()) || (senderPlayer.isPresent() && !Message.hasChannel(senderPlayer.get(), recipient)))
             setReplyTo(sender, recipient);
