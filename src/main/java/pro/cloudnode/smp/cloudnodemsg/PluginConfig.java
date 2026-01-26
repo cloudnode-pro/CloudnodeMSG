@@ -12,7 +12,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
@@ -356,6 +359,34 @@ public final class PluginConfig {
         ));
     }
 
+    public @NotNull Optional<@NotNull ConfiguredSound> sound(final @NotNull SoundEvent event) {
+        final @Nullable String name = config.getString(String.format("sound.%s.sound", event.key));
+        if (name == null || name.isBlank() || name.equalsIgnoreCase("null") || name.equalsIgnoreCase("none")) {
+            return Optional.empty();
+        }
+
+        final @Nullable NamespacedKey key = name.indexOf(':') > -1
+                ? NamespacedKey.fromString(name)
+                : NamespacedKey.minecraft(name);
+
+        if (key == null) {
+            CloudnodeMSG.getInstance().getLogger().warning(String.format("Invalid sound identifier ‘%s’ for sound event ‘%s’", name, event.key));
+            return Optional.empty();
+        }
+
+        final @Nullable Sound sound = Registry.SOUNDS.get(key);
+
+        if (sound == null) {
+            CloudnodeMSG.getInstance().getLogger().warning(String.format("Unknown sound ‘%s’ for sound event ‘%s’", name, event.key));
+            return Optional.empty();
+        }
+
+        final float volume = (float) config.getDouble(String.format("sound.%s.volume", event.key), 1.0);
+        final float pitch = (float) config.getDouble(String.format("sound.%s.pitch", event.key), 1.0);
+
+        return Optional.of(new ConfiguredSound(sound, volume, pitch));
+    }
+
     /**
      * No permission
      */
@@ -476,5 +507,23 @@ public final class PluginConfig {
     public @NotNull Component notInTeam() {
         return MiniMessage.miniMessage().deserialize(Objects.requireNonNull(config.getString("errors.not-in-team")));
     }
-}
 
+    public enum SoundEvent {
+        PERSONAL_INCOMING("personal.incoming"),
+        PERSONAL_OUTGOING("personal.outgoing"),
+        TEAM_INCOMING("team.incoming"),
+        TEAM_OUTGOING("team.outgoing");
+
+        public final @NotNull String key;
+
+        SoundEvent(final @NotNull String key) {
+            this.key = key;
+        }
+    }
+
+    public record ConfiguredSound(@NotNull Sound sound, float volume, float pitch) {
+        public void play(final @NotNull Player player) {
+            player.playSound(player, sound, volume, pitch);
+        }
+    }
+}

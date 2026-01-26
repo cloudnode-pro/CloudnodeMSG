@@ -89,6 +89,17 @@ public final class Message {
             setReplyTo(sender, recipient);
         if (recipient.getUniqueId().equals(console.getUniqueId()) || (recipientPlayer.isPresent() && !Message.hasChannel(recipientPlayer.get(), sender)))
             setReplyTo(recipient, sender);
+
+        senderPlayer.ifPresent(player -> CloudnodeMSG.getInstance()
+                .config()
+                .sound(PluginConfig.SoundEvent.PERSONAL_OUTGOING)
+                .ifPresent(sound -> sound.play(player))
+        );
+        recipientPlayer.ifPresent(player -> CloudnodeMSG.getInstance()
+                .config()
+                .sound(PluginConfig.SoundEvent.PERSONAL_INCOMING)
+                .ifPresent(sound -> sound.play(player))
+        );
     }
 
     public final static @NotNull OfflinePlayer console = CloudnodeMSG.getInstance().getServer()
@@ -315,7 +326,7 @@ public final class Message {
     /**
      * The context in which this message is sent
      */
-    public static enum Context {
+    public enum Context {
         /**
          * Message sent via command (i.e. no special context)
          */
