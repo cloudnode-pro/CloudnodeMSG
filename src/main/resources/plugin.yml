@@ -9,12 +9,12 @@ commands:
     message:
         description: Send a private message
         usage: /<command> <player> [message]
-        aliases: [ "msg", "tell", "t", "whisper", "dm", "m", "pm" ]
+        aliases: [ "msg", "tell", "t", "whisper", "dm", "m", "pm", "w" ]
         permission: cloudnodemsg.use
     reply:
         description: Privately reply to the last message your received
         usage: /<command> <message>
-        aliases: [ "r", "re" ]
+        aliases: [ "r", "re", "last", "l" ]
         permission: cloudnodemsg.use
     cloudnodemsg:
         description: CloudnodeMSG
