@@ -3,11 +3,17 @@ package pro.cloudnode.smp.cloudnodemsg;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 @NullMarked
 public final class Permissions {
     private static final String NAME = "cloudnodemsg";
+
+    private static final Queue<Permission> REGISTRATION_QUEUE = new ArrayDeque<>();
 
     public static final Permission USE = create(
             "use",
@@ -78,7 +84,14 @@ public final class Permissions {
     ) {
         final var permission = create(node, description);
         permission.setDefault(permissionDefault);
-        Bukkit.getPluginManager().addPermission(permission);
+        REGISTRATION_QUEUE.add(permission);
         return permission;
+    }
+
+    public static void register() {
+        final var pm = Bukkit.getPluginManager();
+        while (!REGISTRATION_QUEUE.isEmpty()) {
+            pm.addPermission(REGISTRATION_QUEUE.poll());
+        }
     }
 }
