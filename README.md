@@ -17,7 +17,7 @@ The following are all commands from this plugin.
 Send a private message to another player.
 
 <dl>
-    <dt>Aliases:</dt> <dd><code>/message</code>, <code>/tell</code>, <code>/t</code>, <code>/whisper</code>, <code>/dm</code>, <code>/m</code>, <code>/pm</code></dd>
+    <dt>Aliases:</dt> <dd><code>/message</code>, <code>/tell</code>, <code>/t</code>, <code>/whisper</code>, <code>/dm</code>, <code>/m</code>, <code>/pm</code>, <code>/w</code></dd>
     <dt>Permission:</dt> <dd><code>cloudnodemsg.use</code></dd>
 </dl>
 
@@ -30,7 +30,7 @@ i.e. all of your chat messages will be sent as private messages to this player.
 Run the command again to disable the message channel.
 
 <dl>
-    <dt>Aliases:</dt> <dd><code>/message</code>, <code>/tell</code>, <code>/t</code>, <code>/whisper</code>, <code>/dm</code>, <code>/m</code>, <code>/pm</code></dd>
+    <dt>Aliases:</dt> <dd><code>/message</code>, <code>/tell</code>, <code>/t</code>, <code>/whisper</code>, <code>/dm</code>, <code>/m</code>, <code>/pm</code>, <code>/w</code></dd>
     <dt>Permission:</dt> <dd><code>cloudnodemsg.use</code></dd>
 </dl>
 
@@ -41,7 +41,7 @@ Run the command again to disable the message channel.
 Send a private message to the last player that messaged you.
 
 <dl>
-    <dt>Aliases:</dt> <dd><code>/r</code>, <code>/re</code></dd>
+    <dt>Aliases:</dt> <dd><code>/r</code>, <code>/re</code>, <code>/last</code>, <code>/l</code></dd>
     <dt>Permission:</dt> <dd><code>cloudnodemsg.use</code></dd>
 </dl>
 
