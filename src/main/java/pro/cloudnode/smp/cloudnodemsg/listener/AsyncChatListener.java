@@ -3,7 +3,6 @@ package pro.cloudnode.smp.cloudnodemsg.listener;
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -14,7 +13,7 @@ import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Message;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.command.TeamMessageCommand;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotInTeamError;
@@ -38,7 +37,7 @@ public final class AsyncChatListener implements Listener {
                 final @NotNull HashSet<@NotNull OfflinePlayer> ignored = Message.getIgnored(player).stream()
                         .map(server::getOfflinePlayer).collect(HashSet::new, HashSet::add, HashSet::addAll);
 
-                if (ignored.contains(sender) && !sender.hasPermission(Permission.IGNORE_BYPASS)) iterator.remove();
+                if (ignored.contains(sender) && !sender.hasPermission(Permissions.IGNORE_BYPASS)) iterator.remove();
             }
         }
     }

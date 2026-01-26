@@ -6,7 +6,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public final class MainCommand extends Command {
     }
 
     private boolean reload(final @NotNull CommandSender sender) {
-        if (!sender.hasPermission(Permission.RELOAD)) return new NoPermissionError().send(sender);
+        if (!sender.hasPermission(Permissions.RELOAD)) return new NoPermissionError().send(sender);
         CloudnodeMSG.getInstance().reload();
         return sendMessage(sender, CloudnodeMSG.getInstance().config().reloaded());
     }
@@ -39,7 +39,7 @@ public final class MainCommand extends Command {
     @Override
     public @NotNull List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
         final @NotNull List<@NotNull String> completions = new ArrayList<>();
-        if (args.length == 1) if (sender.hasPermission(Permission.RELOAD) && "reload".startsWith(args[0].toLowerCase()))
+        if (args.length == 1) if (sender.hasPermission(Permissions.RELOAD) && "reload".startsWith(args[0].toLowerCase()))
             completions.add("reload");
         return completions;
     }

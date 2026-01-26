@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Message;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NobodyReplyError;
@@ -19,7 +19,7 @@ public final class ReplyCommand extends Command {
 
     @Override
     public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
-        if (!sender.hasPermission(Permission.USE)) return new NoPermissionError().send(sender);
+        if (!sender.hasPermission(Permissions.USE)) return new NoPermissionError().send(sender);
         if (args.length == 0) return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, usage));
 
         final @NotNull Optional<@NotNull OfflinePlayer> recipient = Message.getReplyTo(Message.offlinePlayer(sender));
