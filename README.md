@@ -141,6 +141,7 @@ Here is a list of the permissions used by this plugin.
 | `cloudnodemsg.toggle.bypass` | Allows sending private messages to recipients who have toggled them off                                          | OP       |
 | `cloudnodemsg.send.vanished` | Allows sending messages to vanished recipients                                                                   | OP       |
 | `cloudnodemsg.spy`           | Makes you see all private and team messages sent between all players                                             | none     |
+| `cloudnodemsg.reload`        | Allows access to the [`/cloudnodemsg reload`](#cloudnodemsg-reload) command                                      | OP       |
 
 ## Release Cycle
 
