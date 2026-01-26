@@ -2,6 +2,7 @@ package pro.cloudnode.smp.cloudnodemsg;
 
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import pro.cloudnode.smp.cloudnodemsg.command.IgnoreCommand;
@@ -29,6 +30,8 @@ public final class CloudnodeMSG extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         reload();
+
+        Permissions.register();
 
         Objects.requireNonNull(getCommand("cloudnodemsg")).setExecutor(new MainCommand());
         Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand());

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.error.CannotIgnoreError;
 import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
@@ -23,7 +23,7 @@ public final class IgnoreCommand extends Command {
 
     @Override
     public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
-        if (!sender.hasPermission(Permission.IGNORE)) return new NoPermissionError().send(sender);
+        if (!sender.hasPermission(Permissions.IGNORE)) return new NoPermissionError().send(sender);
         if (!(sender instanceof final @NotNull Player player)) return new NotPlayerError().send(sender);
         if (args.length == 0) return sendMessage(player, CloudnodeMSG.getInstance().config().usage(label, usage));
         final @NotNull OfflinePlayer target = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
@@ -33,7 +33,7 @@ public final class IgnoreCommand extends Command {
     }
 
     public static boolean ignore(final @NotNull Player player, final @NotNull OfflinePlayer target) {
-        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permission.IGNORE_BYPASS))
+        if (target.isOnline() && Objects.requireNonNull(target.getPlayer()).hasPermission(Permissions.IGNORE_BYPASS))
             return new CannotIgnoreError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
         if (!target.isOnline() && !target.hasPlayedBefore())
             return new NeverJoinedError(Optional.ofNullable(target.getName()).orElse("Unknown Player")).send(player);
@@ -50,7 +50,7 @@ public final class IgnoreCommand extends Command {
 
     @Override
     public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
-        if (args.length == 1 && sender.hasPermission(Permission.IGNORE) && sender instanceof Player) return null;
+        if (args.length == 1 && sender.hasPermission(Permissions.IGNORE) && sender instanceof Player) return null;
         return new ArrayList<>();
     }
 }

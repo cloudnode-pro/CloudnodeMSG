@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.error.NeverJoinedError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public final class ToggleMessageCommand extends Command {
     @Override
     public boolean run(final @NotNull CommandSender sender, final @NotNull String label, final @NotNull String @NotNull [] args) {
-        if (!sender.hasPermission(Permission.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permission.TOGGLE_OTHER)))
+        if (!sender.hasPermission(Permissions.TOGGLE) || (args.length == 1 && !sender.hasPermission(Permissions.TOGGLE_OTHER)))
             return new NoPermissionError().send(sender);
         if (args.length == 1) {
             final @NotNull OfflinePlayer recipient = CloudnodeMSG.getInstance().getServer().getOfflinePlayer(args[0]);
@@ -50,7 +50,7 @@ public final class ToggleMessageCommand extends Command {
 
     @Override
     public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final org.bukkit.command.@NotNull Command command, final @NotNull String s, final @NotNull String @NotNull [] strings) {
-        if (sender.hasPermission(Permission.TOGGLE_OTHER)) return null;
+        if (sender.hasPermission(Permissions.TOGGLE_OTHER)) return null;
         return new ArrayList<>();
     }
 }

@@ -6,8 +6,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -31,7 +29,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set release version
+      - name: Get release version from tag
         run: |
           TAG=${{ github.event.release.tag_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
@@ -54,8 +52,8 @@ jobs:
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: ${{ github.event.repository.custom_properties.modrinth_id }}
-          name: ${{ github.event.release.name == github.event.release.tag_name && format('BankAccounts {0}', github.event.release.name) || github.event.release.name }}
-          version: ${{ github.event.release.tag_name }}
+          name: ${{ github.event.release.name == github.event.release.tag_name && format('CloudnodeMSG {0}', steps.version.outputs.VERSION) || github.event.release.name }}
+          version: ${{ steps.version.outputs.VERSION }}
           changelog: ${{ github.event.release.body }}
           loaders: paper
           dependencies: |-
@@ -67,18 +65,3 @@ jobs:
             1.20.x
             1.21.x
           files: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar
-
-      - name: Generate Javadoc
-        run: mvn -B javadoc:javadoc --file pom.xml
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: target/site/apidocs
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

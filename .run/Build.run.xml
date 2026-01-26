@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Package" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Build" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,9 +10,7 @@
             <set />
           </option>
           <option name="goals">
-            <list>
-              <option value="package" />
-            </list>
+            <list />
           </option>
           <option name="multimoduleDir" />
           <option name="pomFileName" />
