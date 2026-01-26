@@ -102,6 +102,38 @@ toggle:
 #chat-format: <has-team:'<dark_gray>[<white><team></white>]</dark_gray> '><white><player></white><dark_gray>:</dark_gray> <gray><message></gray>
 chat-format: null
 
+# Play a sound…
+sound:
+  personal:
+    # …when receiving a private message
+    incoming:
+      # The ID of the sound.
+      # Set to null, none, or "" to disable.
+      sound: entity.chicken.egg
+
+      # Volume of the sound from 0.0 to 1.0. Decrease to be quieter.
+      volume: 1.0
+
+      # Pitch of the sound from 0.5 to 2.0.
+      # Optional: defaults to 1.0.
+      # Values below 1.0 lower the pitch and increase the duration;
+      # values above 1.0 raise the pitch and reduce the duration.
+      pitch: 0.82
+
+    # …when sending a private message
+    outgoing:
+      sound: null
+
+  team:
+    # …when receiving a team message
+    incoming:
+      sound: ui.hud.bubble_pop
+      pitch: .7
+
+    # …when sending a team message
+    outgoing:
+      sound: null
+
 # Error messages
 errors:
     # No permission

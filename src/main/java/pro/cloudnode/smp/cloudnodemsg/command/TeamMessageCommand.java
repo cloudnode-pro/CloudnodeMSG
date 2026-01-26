@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Message;
 import pro.cloudnode.smp.cloudnodemsg.Permissions;
+import pro.cloudnode.smp.cloudnodemsg.PluginConfig;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotInTeamError;
 import pro.cloudnode.smp.cloudnodemsg.error.NotPlayerError;
@@ -48,7 +49,19 @@ public class TeamMessageCommand extends Command {
      * Send message to online team members
      */
     public static boolean sendTeamMessage(final @NotNull Player sender, final @NotNull Team team, final @NotNull Component message) {
+        CloudnodeMSG.getInstance()
+                .config()
+                .sound(PluginConfig.SoundEvent.TEAM_OUTGOING)
+                .ifPresent(sound -> sound.play(sender));
+
         for (final @NotNull Player player : sender.getServer().getOnlinePlayers()) {
+            if (!sender.getUniqueId().equals(player.getUniqueId())) {
+                CloudnodeMSG.getInstance()
+                        .config()
+                        .sound(PluginConfig.SoundEvent.TEAM_INCOMING)
+                        .ifPresent(sound -> sound.play(player));
+            }
+
             if (Message.isIgnored(player, sender)) continue;
             if (Optional.ofNullable(player.getScoreboard().getPlayerTeam(player)).map(t -> t.equals(team))
                     .orElse(false))
