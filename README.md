@@ -132,8 +132,8 @@ Here is a list of the permissions used by this plugin.
 
 | Permission                   | Description                                                                                                      | Default  |
 |------------------------------|------------------------------------------------------------------------------------------------------------------|----------|
-| `cloudnodemsg.use`           | Allows access to the private message ([`/msg`](#msg-player-message) and reply ([`/r`](#reply-message) commands   | everyone |
-| `cloudnodemsg.team`          | Allows access to the team message command ([`/teammsg`](#teammsg)                                                | everyone |
+| `cloudnodemsg.use`           | Allows access to the private message ([`/msg`](#msg-player-message)) and reply ([`/r`](#reply-message)) commands | everyone |
+| `cloudnodemsg.team`          | Allows access to the team message command ([`/teammsg`](#teammsg))                                               | everyone |
 | `cloudnodemsg.ignore`        | Allows access to the [`/ignore`](#ignore-player) and [`/unignore`](#unignore-player) commands                    | everyone |
 | `cloudnodemsg.ignore.bypass` | Prevents the sender’s messages from being ignored                                                                | none     |
 | `cloudnodemsg.toggle`        | Allows toggling receiving private messages on and off with [`/togglemsg`](#togglemsg)                            | everyone |
