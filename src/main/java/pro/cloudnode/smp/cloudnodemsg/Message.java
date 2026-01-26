@@ -57,7 +57,8 @@ public final class Message {
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
-        if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
+        if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(
+                Permissions.SEND_VANISHED))) {
             if (context == Context.CHANNEL) {
                 final @NotNull Player player = Objects.requireNonNull(sender.getPlayer());
                 Message.exitChannel(player);
@@ -73,7 +74,7 @@ public final class Message {
         }
 
         if (recipientPlayer.isPresent() && senderPlayer.isPresent() && !Message.isIncomingEnabled(recipientPlayer.get()) && !senderPlayer
-                .get().hasPermission(Permission.TOGGLE_BYPASS)) {
+                .get().hasPermission(Permissions.TOGGLE_BYPASS)) {
             new PlayerHasIncomingDisabledError(recipientPlayer.get().getName()).send(senderPlayer.get());
             return;
         }
@@ -81,7 +82,7 @@ public final class Message {
         sendSpyMessage(sender, recipient, message);
         sendMessage(sender, CloudnodeMSG.getInstance().config().outgoing(senderUsername, recipientUsername, message));
         if ((recipientPlayer.isPresent() && Message.isIgnored(recipientPlayer.get(), sender)) && (senderPlayer.isPresent() && !senderPlayer
-                .get().hasPermission(Permission.IGNORE_BYPASS))) return;
+                .get().hasPermission(Permissions.IGNORE_BYPASS))) return;
         sendMessage(recipient, CloudnodeMSG.getInstance().config()
                 .incoming(senderUsername, recipientUsername, message));
 
@@ -114,7 +115,7 @@ public final class Message {
                 .getInstance().config().consoleName() : Optional.ofNullable(recipient.getName())
                                                       .orElse("Unknown Player");
         for (final @NotNull Player player : CloudnodeMSG.getInstance().getServer().getOnlinePlayers()) {
-            if (!player.hasPermission(Permission.SPY) || player.getUniqueId().equals(sender.getUniqueId()) || player
+            if (!player.hasPermission(Permissions.SPY) || player.getUniqueId().equals(sender.getUniqueId()) || player
                     .getUniqueId().equals(recipient.getUniqueId())) continue;
             sendMessage(player, CloudnodeMSG.getInstance().config().spy(senderName, recipientName, message));
         }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pro.cloudnode.smp.cloudnodemsg.CloudnodeMSG;
 import pro.cloudnode.smp.cloudnodemsg.Message;
-import pro.cloudnode.smp.cloudnodemsg.Permission;
+import pro.cloudnode.smp.cloudnodemsg.Permissions;
 import pro.cloudnode.smp.cloudnodemsg.error.InvalidPlayerError;
 import pro.cloudnode.smp.cloudnodemsg.error.MessageYourselfError;
 import pro.cloudnode.smp.cloudnodemsg.error.NoPermissionError;
@@ -25,7 +25,7 @@ public final class MessageCommand extends Command {
 
     @Override
     public boolean run(final @NotNull CommandSender sender, final @NotNull String label, @NotNull String @NotNull [] args) {
-        if (!sender.hasPermission(Permission.USE)) return new NoPermissionError().send(sender);
+        if (!sender.hasPermission(Permissions.USE)) return new NoPermissionError().send(sender);
         if (args.length == 0)
             return sendMessage(sender, CloudnodeMSG.getInstance().config().usage(label, sender instanceof Player ? usage : usageConsole));
         if (args.length == 1 && !(sender instanceof Player)) return sendMessage(sender, CloudnodeMSG.getInstance().config()
@@ -44,7 +44,7 @@ public final class MessageCommand extends Command {
                     return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
                 }
             }
-            if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
+            if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permissions.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
             if (!Message.isIncomingEnabled(recipient.get())) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(player);
             Message.createChannel(player, recipient.get());
             return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player.getName(), recipient.get().getName(), label));
@@ -62,7 +62,7 @@ public final class MessageCommand extends Command {
 
     @Override
     public @Nullable List<@NotNull String> onTabComplete(final @NotNull CommandSender sender, final @NotNull org.bukkit.command.Command command, final @NotNull String label, final @NotNull String @NotNull [] args) {
-        if (!sender.hasPermission(Permission.USE)) return new ArrayList<>();
+        if (!sender.hasPermission(Permissions.USE)) return new ArrayList<>();
         // `null` works for list of players
         if (args.length == 1) return null;
         return new ArrayList<>();

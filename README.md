@@ -130,22 +130,22 @@ Reload the plugin configuration.
 
 Here is a list of the permissions used by this plugin.
 
-| Permission                   | Description                                                             | Recommended Group |
-|------------------------------|-------------------------------------------------------------------------|-------------------|
-| `cloudnodemsg.use`           | Allows using the `/msg` and `/r` commands                               | default           |
-| `cloudnodemsg.team`          | Allows using the `/teammsg` command                                     | default           |
-| `cloudnodemsg.send.vanished` | Allows sending messages to vanished players                             | admin             |
-| `cloudnodemsg.ignore`        | Allows using the `/ignore` and `/unignore` commands                     | default           |
-| `cloudnodemsg.ignore.bypass` | Makes your private messages visible, even if the recipient ignored you  | admin             |
-| `cloudnodemsg.toggle`        | Allows you to use the `/togglemsg` command                              | default           |
-| `cloudnodemsg.toggle.other`  | Allows you to toggle msg for another player using `/togglemsg <player>` | admin             |
-| `cloudnodemsg.toggle.bypass` | Allows you to send messages to players with disabled DMs                | admin             |
-| `cloudnodemsg.spy`           | Players with this permission see ALL private messages and team messages | admin             |
+| Permission                   | Description                                                                                                      | Default  |
+|------------------------------|------------------------------------------------------------------------------------------------------------------|----------|
+| `cloudnodemsg.use`           | Allows access to the private message ([`/msg`](#msg-player-message) and reply ([`/r`](#reply-message) commands   | everyone |
+| `cloudnodemsg.team`          | Allows access to the team message command ([`/teammsg`](#teammsg)                                                | everyone |
+| `cloudnodemsg.ignore`        | Allows access to the [`/ignore`](#ignore-player) and [`/unignore`](#unignore-player) commands                    | everyone |
+| `cloudnodemsg.ignore.bypass` | Prevents the sender’s messages from being ignored                                                                | none     |
+| `cloudnodemsg.toggle`        | Allows toggling receiving private messages on and off with [`/togglemsg`](#togglemsg)                            | everyone |
+| `cloudnodemsg.toggle.other`  | Allows toggling receiving private messages on and off for others with [`/togglemsg <player>`](#togglemsg-player) | OP       |
+| `cloudnodemsg.toggle.bypass` | Allows sending private messages to recipients who have toggled them off                                          | OP       |
+| `cloudnodemsg.send.vanished` | Allows sending messages to vanished recipients                                                                   | OP       |
+| `cloudnodemsg.spy`           | Makes you see all private and team messages sent between all players                                             | none     |
 
 ## Release Cycle
 
 CloudnodeMSG follows a weekly **time-based release schedule**,
-with new features or changes typically released every **Tuesday**.
+with new features or changes typically released on **Tuesday**.
 
 When we merge critical bug fixes, we may publish out-of-band releases on any day of the week.
 
