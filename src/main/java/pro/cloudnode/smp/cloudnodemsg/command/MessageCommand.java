@@ -44,7 +44,7 @@ public final class MessageCommand extends Command {
                     return sendMessage(player, CloudnodeMSG.getInstance().config().channelClosed(player.getName(), Optional.ofNullable(recipientOffline.getName()).orElse("Unknown Player"), label));
                 }
             }
-            if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get()) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
+            if (recipient.isEmpty() || (CloudnodeMSG.isVanished(recipient.get(), player) && !player.hasPermission(Permission.SEND_VANISHED))) return new PlayerNotFoundError(args[0]).send(player);
             if (!Message.isIncomingEnabled(recipient.get())) return new PlayerHasIncomingDisabledError(recipient.get().getName()).send(player);
             Message.createChannel(player, recipient.get());
             return sendMessage(player, CloudnodeMSG.getInstance().config().channelCreated(player.getName(), recipient.get().getName(), label));

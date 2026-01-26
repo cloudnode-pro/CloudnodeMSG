@@ -57,7 +57,7 @@ public final class Message {
         final @NotNull Optional<@NotNull Player> senderPlayer = Optional.ofNullable(this.sender.getPlayer());
         final @NotNull Optional<@NotNull Player> recipientPlayer = Optional.ofNullable(this.recipient.getPlayer());
 
-        if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
+        if (!recipient.getUniqueId().equals(console.getUniqueId()) && recipientPlayer.isEmpty() || (recipientPlayer.isPresent() && senderPlayer.isPresent() && CloudnodeMSG.isVanished(recipientPlayer.get(), senderPlayer.get()) && !senderPlayer.get().hasPermission(Permission.SEND_VANISHED))) {
             if (context == Context.CHANNEL) {
                 final @NotNull Player player = Objects.requireNonNull(sender.getPlayer());
                 Message.exitChannel(player);
