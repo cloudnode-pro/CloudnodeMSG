@@ -6,8 +6,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -67,18 +65,3 @@ jobs:
             1.20.x
             1.21.x
           files: target/CloudnodeMSG-${{ steps.version.outputs.VERSION }}.jar
-
-      - name: Generate Javadoc
-        run: mvn -B javadoc:javadoc --file pom.xml
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: target/site/apidocs
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
